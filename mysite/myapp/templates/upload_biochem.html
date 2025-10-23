@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f9fafb;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        max-width: 900px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: white;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        text-align: center;
+    }
+    h1 {
+        font-size: 2.5rem;
+        color: #333;
+        margin-bottom: 30px;
+    }
+    .file-upload {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: #007BFF;
+        color: white;
+        border: 2px dashed #007BFF;
+        border-radius: 10px;
+        padding: 40px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    .file-upload:hover {
+        background-color: #0056b3;
+        transform: scale(1.05);
+    }
+    .file-upload input[type="file"] {
+        display: none;
+    }
+    .file-upload i {
+        font-size: 3rem;
+        margin-bottom: 20px;
+    }
+    .file-upload p {
+        font-size: 1.1rem;
+        margin: 0;
+    }
+
+    /* Стиль для отображения данных */
+    .results {
+        margin-top: 40px;
+        padding: 20px;
+        background-color: #f3f4f6;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .results h3 {
+        font-size: 1.8rem;
+        color: #333;
+        margin-bottom: 15px;
+    }
+    .result-item {
+        margin: 10px 0;
+        font-size: 1.2rem;
+        color: #333;
+        padding: 12px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    .result-item span {
+        font-weight: bold;
+    }
+
+    .button-container {
+        margin-top: 30px;
+    }
+
+    .btn {
+        padding: 12px 25px;
+        margin-top: 20px;
+        background-color: #007bff;
+        color: white;
+        font-size: 18px;
+        border-radius: 30px;
+        text-decoration: none;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .btn:hover {
+        background-color: #0056b3;
+        transform: scale(1.05);
+    }
+
+    .btn:active {
+        background-color: #004085;
+        transform: scale(1);
+    }
+</style>
+
+<div class="container">
+    <h1>Upload Your Blood Analysis Image</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="file-upload">
+            <label for="analysis_file">
+                <i class="fas fa-upload"></i>
+                <p>Click or Drag & Drop an Image (JPG/PNG/PDF)</p>
+            </label>
+            <input type="file" name="file" id="analysis_file" accept=".jpg,.jpeg,.png,.pdf">
+        </div>
+        <div  class="t1001__btn-wrapper " style="margin-bottom: 5px; padding-bottom: 10px;margin-top: 10px;">
+
+        <button  class="t1001__btn t-btn t-btn_md " style= "color:rgb(0, 0, 0); margin-top: 20px ; font-size: large   ;padding-inline:50px ;display: block;background-color:#88C8E8;border-radius:30px;-moz-border-radius:30px; -webkit-border-radius:30px;"  type="submit">Submit</button>
+    </div>
+    </form>
+
+    {% if analysis_data %}
+        <div class="results">
+            <h3>Extracted Data:</h3>
+            <div class="result-item">
+                <span>Leukocytes Level:</span> {{ analysis_data.leukocytes_level }}
+            </div>
+            <div class="result-item">
+                <span>Hemoglobin Level:</span> {{ analysis_data.hemoglobin_level }}
+            </div>
+            <div class="result-item">
+                <span>Erythrocytes Level:</span> {{ analysis_data.erythrocytes_level }}
+            </div>
+            <div class="result-item">
+                <span>Thrombocytes Level:</span> {{ analysis_data.thrombocytes_level }}
+            </div>
+            <div class="result-item">
+                <span>Hematocrit Level:</span> {{ analysis_data.hematocrit_level }}
+            </div>
+        </div>
+        <div  class="t1001__btn-wrapper " style="margin-bottom: 5px; padding-bottom: 10px;margin-top: 10px;">
+            <form method="POST" action="{% url 'save_results' %}">
+                {% csrf_token %}
+                <div class="t-btnwrapper" ><button class="t1001__btn t-btn t-btn_md " style= "color:rgb(0, 0, 0); margin-top: 20px ; font-size: large   ;padding-inline:50px ;display: block;background-color:#88C8E8;border-radius:30px;-moz-border-radius:30px; -webkit-border-radius:30px;" type="submit">Save results</button>
+                </div></form>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

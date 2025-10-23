@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}Подписка оформлена - Health-X{% endblock %}
+
+{% block content %}
+<div class="success-container">
+    <div class="success-card">
+        <div class="success-icon">✓</div>
+        <h1>Подписка успешно оформлена!</h1>
+        <p>Спасибо за доверие нашему сервису. Теперь у вас есть доступ ко всем премиум-функциям.</p>
+        <div class="next-steps">
+            <h2>Что дальше?</h2>
+            <ul>
+                <li>✓ Получите доступ к расширенной AI-диагностике</li>
+                <li>✓ Используйте приоритетную поддержку</li>
+                <li>✓ Изучите базу знаний</li>
+            </ul>
+        </div>
+        <a href="/" class="back-button">Вернуться на главную</a>
+    </div>
+</div>
+
+<style>
+.success-container {
+    max-width: 800px;
+    margin: 60px auto;
+    padding: 20px;
+}
+
+.success-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 4px 24px rgba(80,80,180,0.10);
+}
+
+.success-icon {
+    width: 80px;
+    height: 80px;
+    background: #4CAF50;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 30px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 2rem;
+}
+
+p {
+    color: #666;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 40px;
+}
+
+.next-steps {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 40px;
+}
+
+.next-steps h2 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.next-steps ul {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.next-steps li {
+    color: #555;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+}
+
+.back-button {
+    display: inline-block;
+    padding: 15px 40px;
+    background: linear-gradient(90deg, #7b6cff 0%, #4f8cff 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.back-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(80,80,180,0.18);
+}
+</style>
+{% endblock %} 

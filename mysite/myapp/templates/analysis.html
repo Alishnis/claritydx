@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Page</title>
+    <style>
+        .analysis-block {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Analysis Page</h1>
+    <button id="add-analysis">Добавить анализ</button>
+    <div id="analysis-container"></div>
+
+    <script>
+        document.getElementById('add-analysis').addEventListener('click', function () {
+            const analysisContainer = document.getElementById('analysis-container');
+
+            // Проверяем, существует ли блок
+            if (!document.querySelector('.analysis-block')) {
+                const newBlock = document.createElement('div');
+                newBlock.className = 'analysis-block';
+                newBlock.textContent = 'Ваши анализы:';
+                analysisContainer.appendChild(newBlock);
+            } else {
+                alert('Вы уже проверили снимок');
+            }
+        });
+    </script>
+</body>
+</html>

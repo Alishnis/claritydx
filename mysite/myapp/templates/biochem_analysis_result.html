@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container" style="max-width: 900px; margin: 50px auto; padding: 30px; background-color: white; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); border-radius: 10px;">
+    <h1 style="text-align: center; color: #333;">Blood Analysis Results</h1>
+
+    <!-- Список анализов -->
+    <div style="margin-top: 20px;">
+        {% if analyses %}
+            <ul style="list-style-type: none; padding: 0;">
+                {% for analysis in analyses %}
+                    <li style="padding: 15px; border-bottom: 2px solid #eee; cursor: pointer; transition: background-color 0.3s; border-radius: 8px;" onclick="toggleDetails('{{ analysis.id }}')">
+                        <p style="margin: 0; font-weight: bold; font-size: 18px; color: #333;">Analysis done on: {{ analysis.uploaded_at|date:"d M Y" }}</p>
+                        <div id="details-{{ analysis.id }}" style="display: none; padding-top: 10px;">
+                            <div style="background-color: #f9f9f9; padding: 20px; border-radius: 10px; margin-top: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                                <p><strong>Leukocytes Level:</strong> {{ analysis.leukocytes_level }}</p>
+                                <p><strong>Hemoglobin Level:</strong> {{ analysis.hemoglobin_level }}</p>
+                                <p><strong>Erythrocytes Level:</strong> {{ analysis.erythrocytes_level }}</p>
+                                <p><strong>Thrombocytes Level:</strong> {{ analysis.thrombocytes_level }}</p>
+                                <p><strong>Hematocrit Level:</strong> {{ analysis.hematocrit_level }}</p>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p style="text-align: center; color: #999;">No blood analysis available.</p>
+        {% endif %}
+    </div>
+
+    <!-- Кнопки для выбора показателей с красивыми anchor тэгами -->
+    <div style="margin-top: 30px; text-align: center;">
+        <h2 style="text-align: center;margin-bottom: 20px ;color: rgb(0, 0, 0);">View the dynamics of changes in indicators</h2>
+        <a href="{% url 'show_graph' 'leukocytes' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">Leukocytes</a>
+        <a href="{% url 'show_graph' 'hemoglobin' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">Hemoglobin</a>
+        <a href="{% url 'show_graph' 'erythrocytes' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">Erythrocytes</a>
+        <a href="{% url 'show_graph' 'thrombocytes' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">Thrombocytes</a>
+        <a href="{% url 'show_graph' 'hematocrit' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">Hematocrit</a>
+    </div>
+
+    <div id="graph-container" style="margin-top: 30px; text-align: center;">
+        {% if graph_image %}
+            <img src="data:image/png;base64,{{ graph_image }}" alt="Blood Analysis Graph">
+        {% else %}
+            <p>No graph available.</p>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    function toggleDetails(analysisId) {
+        const details = document.getElementById('details-' + analysisId);
+
+        // Скрыть все детали перед тем как показать новую
+        const allDetails = document.querySelectorAll('[id^="details-"]');
+        allDetails.forEach(function(detail) {
+            if (detail !== details) {
+                detail.style.display = 'none';
+            }
+        });
+
+        // Переключаем отображение текущих деталей
+        if (details.style.display === 'none' || details.style.display === '') {
+            details.style.display = 'block';
+        } else {
+            details.style.display = 'none';
+        }
+    }
+
+    // Скрыть все детали при первом рендере страницы
+    window.onload = function() {
+        const allDetails = document.querySelectorAll('[id^="details-"]');
+        allDetails.forEach(function(detail) {
+            detail.style.display = 'none'; // Скрыть все детали
+        });
+    }
+</script>
+
+{% block extra_css %}
+<style>
+    .btn-param {
+        padding: 12px 25px;
+        margin: 10px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 50px;
+        font-size: 18px;
+        font-weight: bold;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .btn-param:hover {
+        background-color: #0056b3;
+        color: white;
+        transform: translateY(-5px);
+    }
+
+    .btn-param:active {
+        background-color: #004085;
+        color: white;
+        transform: translateY(2px);
+    }
+
+    .btn-param:focus {
+        outline: none;
+        box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+    }
+
+    li:hover {
+        background-color: #f0f8ff;
+        cursor: pointer;
+    }
+</style>
+{% endblock %}
+{% endblock %}

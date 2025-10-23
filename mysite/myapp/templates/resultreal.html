@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div id="rec843263554" class="r t-rec t-rec_pt_135 t-rec_pt-res-480_90 t-rec_pb_135 t-rec_pb-res-480_90" style="padding-top:135px;padding-bottom:135px;background-color:#fff;" data-animationappear="off" data-record-type="948" data-bg-color="#fff">
+    <div class="t948">
+        <div class="t-section__container t-container t-container_flex" style="margin-bottom:80px;">
+            <div class="t-col t-col_12">
+                <div class="t-section__title t-title t-title_xs t-align_center t-margin_auto" field="btitle">
+                    Анализ рентгеновских снимков легких
+                </div>
+                <div class="t-section__descr t-descr t-descr_xl t-align_center t-margin_auto" field="bdescr">
+                    с помощью исскуственного интеллекта
+                </div>
+            </div>
+        </div>
+        <div class="t-container">
+            <div class="t948__row">
+                <div class="t-item t948__col t-col t-col_12">
+                    <div class="t948__content">
+                        <div class="t948__textwrapper" style="border: 1px solid transparent; background-color: #f2f9fd;">
+                            <div class="t948__circle">
+                                <div class="t948__number t-name t-name_md">1</div>
+                            </div>
+                            <div class="t948__title t-name t-name_md" field="li_title__5917094636332">
+                                <h1>Результаты анализа</h1>
+                                    <p><strong>Возможные болезни:</strong></p>
+                                    <ul>
+                                        {% for disease in analysis.result.splitlines %}
+                                            <li>{{ disease }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                    <h2>Grad-CAM Визуализация:</h2>
+                                    <img src="/{{ gradcam_path }}" alt="Grad-CAM Image">
+                            </div>
+                            <form method="POST" action="{% url 'save_results' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="analysis_id" value="{{ analysis.id }}">
+                                <button type="submit" class="btn-save">Сохранить результаты</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Индикатор загрузки -->
+<div id="loading-overlay" style="display: none;">
+    <div class="loading-spinner">
+        <img src="{% static 'loading.gif' %}" alt="Загрузка...">
+        <p>Анализируем...</p>
+    </div>
+</div>
+
+<style>
+    /* Стиль для фона на весь экран */
+    img {
+        width: 400px; /* Фиксированная ширина */
+        height: 300px; /* Фиксированная высота */
+        object-fit: contain; /* Сохраняет пропорции внутри заданных размеров */
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-top: 20px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    #loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000; /* Поверх всего контента */
+    }
+
+    /* Стиль для индикатора загрузки */
+    .loading-spinner {
+        text-align: center;
+        color: white;
+        font-size: 1.5em;
+    }
+
+    .loading-spinner img {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 20px;
+    }
+    button {
+            padding: 10px 15px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        button:focus {
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+</style>
+
+<script>
+    // Функция для отображения индикатора загрузки
+    function showLoading() {
+        document.getElementById('loading-overlay').style.display = 'flex';
+    }
+</script>
+    
+
+
+
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+main {
+    padding: 20px;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+}
+
+ul {
+    padding-left: 20px;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+</style>
+{% endblock %}

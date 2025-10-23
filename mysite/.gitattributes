@@ -1,0 +1,4 @@
+*.h5 filter=lfs diff=lfs merge=lfs -text
+/Users/aliserromankul/Desktop/testserv_russian/informatrix-project2/mysite/myapp/vgg16.weights.h5c filter=lfs diff=lfs merge=lfs -text
+/Users/aliserromankul/Desktop/testserv_russian/informatrix-project2/mysite/myapp/model_from_scratch_blood.weights.h5 filter=lfs diff=lfs merge=lfs -text
+/Users/aliserromankul/Desktop/testserv_russian/informatrix-project2/mysite/trained_model.h5 filter=lfs diff=lfs merge=lfs -text
