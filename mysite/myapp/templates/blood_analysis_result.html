@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container" style="max-width: 900px; margin: 50px auto; padding: 30px; background-color: white; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); border-radius: 10px;">
+    <h1 style="text-align: center; color: #333;">Результаты анализа крови</h1>
+
+    <!-- Список анализов -->
+    <div style="margin-top: 20px;">
+        {% if analyses %}
+            <ul style="list-style-type: none; padding: 0;">
+                {% for analysis in analyses %}
+                    <li style="padding: 15px; border-bottom: 2px solid #eee; cursor: pointer; transition: background-color 0.3s; border-radius: 8px;" onclick="toggleDetails('{{ analysis.id }}')">
+                        <p style="margin: 0; font-weight: bold; font-size: 18px; color: #333;">Анализ сделан в: {{ analysis.uploaded_at|date:"d M Y" }}</p>
+                        <div id="details-{{ analysis.id }}" style="display: none; padding-top: 10px;">
+                            <div style="background-color: #f9f9f9; padding: 20px; border-radius: 10px; margin-top: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                                <p><strong>Leukocytes Level:</strong> {{ analysis.leukocytes_level }}</p>
+                                <p><strong>Hemoglobin Level:</strong> {{ analysis.hemoglobin_level }}</p>
+                                <p><strong>Erythrocytes Level:</strong> {{ analysis.erythrocytes_level }}</p>
+                                <p><strong>Thrombocytes Level:</strong> {{ analysis.thrombocytes_level }}</p>
+                                <p><strong>Hematocrit Level:</strong> {{ analysis.hematocrit_level }}</p>
+                                <p><strong>Amylase Level:</strong> {{ analysis.amylase_level }}</p>
+                                <p><strong>Potassium Level:</strong> {{ analysis.potassium_level }}</p>
+                                <p><strong>Basophils Level:</strong> {{ analysis.basophils_level }}</p>
+                                <p><strong>Creatinine Level:</strong> {{ analysis.creatinine_level }}</p>
+                                <p><strong>C-reactive Protein Level:</strong> {{ analysis.c_reactive_protein_level }}</p>
+                            </div>
+                        </div>
+                        
+                          <!-- Рекомендации для этого анализа -->
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p style="text-align: center; color: #999;">No blood analysis available.</p>
+        {% endif %}
+    </div>
+    
+
+
+
+    <div style="margin-top: 30px; text-align: center;">
+        <h2 style="text-align: center;margin-bottom: 20px ;color: rgb(0, 0, 0);">Посмотреть динамику изменения показателей</h2>
+        <a href="{% url 'show_graph' 'leukocytes' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">Лейкоциты</a>
+        <a href="{% url 'show_graph' 'hemoglobin' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">Гемоглобин</a>
+        <a href="{% url 'show_graph' 'erythrocytes' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">Эритроциты</a>
+        <a href="{% url 'show_graph' 'thrombocytes' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">Тромбоциты</a>
+        <a href="{% url 'show_graph' 'hematocrit' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">Гемоглобин</a>
+        <a href="{% url 'show_graph' 'amylase' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">Амилаза</a>    
+        <a href="{% url 'show_graph' 'potassium' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">Калий</a>
+        <a href="{% url 'show_graph' 'basophils' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">Базофилы</a>
+        <a href="{% url 'show_graph' 'creatinine' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">Креатинин</a>
+        <a href="{% url 'show_graph' 'c_reactive_protein' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">С-реактивный белок</a>
+    </div>
+
+    <div id="graph-container" style="margin-top: 30px; text-align: center;">
+        {% if graph_image %}
+            <img src="data:image/png;base64,{{ graph_image }}" alt="Blood Analysis Graph">
+        {% else %}
+            <p>График не доступен.</p>
+        {% endif %}
+    </div>
+    {% if recommendations %}
+    <div class='rec_blood'style="margin-top: 20px; background-color: #f9f9f9; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <p style="color: #333; font-size: 22px;"><strong>Рекомендации для последнего анализа:</strong></p >
+        <p>{{ recommendations.0.0 }}</p>  
+        <p style="color: #333; font-size: 22px;"><strong>Способы лечения:</strong></p>
+        <p>{{ recommendations.0.1 }}</p>  
+    </div>
+{% else %}
+    <p style="color: #999;">Все результаты в пределах нормы.</p>
+{% endif %}
+</div>
+<style>
+    .rec_blood p{
+        padding: 2.5px;
+        font-size: 17px;
+        font-weight: 100;
+    }
+</style>
+<script>
+    function toggleDetails(analysisId) {
+        const details = document.getElementById('details-' + analysisId);
+
+        const allDetails = document.querySelectorAll('[id^="details-"]');
+        allDetails.forEach(function(detail) {
+            if (detail !== details) {
+                detail.style.display = 'none';
+            }
+        });
+
+        
+        if (details.style.display === 'none' || details.style.display === '') {
+            details.style.display = 'block';
+        } else {
+            details.style.display = 'none';
+        }
+    }
+
+    window.onload = function() {
+        const allDetails = document.querySelectorAll('[id^="details-"]');
+        allDetails.forEach(function(detail) {
+            detail.style.display = 'none'; 
+        });
+    }
+</script>
+
+{% block extra_css %}
+<style>
+    .btn-param {
+        padding: 12px 25px;
+        margin: 10px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 50px;
+        font-size: 18px;
+        font-weight: bold;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .btn-param:hover {
+        background-color: #0056b3;
+        color: white;
+        transform: translateY(-5px);
+    }
+
+    .btn-param:active {
+        background-color: #004085;
+        color: white;
+        transform: translateY(2px);
+    }
+
+    .btn-param:focus {
+        outline: none;
+        box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+    }
+
+    li:hover {
+        background-color: #f0f8ff;
+        cursor: pointer;
+    }
+</style>
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Личный Кабинет{% endblock %}
+
+{% block content %}
+<div id="rec843263553" class="r t-rec t-rec_pt_120 t-rec_pt-res-480_90 t-rec_pb_45 t-rec_pb-res-480_15" style="padding-top:120px;padding-bottom:45px;background-color:#fff; " data-animationappear="off" data-record-type="1001" data-bg-color="#fff">
+    <div class="t1001">
+       <div class="t-container t-align_center">
+          <div class="t-col t-col_10 t-prefix_1">
+             <div class="t1001__title t-title t-title_md t-margin_auto" field="title">Ваш Личный Кабинет</div>
+          </div>
+       </div>
+    </div>
+
+    <div class="dashboard-container" style="max-width: 800px; margin: 20px auto; background: #f9f9f9; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+    <h1 style="text-align: center; color: #333;">Добро пожаловать, {{ user.username }}!</h1>
+
+    <!-- Навигация по разделам -->
+    <div class="categories" style="margin-top: 20px; text-align: center; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+        <a href="?section=ct" style="background-color:#88C8E8; color: black; padding: 10px 20px; font-size: 16px; border-radius: 40px; transition: background 0.3s ease, transform 0.2s ease; text-decoration: none; min-width: 200px;">Анализ КТ изображений</a>
+        <a href="?section=xray" style="background-color:#88C8E8; color: black; padding: 10px 20px; font-size: 16px; border-radius: 40px; transition: background 0.3s ease, transform 0.2s ease; text-decoration: none; min-width: 200px;">Анализ рентгеновских снимков</a>
+        <a href="?section=skin" style="background-color:#88C8E8; color: black; padding: 10px 20px; font-size: 16px; border-radius: 40px; transition: background 0.3s ease, transform 0.2s ease; text-decoration: none; min-width: 200px;">Анализ кожи</a>
+        <a href="?section=blood" style="background-color:#88C8E8; color: black; padding: 10px 20px; font-size: 16px; border-radius: 40px; transition: background 0.3s ease, transform 0.2s ease; text-decoration: none; min-width: 200px;">Анализ крови</a>
+        <a href="?section=blood_cell" style="background-color:#88C8E8; color: black; padding: 10px 20px; font-size: 16px; border-radius: 40px; transition: background 0.3s ease, transform 0.2s ease; text-decoration: none; min-width: 200px;">Анализ клеток крови</a>
+        
+    </div>
+
+    <h2 style="text-align: center; margin-top: 30px;">{{ section_title }}</h2>
+
+    <!-- История анализов -->
+    <div style="margin-top: 20px; padding: 10px; border: 1px solid #ddd; border-radius: 5px; background: #fff;">
+        {% if analyses %}
+            <ul style="list-style-type: none; padding: 0; margin: 0;">
+                {% for analysis in analyses %}
+                    <li style="padding: 10px; border-bottom: 1px solid #eee;">
+                        {% if section_title == 'Blood Cell Analysis' %}
+                            <p style="margin: 0;"><strong>Прогноз:</strong> {{ analysis.prediction }}</p>
+                            <p style="margin: 5px 0 0; color: #777;"><strong>Уверенность:</strong> {{ analysis.confidence|floatformat:2 }}%</p>
+                            <p style="margin: 5px 0 0; color: #777;"><strong>Дата загрузки:</strong> {{ analysis.created_at|date:"d M Y, H:i" }}</p>
+                            <p style="margin: 5px 0 0; color: #777;">
+                                <strong>Изображения:</strong>
+                                <a style="color: #25a2e0;" href="{{ analysis.image.url }}" target='_blank'>Исходное изображение</a> |
+                                <a style="color: #25a2e0;" href="{{ analysis.saliency_map.url }}" target='_blank'>Карта значимости</a>
+                            </p>
+                        {% else %}
+                            <p style="margin: 0;"><strong>Название анализа:</strong> {{ analysis.name }}</p>
+                            <p style="margin: 5px 0 0; color: #777;"><strong>Дата загрузки:</strong> {{ analysis.uploaded_at|date:"d M Y, H:i" }}</p>
+                            <p style="margin: 5px 0 0; color: #777;"><strong><a style="color: #25a2e0;" href="{{ analysis.analysis_file.url }}" target='_blank'>Файл анализа</a></strong></p>
+                            <p style="margin: 5px 0 0; color: #777;"><strong>Результат анализа:</strong> {{ analysis.result }}</p>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p style="text-align: center; color: #999;">Нет доступных анализов для этого раздела.</p>
+        {% endif %}
+    </div>
+</div>
+</div>
+<style>
+    .categories a {
+        text-decoration: none;
+        color: #000;
+        background-color: #88C8E8;
+        border: none;
+        border-radius: 40px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .categories a:hover {
+        background-color: #6ab0d0;
+        transform: scale(1.05);
+    }
+
+    .categories a:focus {
+        outline: none;
+        box-shadow: 0 0 5px rgba(136, 200, 232, 0.5);
+    }
+
+    @media (max-width: 768px) {
+        .categories {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .categories a {
+            width: 100%;
+            max-width: 300px;
+            margin: 5px 0;
+        }
+    }
+</style>
+{% endblock %}

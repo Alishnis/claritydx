@@ -1,0 +1,350 @@
+{% extends 'base.html' %}
+
+{% block title %}Подписка - Health-X{% endblock %}
+
+{% block content %}
+<div class="subscription-container">
+    <h1 class="subscription-title">Выберите план подписки</h1>
+    <div class="subscription-plans">
+        <!-- Monthly Plan -->
+        <div class="plan-card">
+            <h2 class="plan-title">Месячный план</h2>
+            <div class="price">
+                499 <span class="currency">$</span><span class="period">/месяц</span>
+            </div>
+            <ul class="plan-features">
+                <li>✓ Неограниченный доступ к AI-диагностике</li>
+                <li>✓ Приоритетная поддержка</li>
+                <li>✓ Расширенная аналитика</li>
+                <li>✓ Доступ к базе знаний</li>
+            </ul>
+            <button class="subscribe-btn" onclick="showPaymentForm('monthly')">Подписаться</button>
+        </div>
+        <!-- Annual Plan -->
+        <div class="plan-card">
+            <div class="badge">Скидка 20%</div>
+            <h2 class="plan-title">Годовой план</h2>
+            <div class="price">
+                4990 <span class="currency">$</span><span class="period">/год</span>
+            </div>
+            <ul class="plan-features">
+                <li>✓ Все преимущества месячного плана</li>
+                <li>✓ Скидка 20%</li>
+                <li>✓ VIP-поддержка</li>
+                <li>✓ Эксклюзивные материалы</li>
+            </ul>
+            <button class="subscribe-btn" onclick="showPaymentForm('annual')">Подписаться</button>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Оформление подписки</h2>
+            <form id="paymentForm" class="payment-form">
+                <div class="form-group">
+                    <label for="cardNumber">Номер карты</label>
+                    <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="expiryDate">Срок действия</label>
+                        <input type="text" id="expiryDate" placeholder="MM/YY" maxlength="5">
+                    </div>
+                    <div class="form-group">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" placeholder="123" maxlength="3">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="cardName">Имя на карте</label>
+                    <input type="text" id="cardName" placeholder="IVAN IVANOV">
+                </div>
+                <button type="submit" class="pay-button">Оплатить</button>
+            </form>
+            <div class="payment-methods">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1200px-Mastercard-logo.svg.png" alt="Mastercard">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/1200px-Visa_Inc._logo.svg.png" alt="Visa">
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.subscription-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.subscription-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 40px;
+    font-size: 2.2rem;
+    font-weight: 700;
+}
+
+.subscription-plans {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+}
+
+.plan-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 36px 32px 32px 32px;
+    width: 320px;
+    box-shadow: 0 4px 24px rgba(80,80,180,0.10);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.plan-card:hover {
+    box-shadow: 0 8px 32px rgba(80,80,180,0.18);
+    transform: translateY(-4px) scale(1.03);
+}
+
+.badge {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: #ff6b6b;
+    color: #fff;
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 15px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(255,107,107,0.12);
+}
+
+.plan-title {
+    color: #7b6cff;
+    margin-bottom: 22px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.price {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 18px;
+    text-align: center;
+}
+
+.currency {
+    font-size: 1.5rem;
+    color: #222;
+    margin-left: 2px;
+}
+
+.period {
+    font-size: 1rem;
+    color: #666;
+    margin-left: 4px;
+}
+
+.plan-features {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 32px;
+    color: #555;
+    font-size: 1.08rem;
+    width: 100%;
+}
+
+.plan-features li {
+    margin-bottom: 12px;
+    padding-left: 0;
+}
+
+.subscribe-btn {
+    width: 100%;
+    padding: 15px 0;
+    background: linear-gradient(90deg, #7b6cff 0%, #4f8cff 100%);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(80,80,180,0.10);
+}
+
+.subscribe-btn:hover {
+    background: linear-gradient(90deg, #4f8cff 0%, #7b6cff 100%);
+    box-shadow: 0 4px 16px rgba(80,80,180,0.18);
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1000;
+}
+
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    margin: 50px auto;
+    padding: 40px;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 20px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+}
+
+.payment-form {
+    margin-top: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+    border-color: #7b6cff;
+    outline: none;
+}
+
+.pay-button {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(90deg, #7b6cff 0%, #4f8cff 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.pay-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(80,80,180,0.18);
+}
+
+.payment-methods {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.payment-methods img {
+    height: 30px;
+    filter: grayscale(0.2);
+}
+
+@media (max-width: 900px) {
+    .subscription-plans {
+        flex-direction: column;
+        align-items: center;
+    }
+    .plan-card {
+        width: 95%;
+        max-width: 400px;
+    }
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+}
+</style>
+
+<script>
+function showPaymentForm(plan) {
+    document.getElementById('paymentModal').style.display = 'block';
+}
+
+// Close modal when clicking the X
+document.querySelector('.close').onclick = function() {
+    document.getElementById('paymentModal').style.display = 'none';
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    if (event.target == document.getElementById('paymentModal')) {
+        document.getElementById('paymentModal').style.display = 'none';
+    }
+}
+
+// Format card number with spaces
+document.getElementById('cardNumber').addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+    let formattedValue = '';
+    for(let i = 0; i < value.length; i++) {
+        if(i > 0 && i % 4 === 0) {
+            formattedValue += ' ';
+        }
+        formattedValue += value[i];
+    }
+    e.target.value = formattedValue;
+});
+
+// Format expiry date
+document.getElementById('expiryDate').addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+    if(value.length >= 2) {
+        value = value.slice(0,2) + '/' + value.slice(2);
+    }
+    e.target.value = value;
+});
+
+// Handle form submission
+document.getElementById('paymentForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    // Here you would normally handle the payment
+    alert('Это демонстрационная версия. В реальном приложении здесь будет обработка платежа.');
+    document.getElementById('paymentModal').style.display = 'none';
+});
+</script>
+{% endblock %} 
