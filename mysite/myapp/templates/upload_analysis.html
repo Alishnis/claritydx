@@ -57,7 +57,7 @@
         margin: 0;
     }
 
-    /* Стиль для отображения данных */
+    /* Data display styles */
     .results {
         margin-top: 40px;
         padding: 20px;
@@ -158,20 +158,20 @@
 </style>
 
 <div class="container">
-    <h1>Загрузите изображение вашего анализа крови</h1>
+    <h1>Upload an image of your blood test</h1>
 
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="file-upload">
             <label for="analysis_file">
                 <i class="fas fa-upload"></i>
-                <p>Щелкните или перетащите изображение (JPG/PNG/PDF)</p>
+                <p>Click or drag an image (JPG/PNG/PDF)</p>
             </label>
             <input type="file" name="file" id="analysis_file" accept=".jpg,.jpeg,.png,.pdf">
         </div>
         <div  class="t1001__btn-wrapper " style="margin-bottom: 5px; padding-bottom: 10px;margin-top: 10px;">
 
-        <button  class="t1001__btn t-btn t-btn_md " style= "color:rgb(0, 0, 0); margin-top: 20px ; font-size: large   ;padding-inline:50px ;display: block;background-color:#88C8E8;border-radius:30px;-moz-border-radius:30px; -webkit-border-radius:30px;"  type="submit">Отправить</button>
+        <button  class="t1001__btn t-btn t-btn_md " style= "color:rgb(0, 0, 0); margin-top: 20px ; font-size: large   ;padding-inline:50px ;display: block;background-color:#88C8E8;border-radius:30px;-moz-border-radius:30px; -webkit-border-radius:30px;"  type="submit">Submit</button>
     </div>
     </form>
 
@@ -179,50 +179,50 @@
     <div class="analysis-flex">
         <!-- Left: Extracted Data -->
         <div class="analysis-half">
-            <h3>Извлеченные Данные:</h3>
+            <h3>Extracted Data:</h3>
             <div class="result-item">
-                <span>Уровень Лейкоцитов:</span> {{ analysis_data.leukocytes_level }}
+                <span>Leukocytes Level:</span> {{ analysis_data.leukocytes_level }}
             </div>
             <div class="result-item">
-                <span>Уровень Гемоглобина:</span> {{ analysis_data.hemoglobin_level }}
+                <span>Hemoglobin Level:</span> {{ analysis_data.hemoglobin_level }}
             </div>
             <div class="result-item">
-                <span>Уровень Эритроцитов:</span> {{ analysis_data.erythrocytes_level }}
+                <span>Erythrocytes Level:</span> {{ analysis_data.erythrocytes_level }}
             </div>
             <div class="result-item">
-                <span>Уровень Тромбоцитов:</span> {{ analysis_data.thrombocytes_level }}
+                <span>Thrombocytes Level:</span> {{ analysis_data.thrombocytes_level }}
             </div>
             <div class="result-item">
-                <span>Уровень Гематокрита:</span> {{ analysis_data.hematocrit_level }}
+                <span>Hematocrit Level:</span> {{ analysis_data.hematocrit_level }}
             </div>
             <div class="result-item">
-                <span> Уровень Амилазы:</span> {{ analysis_data.amylase_level }}
+                <span>Amylase Level:</span> {{ analysis_data.amylase_level }}
             </div>
             <div class="result-item">
-                <span> Уровень Калия:</span> {{ analysis_data.creatinine_level }}
+                <span>Potassium Level:</span> {{ analysis_data.creatinine_level }}
             </div>
             <div class="result-item">
-                <span> Уровень Базофилов:</span> {{ analysis_data.creatinine_level }}
+                <span>Basophils Level:</span> {{ analysis_data.creatinine_level }}
             </div>
             <div class="result-item">
-                <span> Уровень Креатинина:</span> {{ analysis_data.creatinine_level }}
+                <span>Creatinine Level:</span> {{ analysis_data.creatinine_level }}
             </div>
             <div class="result-item">
-                <span> Уровень С-Реактивного Протеина:</span> {{ analysis_data.creatinine_level }}
+                <span>C-Reactive Protein Level:</span> {{ analysis_data.creatinine_level }}
             </div>
 
                 
         </div>
         <!-- Right: AI Recommendations -->
         <div class="analysis-half">
-            <button class="ai-btn" id="get-ai-recommendations">Получить AI рекомендации</button>
+            <button class="ai-btn" id="get-ai-recommendations">Get AI recommendations</button>
             <div class="ai-recommendations" id="ai-recommendations"></div>
         </div>
     </div>
     <div  class="t1001__btn-wrapper " style="margin-bottom: 5px; padding-bottom: 10px;margin-top: 10px;">
         <form method="POST" action="{% url 'save_results' %}">
             {% csrf_token %}
-            <div class="t-btnwrapper" ><button class="t1001__btn t-btn t-btn_md " style= "color:rgb(0, 0, 0); margin-top: 20px ; font-size: large   ;padding-inline:50px ;display: block;background-color:#88C8E8;border-radius:30px;-moz-border-radius:30px; -webkit-border-radius:30px;" type="submit">Сохранить результаты</button>
+            <div class="t-btnwrapper" ><button class="t1001__btn t-btn t-btn_md " style= "color:rgb(0, 0, 0); margin-top: 20px ; font-size: large   ;padding-inline:50px ;display: block;background-color:#88C8E8;border-radius:30px;-moz-border-radius:30px; -webkit-border-radius:30px;" type="submit">Save results</button>
             </div></form>
     </div>
     <script>
@@ -241,7 +241,7 @@
         };
         const recommendationsDiv = document.getElementById('ai-recommendations');
         recommendationsDiv.style.display = 'block';
-        recommendationsDiv.innerHTML = 'Генерация рекомендаций...';
+        recommendationsDiv.innerHTML = 'Generating recommendations...';
         fetch('{% url "get_ai_recommendations" %}', {
             method: 'POST',
             headers: {
@@ -254,10 +254,10 @@
         .then(data => {
             if (Array.isArray(data.recommendations)) {
                 const keywords = [
-                    'Краткое описание:',
-                    'Рекомендуемые методы лечения:',
-                    'Необходимые меры предосторожности:',
-                    'Общие лекарства:'
+                    'Short description:',
+                    'Recommended treatments:',
+                    'Required precautions:',
+                    'Common medications:'
                 ];
                 recommendationsDiv.innerHTML = data.recommendations.map(section => {
                     let html = section;
@@ -268,11 +268,11 @@
                     return `<div>${html}</div>`;
                 }).join('');
             } else {
-                recommendationsDiv.innerHTML = data.recommendations || 'Нет рекомендаций.';
+                recommendationsDiv.innerHTML = data.recommendations || 'No recommendations.';
             }
         })
         .catch(() => {
-            recommendationsDiv.innerHTML = 'Ошибка при получении рекомендаций.';
+            recommendationsDiv.innerHTML = 'Error while fetching recommendations.';
         });
     };
     </script>

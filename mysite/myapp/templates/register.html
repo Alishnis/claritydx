@@ -74,7 +74,7 @@
 </head>
 <body>
     <div class="container">
-        <!-- Форма регистрации -->
+        <!-- Registration form -->
         <h2>Sign up</h2>
         <form method="POST" action="{% url 'register' %}">
             {% csrf_token %}
@@ -83,7 +83,7 @@
             <button type="submit">Sign up</button>
         </form>
 
-        <!-- Форма входа -->
+        <!-- Login form -->
         <h2>Login</h2>
         <form method="POST" action="{% url 'login' %}">
             {% csrf_token %}

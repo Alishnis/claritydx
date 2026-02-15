@@ -3,7 +3,7 @@
 <div class="container" style="max-width: 900px; margin: 50px auto; padding: 30px; background-color: white; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); border-radius: 10px;">
     <h1 style="text-align: center; color: #333;">Blood Analysis Results</h1>
 
-    <!-- Список анализов -->
+    <!-- Analysis list -->
     <div style="margin-top: 20px;">
         {% if analyses %}
             <ul style="list-style-type: none; padding: 0;">
@@ -27,7 +27,7 @@
         {% endif %}
     </div>
 
-    <!-- Кнопки для выбора показателей с красивыми anchor тэгами -->
+    <!-- Buttons to select markers -->
     <div style="margin-top: 30px; text-align: center;">
         <h2 style="text-align: center;margin-bottom: 20px ;color: rgb(0, 0, 0);">View the dynamics of changes in indicators</h2>
         <a href="{% url 'show_graph' 'leukocytes' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">Leukocytes</a>
@@ -50,7 +50,7 @@
     function toggleDetails(analysisId) {
         const details = document.getElementById('details-' + analysisId);
 
-        // Скрыть все детали перед тем как показать новую
+        // Hide all details before showing a new one
         const allDetails = document.querySelectorAll('[id^="details-"]');
         allDetails.forEach(function(detail) {
             if (detail !== details) {
@@ -58,7 +58,7 @@
             }
         });
 
-        // Переключаем отображение текущих деталей
+        // Toggle current detail display
         if (details.style.display === 'none' || details.style.display === '') {
             details.style.display = 'block';
         } else {
@@ -66,11 +66,11 @@
         }
     }
 
-    // Скрыть все детали при первом рендере страницы
+    // Hide all details on initial render
     window.onload = function() {
         const allDetails = document.querySelectorAll('[id^="details-"]');
         allDetails.forEach(function(detail) {
-            detail.style.display = 'none'; // Скрыть все детали
+            detail.style.display = 'none'; // Hide all details
         });
     }
 </script>

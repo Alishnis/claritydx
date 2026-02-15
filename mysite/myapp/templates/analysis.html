@@ -15,21 +15,21 @@
 </head>
 <body>
     <h1>Welcome to the Analysis Page</h1>
-    <button id="add-analysis">Добавить анализ</button>
+    <button id="add-analysis">Add analysis</button>
     <div id="analysis-container"></div>
 
     <script>
         document.getElementById('add-analysis').addEventListener('click', function () {
             const analysisContainer = document.getElementById('analysis-container');
 
-            // Проверяем, существует ли блок
+            // Check if the block exists
             if (!document.querySelector('.analysis-block')) {
                 const newBlock = document.createElement('div');
                 newBlock.className = 'analysis-block';
-                newBlock.textContent = 'Ваши анализы:';
+                newBlock.textContent = 'Your analyses:';
                 analysisContainer.appendChild(newBlock);
             } else {
-                alert('Вы уже проверили снимок');
+                alert('You have already checked this scan');
             }
         });
     </script>

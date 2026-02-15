@@ -61,7 +61,7 @@
 <body>
     <div class="error-container">
         <h1>{{ error_code|default:"Error" }}</h1>
-        <h2>{{ error_message|default:"Что-то пошло не так!" }}</h2>
+        <h2>{{ error_message|default:"Something went wrong!" }}</h2>
         <p>Try refreshing the page or returning to the main page.</p>
         <a href="{% url 'analysis_page' %}">Home</a>
     </div>
