@@ -3,7 +3,7 @@ import os
 import torch
 import torch.nn as nn
 from torchvision import transforms
-from torchvision.models import efficientnet_b4
+from torchvision.models import efficientnet_b4, EfficientNet_B4_Weights
 from PIL import Image
 import numpy as np
 from django.conf import settings
@@ -23,7 +23,11 @@ preprocess = transforms.Compose([
 
 
 def load_skin_disease_model():
-    model = efficientnet_b4(pretrained=True) 
+    try:
+        model = efficientnet_b4(weights=EfficientNet_B4_Weights.DEFAULT)
+    except Exception:
+        # Fallback to untrained weights if download/SSL fails
+        model = efficientnet_b4(weights=None)
     model.classifier[1] = nn.Linear(model.classifier[1].in_features, 7)  
     model = nn.Sequential(
         model,

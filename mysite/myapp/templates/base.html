@@ -6,9 +6,9 @@
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <!--metatextblock--> 
-      <title>AI Диагностика - Анализ Вашего Здоровья</title>
+      <title>HealthX</title>
       <meta property="og:url" content="http://project11651471.tilda.ws" />
-      <meta property="og:title" content="AI Диагностика - Анализ Вашего Здоровья" />
+      <meta property="og:title" content="HealthX" />
       <meta property="og:description" content="" />
       <meta property="og:type" content="website" />
       <meta property="og:image" content="https://static.tildacdn.info/tild3663-3031-4430-a134-666561353533/-/resize/504x/generative-ai-virtua.jpg" />
@@ -48,7 +48,7 @@
             <div class="tmenu-mobile">
                <div class="tmenu-mobile__container">
                   <div class="tmenu-mobile__burgerlogo">
-                     <div class="tmenu-mobile__burgerlogo__title t-title" field="title">AI Диагностика</div>
+                     <div class="tmenu-mobile__burgerlogo__title t-title" field="title">HealthX</div>
                   </div>
                   <button type="button"
                      class="t-menuburger t-menuburger_first "
@@ -68,7 +68,7 @@
                   <div class="t454__logowrapper">
                      <div class="t454__logowrapper2">
                         <div >
-                           <div class="t454__logo t-title" field="title">AI-diagnostics</div>
+                           <div class="t454__logo t-title" field="title">HealthX</div>
                         </div>
                      </div>
                   </div>
@@ -78,44 +78,44 @@
                            <li class="t454__list_item"
                               style="padding:0 0 0 6px;"> <a class="t-menu__link-item"
                               href="{% url 'analysis_page'%}" data-menu-submenu-hook="" data-menu-item-number="1">
-                              Главная
+                              Home
                               </a> 
                            </li>
                            <li class="t454__list_item divider"
                               style="padding:0 0 0 6px;"> <a class="t-menu__link-item"
                               href="#rec843264067" data-menu-submenu-hook="" data-menu-item-number="3">
-                              Контакты
+                              Contacts
                               </a> 
                            </li>
                            <li class="t454__list_item divider" style="padding:0 0 0 6px; position: relative;">
                               <a class="t-menu__link-item" href="#" data-menu-submenu-hook="" data-menu-item-number="3">
-                              Проверить Болезнь
+                              Check Condition
                               </a>
                               <ul class="dropdown-menu" style="display: none; position: absolute; background-color: white; min-width: 200px; box-shadow: 0 8px 16px rgba(0,0,0,0.1); z-index: 1000; border-radius: 4px; padding: 8px 0;">
                                  <li style="padding: 8px 16px;">
-                                    <a href="{% url 'analyze_symptoms' %}" style="color: #000; text-decoration: none; display: block;">Использовать NLP Модель</a>
+                                    <a href="{% url 'analyze_symptoms' %}" style="color: #000; text-decoration: none; display: block;">Use NLP Model</a>
                                  </li>
                                  <li style="padding: 8px 16px;">
-                                    <a href="{% url 'recommendation' %}" style="color: #000; text-decoration: none; display: block;">Использовать Большую Базу Данных</a>
+                                    <a href="{% url 'recommendation' %}" style="color: #000; text-decoration: none; display: block;">Use Large Database</a>
                                  </li>
                               </ul>
                            </li>
                            <li class="t454__list_item divider"
                               style="padding:0 0 0 6px;"> <a class="t-menu__link-item"
                               href="{% url 'treatment_view' %}" data-menu-submenu-hook="" data-menu-item-number="4">
-                              Получить Лечение
+                              Get Treatment
                               </a> 
                            </li>
                            <li class="t454__list_item"
                               style="padding:0 0 0 5px;"> <a class="t-menu__link-item"
                               href="{% url 'blood_analysis' %}" data-menu-submenu-hook="" data-menu-item-number="4">
-                              Анализ Крови
+                              Blood Analysis
                               </a> 
                            </li>
                            <li class="t454__list_item divider"
                               style="padding:0 0 0 6px;"> <a class="t-menu__link-item"
                               href="{% url 'subscription' %}" data-menu-submenu-hook="" data-menu-item-number="4">
-                              Подписка
+                              Subscription
                               </a> 
                            </li>
                         </ul>
@@ -125,8 +125,8 @@
                   <div class="t454__rightwrapper" style=" padding-left:80px; text-align: right;">
                      <nav class="t454__rightmenuwrapper">
                         <ul class="t454__list t-menu__list">
-                           <li class="t454__list_item divider" style="padding:0 15px 0 0;"> <a class="t-menu__link-item" href="{% static 'Privacy_Policy.pdf' %}" target="_blank" data-menu-submenu-hook="" data-menu-item-number="4">Политика Конфиденциальности</a> </li>
-                           <li class="t454__list_item" style="padding:0 15px;"> <a class="t-menu__link-item" href="{% url 'user_kab' %}" data-menu-submenu-hook="" data-menu-item-number="5">Личный Кабинет</a> </li>
+                           <li class="t454__list_item divider" style="padding:0 15px 0 0;"> <a class="t-menu__link-item" href="{% static 'Privacy_Policy.pdf' %}" target="_blank" data-menu-submenu-hook="" data-menu-item-number="4">Privacy Policy</a> </li>
+                           <li class="t454__list_item" style="padding:0 15px;"> <a class="t-menu__link-item" href="{% url 'user_kab' %}" data-menu-submenu-hook="" data-menu-item-number="5">Dashboard</a> </li>
                         </ul>
                      </nav>
                   </div>
@@ -150,7 +150,7 @@
     <!-- Main content -->
     <main>
         {% block content %}
-        <!-- Контент страницы -->
+        <!-- Page content -->
         {% endblock %}
     </main>
 
@@ -161,7 +161,7 @@
             <div class="t046">
                <div class="t-container">
                   <div class="t-col t-col_6 t-prefix_3">
-                     <div class="t046__text t-text t-text_xs" field="text">Health-X <br /><br />Телефон: 8-7772223344</div>
+                     <div class="t046__text t-text t-text_xs" field="text">HealthX <br /><br />Phone: 8-7772223344</div>
                   </div>
                </div>
             </div>
@@ -262,7 +262,7 @@
           <div id="medbot-avatar-glow">
             <img src="/static/chatbotlogo.png" alt="chatbot_logo">
           </div>
-          <span>Health-X assistant</span>
+          <span>HealthX assistant</span>
           <button id="medbot-close">&times;</button>
         </div>
         <div id="medbot-messages"></div>
@@ -517,7 +517,7 @@
           body: JSON.stringify({
             model: 'gpt-3.5-turbo',
             messages: [
-              {role: 'system', content: 'Ты медицинский ассистент. Отвечай профессионально, понятно и дружелюбно.Если пользователь спрашивает что то вне медицины, то отвечай что не входит в компетенцию ассистента.'},
+              {role: 'system', content: 'You are a medical assistant. Answer professionally, clearly, and politely. If the user asks about something outside of medicine, say it is out of scope for this assistant.'},
               {role: 'user', content: question}
             ],
             max_tokens: 600,
@@ -529,11 +529,11 @@
         if (data.choices && data.choices[0] && data.choices[0].message) {
           addMessage(data.choices[0].message.content, 'bot');
         } else {
-          addMessage('Извините, не удалось получить ответ. Попробуйте позже.', 'bot');
+          addMessage('Sorry, I could not get a response. Please try again later.', 'bot');
         }
       } catch (err) {
         medbotMessages.lastChild.remove();
-        addMessage('Ошибка соединения с сервером.', 'bot');
+        addMessage('Server connection error.', 'bot');
       }
       medbotInput.disabled = false;
     };

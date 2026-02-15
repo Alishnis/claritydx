@@ -78,14 +78,22 @@ WSGI_APPLICATION = "mysite.wsgi.application"
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'aidiag',  # Имя базы данных
-        'USER': 'root',      # Имя пользователя MySQL
-        'PASSWORD': 'samsung3010',  # Пароль пользователя MySQL
-        'HOST': 'localhost',          # Хост базы данных
-        'PORT': '3306',               
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+# Временное использование SQLite вместо MySQL
+# Для возврата к MySQL раскомментируйте ниже и исправьте настройки подключения:
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'aidiag',
+#         'USER': 'root',
+#         'PASSWORD': 'samsung3010',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

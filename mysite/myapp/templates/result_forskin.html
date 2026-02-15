@@ -69,7 +69,7 @@
     </div>
 </div>
 
-<!-- Индикатор загрузки -->
+<!-- Loading indicator -->
 <div id="loading-overlay" style="display: none;">
     <div class="loading-spinner">
         <img src="{% static 'loading.gif' %}" alt=" Loading…">
@@ -78,7 +78,7 @@
 </div>
 
 <style>
-    /* Стиль для фона на весь экран */
+    /* Full-screen overlay styles */
     .result{
         max-width: 100%;
         display: block;
@@ -91,7 +91,7 @@
     }
     img {
         
-        object-fit: contain; /* Сохраняет пропорции внутри заданных размеров */
+        object-fit: contain; /* Keep proportions within bounds */
         border: 1px solid #ddd;
         border-radius: 5px;
         margin-top: 20px;
@@ -105,14 +105,14 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
         display: flex;
         justify-content: center;
         align-items: center;
-        z-index: 1000; /* Поверх всего контента */
+        z-index: 1000; /* Above all content */
     }
 
-    /* Стиль для индикатора загрузки */
+    /* Loading indicator styles */
     .loading-spinner {
         text-align: center;
         color: white;
@@ -179,7 +179,7 @@
 </style>
 
 <script>
-    // Функция для отображения индикатора загрузки
+    // Show loading indicator
     function showLoading() {
         document.getElementById('loading-overlay').style.display = 'flex';
     }
@@ -187,75 +187,56 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 <script>
-    // Инициализация карты
-    const map = L.map('map').setView([55.7558, 37.6173], 14); // Москва по умолчанию
+    // Initialize map
+    const map = L.map('map').setView([55.7558, 37.6173], 14); // Moscow by default
 
-    // Добавление карты OpenStreetMap
+    // Add OpenStreetMap tiles
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    // Получение местоположения пользователя
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const userCoordinates = [position.coords.latitude, position.coords.longitude];
+    // Use fixed location: Kyzylorda
+    const fixedCoordinates = [44.8488, 65.4823];
+    map.setView(fixedCoordinates, 14);
+    L.marker(fixedCoordinates).addTo(map)
+        .bindPopup('Kyzylorda')
+        .openPopup();
+    findNearestHospital(fixedCoordinates);
 
-                // Центрируем карту на местоположении пользователя
-                map.setView(userCoordinates, 14);
-
-                // Добавляем маркер пользователя
-                const userMarker = L.marker(userCoordinates).addTo(map)
-                    .bindPopup('You are here')
-                    .openPopup();
-
-                // Ищем ближайшую больницу
-                findNearestHospital(userCoordinates);
-            },
-            (error) => {
-                document.getElementById('error-message').textContent = "Unable to access your location.";
-            }
-        );
-    } else {
-        document.getElementById('error-message').textContent = "Geolocation is not supported by your browser.";
-    }
-
-    // Поиск ближайшей больницы
+    // Search for nearest hospital
     function findNearestHospital(userCoordinates) {
     const url = `https://nominatim.openstreetmap.org/search?format=json&q=hospital&limit=5&bounded=1&viewbox=${userCoordinates[1]-0.1},${userCoordinates[0]-0.1},${userCoordinates[1]+0.1},${userCoordinates[0]+0.1}`;
 
     fetch(url)
         .then(response => response.json())
         .then(data => {
-            console.log("Реальные больницы из OpenStreetMap:", data);
+            console.log("Hospitals from OpenStreetMap:", data);
 
             if (data.length === 0) {
-                document.getElementById("error-message").textContent = "Ближайших больниц не найдено.";
                 return;
             }
 
-            // Берём первую больницу из списка
+            // Take the first hospital from the list
             const nearestHospital = data[0];
 
             const hospitalCoordinates = [parseFloat(nearestHospital.lat), parseFloat(nearestHospital.lon)];
-            const hospitalName = nearestHospital.display_name || "Неизвестная больница";
+            const hospitalName = nearestHospital.display_name || "Unknown hospital";
 
-            // Добавляем маркер для больницы
+            // Add hospital marker
             L.marker(hospitalCoordinates)
                 .addTo(map)
                 .bindPopup(`<strong>${hospitalName}</strong>`)
                 .openPopup();
 
-            // Отображаем информацию о больнице
+            // Render hospital info
             document.getElementById('hospital-info').innerHTML = `
                 <strong>Hospital name:</strong> ${hospitalName} <br>
                 <strong>Coordinates:</strong> ${hospitalCoordinates[0]}, ${hospitalCoordinates[1]}
             `;
         })
         .catch(error => {
-            console.error("Ошибка запроса к OpenStreetMap:", error);
-            document.getElementById("error-message").textContent = "Ошибка загрузки данных о больницах.";
+            console.error("OpenStreetMap request error:", error);
         });
 }
 </script>

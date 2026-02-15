@@ -7,10 +7,10 @@
         <div class="t-section__container t-container t-container_flex" style="margin-bottom:80px;">
             <div class="t-col t-col_12">
                 <div class="t-section__title t-title t-title_xs t-align_center t-margin_auto" field="btitle">
-                    Анализ рентгеновских снимков легких
+                    Lung X-ray Analysis
                 </div>
                 <div class="t-section__descr t-descr t-descr_xl t-align_center t-margin_auto" field="bdescr">
-                    с помощью исскуственного интеллекта
+                    powered by artificial intelligence
                 </div>
             </div>
         </div>
@@ -23,20 +23,20 @@
                                 <div class="t948__number t-name t-name_md">1</div>
                             </div>
                             <div class="t948__title t-name t-name_md" field="li_title__5917094636332">
-                                <h1>Результаты анализа</h1>
-                                    <p><strong>Возможные болезни:</strong></p>
+                                <h1>Analysis Results</h1>
+                                    <p><strong>Possible conditions:</strong></p>
                                     <ul>
                                         {% for disease in analysis.result.splitlines %}
                                             <li>{{ disease }}</li>
                                         {% endfor %}
                                     </ul>
-                                    <h2>Grad-CAM Визуализация:</h2>
+                                    <h2>Grad-CAM Visualization:</h2>
                                     <img src="/{{ gradcam_path }}" alt="Grad-CAM Image">
                             </div>
                             <form method="POST" action="{% url 'save_results' %}">
                                 {% csrf_token %}
                                 <input type="hidden" name="analysis_id" value="{{ analysis.id }}">
-                                <button type="submit" class="btn-save">Сохранить результаты</button>
+                                <button type="submit" class="btn-save">Save results</button>
                             </form>
                         </div>
                     </div>
@@ -47,20 +47,20 @@
     </div>
 </div>
 
-<!-- Индикатор загрузки -->
+<!-- Loading indicator -->
 <div id="loading-overlay" style="display: none;">
     <div class="loading-spinner">
-        <img src="{% static 'loading.gif' %}" alt="Загрузка...">
-        <p>Анализируем...</p>
+        <img src="{% static 'loading.gif' %}" alt="Loading...">
+        <p>Analyzing...</p>
     </div>
 </div>
 
 <style>
-    /* Стиль для фона на весь экран */
+    /* Full-screen overlay styles */
     img {
-        width: 400px; /* Фиксированная ширина */
-        height: 300px; /* Фиксированная высота */
-        object-fit: contain; /* Сохраняет пропорции внутри заданных размеров */
+        width: 400px; /* Fixed width */
+        height: 300px; /* Fixed height */
+        object-fit: contain; /* Keep proportions within bounds */
         border: 1px solid #ddd;
         border-radius: 5px;
         margin-top: 20px;
@@ -74,14 +74,14 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
         display: flex;
         justify-content: center;
         align-items: center;
-        z-index: 1000; /* Поверх всего контента */
+        z-index: 1000; /* Above all content */
     }
 
-    /* Стиль для индикатора загрузки */
+    /* Loading indicator styles */
     .loading-spinner {
         text-align: center;
         color: white;
@@ -117,7 +117,7 @@
 </style>
 
 <script>
-    // Функция для отображения индикатора загрузки
+    // Show loading indicator
     function showLoading() {
         document.getElementById('loading-overlay').style.display = 'flex';
     }

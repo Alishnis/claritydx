@@ -104,6 +104,8 @@ from django.http import JsonResponse
 
 
 import subprocess
+import sys
+import re
 
 
 
@@ -116,18 +118,24 @@ def analyze_symptoms(request):
                 import os
 
                 script_path = os.path.join(os.path.dirname(__file__), "ex.py")
-                result = subprocess.check_output(
-                    ['python', script_path], 
-                    input=symptoms, 
-                    text=True
+                proc = subprocess.run(
+                    [sys.executable, script_path],
+                    input=symptoms,
+                    text=True,
+                    capture_output=True,
                 )
-                resultind=result.find('обеспечивают возможные диагнозы:')
-                result1=result[resultind:].replace('обеспечивают возможные диагнозы:','')
-                resultfin=result1.split(',')
-                
-                
-               
-                return render(request, 'symptom_form.html', {'diagnosis': resultfin})
+                if proc.returncode != 0:
+                    err = proc.stderr.strip() or "Analysis failed."
+                    return render(request, 'symptom_form.html', {'diagnosis': [err]})
+
+                output = (proc.stdout or "").strip()
+                if not output:
+                    err = proc.stderr.strip() or "No diagnosis returned."
+                    return render(request, 'symptom_form.html', {'diagnosis': [err]})
+
+                # Use raw model output; split by newlines/commas and drop empties
+                parts = [p.strip() for p in re.split(r"[,\n]+", output) if p.strip()]
+                return render(request, 'symptom_form.html', {'diagnosis': parts})
             except Exception as e:
                 return render(request, 'symptom_form.html', {'diagnosis': f"Ошибка: {e}"})
     return render(request, 'symptom_form.html')   
@@ -180,7 +188,7 @@ from PIL import Image
 import os
 import torch
 from torchvision import transforms
-from torchvision.models import densenet121
+from torchvision.models import densenet121, DenseNet121_Weights
 from pytorch_grad_cam import GradCAM
 from pytorch_grad_cam.utils.image import show_cam_on_image
 from skimage.transform import resize
@@ -193,8 +201,21 @@ preprocess = transforms.Compose([
 ])
 
 def load_chexnet():
-    """Загружаем предобученную модель DenseNet121."""
-    model = densenet121(pretrained=True)
+    """Загружаем предобученную модель DenseNet121.
+
+    Если скачивание весов недоступно (например, нет сети или SSL блокирует запрос),
+    поднимаем модель с случайно инициализированными весами, чтобы приложение продолжило работу.
+    """
+    try:
+        model = densenet121(weights=DenseNet121_Weights.DEFAULT)
+    except Exception as exc:
+        logger.warning(
+            "Не удалось загрузить веса DenseNet121 (%s). "
+            "Используем модель без предобученных весов — результаты анализа могут быть неточными.",
+            exc,
+        )
+        model = densenet121(weights=None)
+
     model.classifier = torch.nn.Linear(model.classifier.in_features, 14)
     model.eval()
     return model

@@ -7,10 +7,10 @@
         <div class="t-section__container t-container t-container_flex" style="margin-bottom:80px;">
             <div class="t-col t-col_12">
                 <div class="t-section__title t-title t-title_xs t-align_center t-margin_auto" field="btitle">
-                    Анализ КТ снимков легких
+                    Lung CT Analysis
                 </div>
                 <div class="t-section__descr t-descr t-descr_xl t-align_center t-margin_auto" field="bdescr">
-                    с помощью искусственного интеллекта
+                    powered by artificial intelligence
                 </div>
             </div>
         </div
@@ -30,15 +30,15 @@
                             <div class="t948__title t-name t-name_md" field="li_title__5917094636332">
                                 <form action="{% url 'analyze_image2' %}" method="POST" enctype="multipart/form-data" id="uploadForm">
                                     {% csrf_token %}
-                                    <label for="file">Выберите файл:</label>
+                                    <label for="file">Choose a file:</label>
                                     <input type="file" id="file" name="file" accept="image/*" required>
                                     
                                     <div id="preview-container" style="display: none; margin-top: 20px;">
-                                        <h5>Предпросмотр изображения</h5>
+                                        <h5>Image preview</h5>
                                         <img id="preview" class="img-fluid rounded" alt="Preview" style="max-width: 300px; margin: 10px auto;">
                                     </div>
 
-                                    <button type="submit" class="t1001__btn t-btn t-btn_md " style= "color:rgb(0, 0, 0); margin-top: 20px ; font-size: large   ;padding-inline:50px ;display: block;background-color:#88C8E8;border-radius:30px;-moz-border-radius:30px; -webkit-border-radius:30px;" data-buttonfieldset="button">Отправить:</button>
+                                    <button type="submit" class="t1001__btn t-btn t-btn_md " style= "color:rgb(0, 0, 0); margin-top: 20px ; font-size: large   ;padding-inline:50px ;display: block;background-color:#88C8E8;border-radius:30px;-moz-border-radius:30px; -webkit-border-radius:30px;" data-buttonfieldset="button">Submit</button>
                                 </form>
                             </div>
                         </div>
@@ -50,30 +50,30 @@
     </div>
 </div>
 
-<!-- Индикатор загрузки -->
+<!-- Loading indicator -->
 <div id="loading-overlay" style="display: none;">
     <div class="loading-spinner">
         <img src="{% static 'loading.gif' %}" alt="Loading...">
-        <p>Анализ...</p>
+        <p>Analyzing...</p>
     </div>
 </div>
 
 <style>
-    /* Стиль для фона на весь экран */
+    /* Full-screen overlay styles */
     #loading-overlay {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
         display: flex;
         justify-content: center;
         align-items: center;
-        z-index: 1000; /* Поверх всего контента */
+        z-index: 1000; /* Above all content */
     }
 
-    /* Стиль для индикатора загрузки */
+    /* Loading indicator styles */
     .loading-spinner {
         text-align: center;
         color: white;
@@ -123,7 +123,7 @@
 </style>
 
 <script>
-    // Функция для отображения индикатора загрузки
+    // Show loading indicator
     function showLoading() {
         document.getElementById('loading-overlay').style.display = 'flex';
     }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ближайшая больница</title>
+    <title>Nearest Hospital</title>
     <script src="https://maps.api.2gis.ru/2.0/loader.js"></script>
     <style>
         #map {
@@ -22,15 +22,15 @@
     </style>
 </head>
 <body>
-    <h1>Найдите ближайшую больницу</h1>
-    <p id="error-message"></p> <!-- Сообщение об ошибке -->
-    <div id="map"></div> <!-- Карта -->
-    <div id="hospital-info"></div> <!-- Информация о ближайшей больнице -->
+    <h1>Find the nearest hospital</h1>
+    <p id="error-message"></p> <!-- Error message -->
+    <div id="map"></div> <!-- Map -->
+    <div id="hospital-info"></div> <!-- Nearest hospital info -->
     <script>
-        const apiKey = 'a1cdee81-521a-41e7-a0fa-d56f93f3125d'; // Ваш API-ключ
+        const apiKey = 'a1cdee81-521a-41e7-a0fa-d56f93f3125d'; // Your API key
         let map;
 
-        // Инициализация карты
+        // Initialize map
         function initializeMap(centerCoordinates) {
             DG.then(function () {
                 map = DG.map('map', {
@@ -38,80 +38,80 @@
                     zoom: 14,
                 });
 
-                // Добавляем маркер для пользователя
-                DG.marker(centerCoordinates).addTo(map).bindPopup('Вы здесь');
-                console.log("Карта и маркер пользователя успешно созданы.");
+                // Add user marker
+                DG.marker(centerCoordinates).addTo(map).bindPopup('You are here');
+                console.log("Map and user marker created.");
             });
         }
 
-        // Получение геолокации пользователя
+        // Get user geolocation
         navigator.geolocation.getCurrentPosition(
             (position) => {
-                console.log("Местоположение пользователя получено:", position);
+                console.log("User location obtained:", position);
 
                 const userCoordinates = [position.coords.latitude, position.coords.longitude];
 
-                // Инициализация карты с центром на местоположении пользователя
+                // Initialize map centered on user location
                 initializeMap(userCoordinates);
 
-                // Ищем ближайшую больницу
+                // Find nearest hospital
                 findNearestHospital(userCoordinates);
             },
             (error) => {
-                // Обработка ошибок геолокации
-                console.error("Ошибка геолокации:", error.message);
+                // Handle geolocation errors
+                console.error("Geolocation error:", error.message);
 
                 const errorMessage = document.getElementById('error-message');
-                errorMessage.textContent = "Не удалось определить местоположение. Невозможно выполнить поиск.";
+                errorMessage.textContent = "Unable to determine location. Search cannot be performed.";
             }
         );
 
-        // Функция для поиска ближайшей больницы
+        // Find nearest hospital
         function findNearestHospital(coordinates) {
-            console.log("Поиск ближайшей больницы для координат:", coordinates);
+            console.log("Searching nearest hospital for coordinates:", coordinates);
 
-            fetch(`https://catalog.api.2gis.com/3.0/items?key=${apiKey}&q=больница&type=branch&point=${coordinates[1]},${coordinates[0]}&radius=3000`)
+            fetch(`https://catalog.api.2gis.com/3.0/items?key=${apiKey}&q=hospital&type=branch&point=${coordinates[1]},${coordinates[0]}&radius=3000`)
                 .then(response => response.json())
                 .then(data => {
-                    console.log("Полный ответ от API 2GIS:", data);
+                    console.log("Full response from 2GIS API:", data);
 
                     const hospitals = data.result.items;
 
                     if (!hospitals || hospitals.length === 0) {
                         const errorMessage = document.getElementById('error-message');
-                        errorMessage.textContent = "Ближайших больниц не найдено.";
+                        errorMessage.textContent = "No nearby hospitals found.";
                         return;
                     }
 
-                    // Проверяем данные ближайшей больницы
+                    // Check nearest hospital data
                     const nearestHospital = hospitals[0];
-                    console.log("Данные ближайшей больницы:", nearestHospital);
+                    console.log("Nearest hospital data:", nearestHospital);
 
-                    // Отображаем информацию о ближайшей больнице
+                    // Render nearest hospital info
                     const hospitalInfo = document.getElementById('hospital-info');
                     hospitalInfo.innerHTML = `
-                        <strong>Название:</strong> ${nearestHospital.name} <br>
-                        <strong>Адрес:</strong> ${nearestHospital.address_name || 'Адрес не указан'}
+                        <strong>Name:</strong> ${nearestHospital.name} <br>
+                        <strong>Address:</strong> ${nearestHospital.address_name || 'Address not available'}
                     `;
 
-                    // Если координаты больницы доступны, добавляем её на карту
+                    // If hospital coordinates are available, add it to the map
                     if (nearestHospital.point) {
                         const hospitalCoordinates = [nearestHospital.point.lat, nearestHospital.point.lon];
                         DG.then(function () {
                             DG.marker(hospitalCoordinates)
                                 .addTo(map)
-                                .bindPopup(`<strong>${nearestHospital.name}</strong><br>${nearestHospital.address_name || 'Адрес не указан'}`);
-                            console.log("Маркер ближайшей больницы добавлен на карту.");
+                                .bindPopup(`<strong>${nearestHospital.name}</strong><br>${nearestHospital.address_name || 'Address not available'}`);
+                            console.log("Nearest hospital marker added to map.");
                         });
                     } else {
-                        console.error("Координаты ближайшей больницы отсутствуют.");
+                        console.error("Nearest hospital coordinates are missing.");
                     }
                 })
                 .catch(err => {
-                    console.error('Ошибка при поиске ближайшей больницы:', err);
+                    console.error('Error while searching for nearest hospital:', err);
 
                     const errorMessage = document.getElementById('error-message');
-                    errorMessage.textContent = "Произошла ошибка при подключении к API для поиска ближайшей больницы.";
+                    errorMessage.textContent = "An error occurred while connecting to the hospital search API.";
                 });
         }
     </script>
