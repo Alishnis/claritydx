@@ -1,39 +1,40 @@
 {% extends 'base.html' %}
+{% load ui_i18n %}
 
-{% block title %}Subscription - HealthX{% endblock %}
+{% block title %}{% tr "Subscription - HealthX" %}{% endblock %}
 
 {% block content %}
 <div class="subscription-container">
-    <h1 class="subscription-title">Choose a subscription plan</h1>
+    <h1 class="subscription-title">{% tr "Choose a subscription plan" %}</h1>
     <div class="subscription-plans">
         <!-- Monthly Plan -->
         <div class="plan-card">
-            <h2 class="plan-title">Monthly plan</h2>
+            <h2 class="plan-title">{% tr "Monthly plan" %}</h2>
             <div class="price">
-                499 <span class="currency">$</span><span class="period">/month</span>
+                499 <span class="currency">$</span><span class="period">{% tr "/month" %}</span>
             </div>
             <ul class="plan-features">
-                <li>✓ Unlimited access to AI diagnostics</li>
-                <li>✓ Priority support</li>
-                <li>✓ Advanced analytics</li>
-                <li>✓ Knowledge base access</li>
+                <li>✓ {% tr "Unlimited access to AI diagnostics" %}</li>
+                <li>✓ {% tr "Priority support" %}</li>
+                <li>✓ {% tr "Advanced analytics" %}</li>
+                <li>✓ {% tr "Knowledge base access" %}</li>
             </ul>
-            <button class="subscribe-btn" onclick="showPaymentForm('monthly')">Subscribe</button>
+            <button class="subscribe-btn" onclick="showPaymentForm('monthly')">{% tr "Subscribe" %}</button>
         </div>
         <!-- Annual Plan -->
         <div class="plan-card">
-            <div class="badge">20% off</div>
-            <h2 class="plan-title">Annual plan</h2>
+            <div class="badge">{% tr "20% off" %}</div>
+            <h2 class="plan-title">{% tr "Annual plan" %}</h2>
             <div class="price">
-                4990 <span class="currency">$</span><span class="period">/year</span>
+                4990 <span class="currency">$</span><span class="period">{% tr "/year" %}</span>
             </div>
             <ul class="plan-features">
-                <li>✓ All monthly plan benefits</li>
-                <li>✓ 20% discount</li>
-                <li>✓ VIP support</li>
-                <li>✓ Exclusive content</li>
+                <li>✓ {% tr "All monthly plan benefits" %}</li>
+                <li>✓ {% tr "20% discount" %}</li>
+                <li>✓ {% tr "VIP support" %}</li>
+                <li>✓ {% tr "Exclusive content" %}</li>
             </ul>
-            <button class="subscribe-btn" onclick="showPaymentForm('annual')">Subscribe</button>
+            <button class="subscribe-btn" onclick="showPaymentForm('annual')">{% tr "Subscribe" %}</button>
         </div>
     </div>
 
@@ -41,15 +42,15 @@
     <div id="paymentModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2>Checkout</h2>
+            <h2>{% tr "Checkout" %}</h2>
             <form id="paymentForm" class="payment-form">
                 <div class="form-group">
-                    <label for="cardNumber">Card number</label>
+                    <label for="cardNumber">{% tr "Card number" %}</label>
                     <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="expiryDate">Expiry date</label>
+                        <label for="expiryDate">{% tr "Expiry date" %}</label>
                         <input type="text" id="expiryDate" placeholder="MM/YY" maxlength="5">
                     </div>
                     <div class="form-group">
@@ -58,10 +59,10 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="cardName">Name on card</label>
+                    <label for="cardName">{% tr "Name on card" %}</label>
                     <input type="text" id="cardName" placeholder="IVAN IVANOV">
                 </div>
-                <button type="submit" class="pay-button">Pay</button>
+                <button type="submit" class="pay-button">{% tr "Pay" %}</button>
             </form>
             <div class="payment-methods">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1200px-Mastercard-logo.svg.png" alt="Mastercard">

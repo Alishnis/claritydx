@@ -14,10 +14,7 @@ from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 
 def analysis_page(request):
-    if request.user.is_authenticated:  # Проверяем, авторизован ли пользователь
-        return render(request, 'main.html')  # Шаблон для авторизованных
-    else:
-        return render(request, 'main2.html')  # Шаблон для всех
+    return render(request, 'main.html')
 
 
 # def user_kab(request):

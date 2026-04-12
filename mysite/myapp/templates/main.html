@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static ui_i18n %}
 
 {% block content %}
 
@@ -10,10 +10,10 @@
             <div class="t1001">
                <div class="t-container t-align_center">
                   <div class="t-col t-col_10 t-prefix_1">
-                     <div class="t1001__title t-title t-title_md t-margin_auto" field="title">Artificial Intelligence for Medical Diagnostics</div>
-                     <div class="t1001__descr t-descr t-descr_lg t-margin_auto" field="descr">Upload your X-rays and CT scans to get accurate AI-powered insights about potential conditions.</div>
+                     <div class="t1001__title t-title t-title_md t-margin_auto" field="title">{% tr "Artificial Intelligence for Medical Diagnostics" %}</div>
+                     <div class="t1001__descr t-descr t-descr_lg t-margin_auto" field="descr">{% tr "Upload your X-rays and CT scans to get accurate AI-powered insights about potential conditions." %}</div>
                      <div class="t1001__btn-wrapper ">
-                        <div class="t-btnwrapper" style=""> <a href="#rec843263559" target="" class="t1001__btn t-btn t-btn_md " style="color:rgb(0, 0, 0);background-color:#88C8E8;border-radius:30px; -moz-border-radius:30px; -webkit-border-radius:30px;" data-buttonfieldset="button"> <span >Start diagnosis</span> </a> </div>
+                        <div class="t-btnwrapper" style=""> <a href="#rec843263559" target="" class="t1001__btn t-btn t-btn_md " style="color:rgb(0, 0, 0);background-color:#88C8E8;border-radius:30px; -moz-border-radius:30px; -webkit-border-radius:30px;" data-buttonfieldset="button"> <span >{% tr "Start diagnosis" %}</span> </a> </div>
                      </div>
                   </div>
                </div>
@@ -35,12 +35,12 @@
                      <div
                         class="t-section__title t-title t-title_xs t-align_center t-margin_auto"
                         field="btitle">
-                        Medical Image Analysis
+                        {% tr "Medical Image Analysis" %}
                      </div>
                      <div
                         class="t-section__descr t-descr t-descr_xl t-align_center t-margin_auto"
                         field="bdescr">
-                        Upload your X-rays and the AI will analyze them and provide results.
+                        {% tr "Upload your X-rays and the AI will analyze them and provide results." %}
                      </div>
                   </div>
                </div>
@@ -54,8 +54,8 @@
                               <div class="t948__circle" style=" ">
                                  <div class="t948__number t-name t-name_md" style="">1</div>
                               </div>
-                              <div class="t948__title t-name t-name_md" field="li_title__5917094636330"><span style="text-align: left;">Image Upload</span></div>
-                              <div class="t948__descr t-text t-text_xs" field="li_descr__5917094636330">Upload your X-rays and the AI will analyze them and provide results.</div>
+                              <div class="t948__title t-name t-name_md" field="li_title__5917094636330"><span style="text-align: left;">{% tr "Image Upload" %}</span></div>
+                              <div class="t948__descr t-text t-text_xs" field="li_descr__5917094636330">{% tr "Upload your X-rays and the AI will analyze them and provide results." %}</div>
                            </div>
                         </div>
                      </div>
@@ -65,8 +65,8 @@
                               <div class="t948__circle" style=" ">
                                  <div class="t948__number t-name t-name_md" style="">2</div>
                               </div>
-                              <div class="t948__title t-name t-name_md" field="li_title__5917094636331">AI Analysis</div>
-                              <div class="t948__descr t-text t-text_xs" field="li_descr__5917094636331">The AI analyzes uploaded images and looks for potential conditions.</div>
+                              <div class="t948__title t-name t-name_md" field="li_title__5917094636331">{% tr "AI Analysis" %}</div>
+                              <div class="t948__descr t-text t-text_xs" field="li_descr__5917094636331">{% tr "The AI analyzes uploaded images and looks for potential conditions." %}</div>
                            </div>
                         </div>
                      </div>
@@ -76,8 +76,8 @@
                               <div class="t948__circle" style=" ">
                                  <div class="t948__number t-name t-name_md" style="">3</div>
                               </div>
-                              <div class="t948__title t-name t-name_md" field="li_title__5917094636332">Results Display</div>
-                              <div class="t948__descr t-text t-text_xs" field="li_descr__5917094636332">After analysis you will see results generated by the AI.</div>
+                              <div class="t948__title t-name t-name_md" field="li_title__5917094636332">{% tr "Results Display" %}</div>
+                              <div class="t948__descr t-text t-text_xs" field="li_descr__5917094636332">{% tr "After analysis you will see results generated by the AI." %}</div>
                            </div>
                         </div>
                      </div>
@@ -98,12 +98,12 @@
                      <div
                         class="t-section__title t-title t-title_xs t-align_center t-margin_auto"
                         field="btitle">
-                        Benefits of Using AI for Medical Diagnostics
+                        {% tr "Benefits of Using AI for Medical Diagnostics" %}
                      </div>
                      <div
                         class="t-section__descr t-descr t-descr_xl t-align_center t-margin_auto"
                         field="bdescr">
-                        Speed, accuracy, convenience, and accessibility are the key benefits of AI in medical diagnostics.
+                        {% tr "Speed, accuracy, convenience, and accessibility are the key benefits of AI in medical diagnostics." %}
 
                      </div>
                   </div>
@@ -121,8 +121,8 @@
                         </div>
                      </div>
                      <div class="t820__textwrapper t-cell t-valign_top">
-                        <div class="t-name t-name_md t820__bottommargin" field="li_title__6567369133600">High-Speed Data Processing</div>
-                        <div class="t-descr t-descr_sm" field="li_descr__6567369133600">AI can analyze medical images and test results much faster than a human.</div>
+                        <div class="t-name t-name_md t820__bottommargin" field="li_title__6567369133600">{% tr "High-Speed Data Processing" %}</div>
+                        <div class="t-descr t-descr_sm" field="li_descr__6567369133600">{% tr "AI can analyze medical images and test results much faster than a human." %}</div>
                      </div>
                   </li>
                   <li class="t-col t-col_6 t-item t-list__item">
@@ -135,8 +135,8 @@
                         </div>
                      </div>
                      <div class="t820__textwrapper t-cell t-valign_top">
-                        <div class="t-name t-name_md t820__bottommargin" field="li_title__6567369133601">Result Accuracy</div>
-                        <div class="t-descr t-descr_sm" field="li_descr__6567369133601">Machine learning improves diagnostic accuracy and reduces the risk of errors.</div>
+                        <div class="t-name t-name_md t820__bottommargin" field="li_title__6567369133601">{% tr "Result Accuracy" %}</div>
+                        <div class="t-descr t-descr_sm" field="li_descr__6567369133601">{% tr "Machine learning improves diagnostic accuracy and reduces the risk of errors." %}</div>
                      </div>
                   </li>
                   <li class="t-col t-col_6 t-item t-list__item">
@@ -149,8 +149,8 @@
                         </div>
                      </div>
                      <div class="t820__textwrapper t-cell t-valign_top">
-                        <div class="t-name t-name_md t820__bottommargin" field="li_title__6567369133602">Ease of Use</div>
-                        <div class="t-descr t-descr_sm" field="li_descr__6567369133602">The AI-based platform provides a convenient interface for uploading and analyzing medical data.</div>
+                        <div class="t-name t-name_md t820__bottommargin" field="li_title__6567369133602">{% tr "Ease of Use" %}</div>
+                        <div class="t-descr t-descr_sm" field="li_descr__6567369133602">{% tr "The AI-based platform provides a convenient interface for uploading and analyzing medical data." %}</div>
                      </div>
                   </li>
                   <li class="t-col t-col_6 t-item t-list__item">
@@ -163,8 +163,8 @@
                         </div>
                      </div>
                      <div class="t820__textwrapper t-cell t-valign_top">
-                        <div class="t-name t-name_md t820__bottommargin" field="li_title__6567369133603">Accessible to a Wider Range of Patients</div>
-                        <div class="t-descr t-descr_sm" field="li_descr__6567369133603">AI makes medical diagnostics more accessible by reducing costs and wait times.</div>
+                        <div class="t-name t-name_md t820__bottommargin" field="li_title__6567369133603">{% tr "Accessible to a Wider Range of Patients" %}</div>
+                        <div class="t-descr t-descr_sm" field="li_descr__6567369133603">{% tr "AI makes medical diagnostics more accessible by reducing costs and wait times." %}</div>
                      </div>
                   </li>
                </ul>
@@ -176,8 +176,8 @@
             <div class="t485">
                <div class="t-container t-align_center">
                   <div class="t-col t-col_8 t-prefix_2">
-                     <div class="t485__title t-title t-title_xxs t-margin_auto" field="title">AI-Powered Medical Image Analysis</div>
-                     <div class="t485__descr t-descr t-descr_md t-margin_auto" field="descr"><span style="text-align: left;">Upload your X-rays and CT scans, and the AI will review them and provide results. Note that the results are informational and do not replace professional medical advice.</span></div>
+                     <div class="t485__title t-title t-title_xxs t-margin_auto" field="title">{% tr "AI-Powered Medical Image Analysis" %}</div>
+                     <div class="t485__descr t-descr t-descr_md t-margin_auto" field="descr"><span style="text-align: left;">{% tr "Upload your X-rays and CT scans, and the AI will review them and provide results. Note that the results are informational and do not replace professional medical advice." %}</span></div>
                   </div>
                </div>
             </div>
@@ -191,12 +191,12 @@
                      <div
                         class="t-section__title t-title t-title_xs t-align_center t-margin_auto"
                         field="btitle">
-                        Upload Your CT and X-ray Scans
+                        {% tr "Upload Your CT and X-ray Scans" %}
                      </div>
                      <div
                         class="t-section__descr t-descr t-descr_xl t-align_center t-margin_auto"
                         field="bdescr">
-                        Follow the instructions below to upload your medical images.
+                        {% tr "Follow the instructions below to upload your medical images." %}
                      </div>
                   </div>
                </div>
@@ -206,14 +206,14 @@
                   <div class="t-col t-col_8 t-prefix_2">
                      <div>
                         <div class="t1001__btn-wrapper " style="margin-bottom: 5px;">
-                           <div class="t-btnwrapper" style=""> <a href="{% url 'analyze_image' %}" target="" class="t1001__btn t-btn t-btn_md " style="color:rgb(0, 0, 0);background-color:#88C8E8;border-radius:30px; -moz-border-radius:30px; -webkit-border-radius:30px;" data-buttonfieldset="button"> <span >Start X-ray analysis</span> </a> </div>
+                           <div class="t-btnwrapper" style=""> <a href="{% url 'analyze_image' %}" target="" class="t1001__btn t-btn t-btn_md " style="color:rgb(0, 0, 0);background-color:#88C8E8;border-radius:30px; -moz-border-radius:30px; -webkit-border-radius:30px;" data-buttonfieldset="button"> <span >{% tr "Start X-ray analysis" %}</span> </a> </div>
                         </div>
                         
                         <style>#rec843263559 input::-webkit-input-placeholder {color:#000000;opacity:0.5;}#rec843263559 input::-moz-placeholder{color:#000000;opacity:0.5;}#rec843263559 input:-moz-placeholder {color:#000000;opacity:0.5;}#rec843263559 input:-ms-input-placeholder{color:#000000;opacity:0.5;}#rec843263559 textarea::-webkit-input-placeholder {color:#000000;opacity:0.5;}#rec843263559 textarea::-moz-placeholder{color:#000000;opacity:0.5;}#rec843263559 textarea:-moz-placeholder {color:#000000;opacity:0.5;}#rec843263559 textarea:-ms-input-placeholder{color:#000000;opacity:0.5;}</style>
                      </div>
                      <div>
                         <div class="t1001__btn-wrapper " style="margin-bottom: 5px;">
-                           <div class="t-btnwrapper" style=""> <a href="{% url 'analyze_image2' %}" target="" class="t1001__btn t-btn t-btn_md " style="color:rgb(0, 0, 0);background-color:#88C8E8;border-radius:30px; -moz-border-radius:30px; -webkit-border-radius:30px;" data-buttonfieldset="button"> <span >Start CT analysis</span> </a> </div>
+                           <div class="t-btnwrapper" style=""> <a href="{% url 'analyze_image2' %}" target="" class="t1001__btn t-btn t-btn_md " style="color:rgb(0, 0, 0);background-color:#88C8E8;border-radius:30px; -moz-border-radius:30px; -webkit-border-radius:30px;" data-buttonfieldset="button"> <span >{% tr "Start CT analysis" %}</span> </a> </div>
                         </div>
                         
                         <style>#rec843263559 input::-webkit-input-placeholder {color:#000000;opacity:0.5;}#rec843263559 input::-moz-placeholder{color:#000000;opacity:0.5;}#rec843263559 input:-moz-placeholder {color:#000000;opacity:0.5;}#rec843263559 input:-ms-input-placeholder{color:#000000;opacity:0.5;}#rec843263559 textarea::-webkit-input-placeholder {color:#000000;opacity:0.5;}#rec843263559 textarea::-moz-placeholder{color:#000000;opacity:0.5;}#rec843263559 textarea:-moz-placeholder {color:#000000;opacity:0.5;}#rec843263559 textarea:-ms-input-placeholder{color:#000000;opacity:0.5;}</style>
@@ -221,7 +221,7 @@
 
                      <div>
                         <div class="t1001__btn-wrapper " style="margin-bottom: 5px;">
-                           <div class="t-btnwrapper" style=""> <a href="{% url 'analyze_skin_image' %}" target="" class="t1001__btn t-btn t-btn_md " style="color:rgb(0, 0, 0);background-color:#88C8E8;border-radius:30px; -moz-border-radius:30px; -webkit-border-radius:30px;" data-buttonfieldset="button"> <span >Start skin analysis</span> </a> </div>
+                           <div class="t-btnwrapper" style=""> <a href="{% url 'analyze_skin_image' %}" target="" class="t1001__btn t-btn t-btn_md " style="color:rgb(0, 0, 0);background-color:#88C8E8;border-radius:30px; -moz-border-radius:30px; -webkit-border-radius:30px;" data-buttonfieldset="button"> <span >{% tr "Start skin analysis" %}</span> </a> </div>
                         </div>
                         
                         <style>#rec843263559 input::-webkit-input-placeholder {color:#000000;opacity:0.5;}#rec843263559 input::-moz-placeholder{color:#000000;opacity:0.5;}#rec843263559 input:-moz-placeholder {color:#000000;opacity:0.5;}#rec843263559 input:-ms-input-placeholder{color:#000000;opacity:0.5;}#rec843263559 textarea::-webkit-input-placeholder {color:#000000;opacity:0.5;}#rec843263559 textarea::-moz-placeholder{color:#000000;opacity:0.5;}#rec843263559 textarea:-moz-placeholder {color:#000000;opacity:0.5;}#rec843263559 textarea:-ms-input-placeholder{color:#000000;opacity:0.5;}</style>
@@ -229,7 +229,7 @@
 
                      <div style='padding-bottom:0px'>
                         <div class="t1001__btn-wrapper " style="margin-bottom: 5px;">
-                           <div class="t-btnwrapper" style=""> <a href="{% url 'upload_image' %}" target="" class="t1001__btn t-btn t-btn_md " style="color:rgb(0, 0, 0);background-color:#88C8E8;border-radius:30px; -moz-border-radius:30px; -webkit-border-radius:30px;" data-buttonfieldset="button"> <span >Start blood cell analysis</span> </a> </div>
+                           <div class="t-btnwrapper" style=""> <a href="{% url 'upload_image' %}" target="" class="t1001__btn t-btn t-btn_md " style="color:rgb(0, 0, 0);background-color:#88C8E8;border-radius:30px; -moz-border-radius:30px; -webkit-border-radius:30px;" data-buttonfieldset="button"> <span >{% tr "Start blood cell analysis" %}</span> </a> </div>
                         </div>
                         
                         <style>#rec843263559 input::-webkit-input-placeholder {color:#000000;opacity:0.5;}#rec843263559 input::-moz-placeholder{color:#000000;opacity:0.5;}#rec843263559 input:-moz-placeholder {color:#000000;opacity:0.5;}#rec843263559 input:-ms-input-placeholder{color:#000000;opacity:0.5;}#rec843263559 textarea::-webkit-input-placeholder {color:#000000;opacity:0.5;}#rec843263559 textarea::-moz-placeholder{color:#000000;opacity:0.5;}#rec843263559 textarea:-moz-placeholder {color:#000000;opacity:0.5;}#rec843263559 textarea:-ms-input-placeholder{color:#000000;opacity:0.5;}</style>
@@ -256,7 +256,7 @@
                      <div
                         class="t-section__title t-title t-title_xs t-align_center t-margin_auto"
                         field="btitle">
-                        Frequently Asked Questions About Safety and Accuracy
+                        {% tr "Frequently Asked Questions About Safety and Accuracy" %}
                      </div>
                   </div>
                </div>
@@ -270,7 +270,7 @@
                                  class="t849__trigger-button "
                                  aria-controls="accordion1_843263576"
                                  aria-expanded="false">
-                                 <span class="t849__title t-name t-name_xl" field="li_title__2777140218030">Frequently Asked Questions About Safety and Accuracy</span> 
+                                 <span class="t849__title t-name t-name_xl" field="li_title__2777140218030">{% tr "Frequently Asked Questions About Safety and Accuracy" %}</span> 
                                  <svg class="t849__icon" role="presentation" focusable="false" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
                                     <circle cx="20" cy="20" r="20" stroke-width="0" />
                                     <g class="t849__lines" stroke-width="2px" fill="none">
@@ -284,7 +284,7 @@
                               id="accordion1_843263576"
                               hidden >
                               <div class="t849__textwrapper">
-                                 <div class="t849__text t-descr t-descr_sm" field="li_descr__2777140218030">We use advanced encryption and strict security protocols to protect your personal data. Access is limited to a small number of specialists involved in analysis.</div>
+                                 <div class="t849__text t-descr t-descr_sm" field="li_descr__2777140218030">{% tr "We use advanced encryption and strict security protocols to protect your personal data. Access is limited to a small number of specialists involved in analysis." %}</div>
                               </div>
                            </div>
                         </div>
@@ -298,7 +298,7 @@
                                  class="t849__trigger-button "
                                  aria-controls="accordion2_843263576"
                                  aria-expanded="false">
-                                 <span class="t849__title t-name t-name_xl" field="li_title__2787140218031">How accurate is AI at diagnosing diseases?</span> 
+                                 <span class="t849__title t-name t-name_xl" field="li_title__2787140218031">{% tr "How accurate is AI at diagnosing diseases?" %}</span> 
                                  <svg class="t849__icon" role="presentation" focusable="false" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
                                     <circle cx="20" cy="20" r="20" stroke-width="0" />
                                     <g class="t849__lines" stroke-width="2px" fill="none">
@@ -312,7 +312,7 @@
                               id="accordion2_843263576"
                               hidden >
                               <div class="t849__textwrapper">
-                                 <div class="t849__text t-descr t-descr_sm" field="li_descr__2787140218031">Our AI is trained on large volumes of medical data and continuously updated to improve accuracy. However, the final diagnosis should be made by a qualified physician.</div>
+                                 <div class="t849__text t-descr t-descr_sm" field="li_descr__2787140218031">{% tr "Our AI is trained on large volumes of medical data and continuously updated to improve accuracy. However, the final diagnosis should be made by a qualified physician." %}</div>
                               </div>
                            </div>
                         </div>
@@ -326,7 +326,7 @@
                                  class="t849__trigger-button "
                                  aria-controls="accordion3_843263576"
                                  aria-expanded="false">
-                                 <span class="t849__title t-name t-name_xl" field="li_title__2787140218032">Can I upload my medical tests and images?</span> 
+                                 <span class="t849__title t-name t-name_xl" field="li_title__2787140218032">{% tr "Can I upload my medical tests and images?" %}</span> 
                                  <svg class="t849__icon" role="presentation" focusable="false" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
                                     <circle cx="20" cy="20" r="20" stroke-width="0" />
                                     <g class="t849__lines" stroke-width="2px" fill="none">
@@ -340,7 +340,7 @@
                               id="accordion3_843263576"
                               hidden >
                               <div class="t849__textwrapper">
-                                 <div class="t849__text t-descr t-descr_sm" field="li_descr__2787140218032">Yes, you can upload your medical files to our website.</div>
+                                 <div class="t849__text t-descr t-descr_sm" field="li_descr__2787140218032">{% tr "Yes, you can upload your medical files to our website." %}</div>
                               </div>
                            </div>
                         </div>
@@ -354,7 +354,7 @@
                                  class="t849__trigger-button "
                                  aria-controls="accordion4_843263576"
                                  aria-expanded="false">
-                                 <span class="t849__title t-name t-name_xl" field="li_title__2787140218033">What conditions can the system diagnose?</span> 
+                                 <span class="t849__title t-name t-name_xl" field="li_title__2787140218033">{% tr "What conditions can the system diagnose?" %}</span> 
                                  <svg class="t849__icon" role="presentation" focusable="false" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
                                     <circle cx="20" cy="20" r="20" stroke-width="0" />
                                     <g class="t849__lines" stroke-width="2px" fill="none">
@@ -368,7 +368,7 @@
                               id="accordion4_843263576"
                               hidden >
                               <div class="t849__textwrapper">
-                                 <div class="t849__text t-descr t-descr_sm" field="li_descr__2787140218033">Our system can analyze a wide range of medical images and diagnose various pathologies, including but not limited to cancer, cardiovascular issues, and infections.</div>
+                                 <div class="t849__text t-descr t-descr_sm" field="li_descr__2787140218033">{% tr "Our system can analyze a wide range of medical images and diagnose various pathologies, including but not limited to cancer, cardiovascular issues, and infections." %}</div>
                               </div>
                            </div>
                         </div>
@@ -418,12 +418,12 @@
                      <div
                         class="t-section__title t-title t-title_xs t-align_center t-margin_auto"
                         field="btitle">
-                        Contact Us
+                        {% tr "Contact Us" %}
                      </div>
                      <div
                         class="t-section__descr t-descr t-descr_xl t-align_center t-margin_auto"
                         field="bdescr">
-                        Send a request or ask a question — we will respond.
+                        {% tr "Send a request or ask a question — we will respond." %}
                      </div>
                   </div>
                </div>
@@ -434,7 +434,7 @@
                      <div class="t718__contentbox" style="height:;">
                         <div class="t718__contentwrapper">
                            <div class="t718__contacts t-text t-descr_xxxl" field="text">support@example.com</div>
-                           <div class="t718__address t-text t-text_sm" field="text2">We are open Monday to Friday, 9:00–18:00.</div>
+                           <div class="t718__address t-text t-text_sm" field="text2">{% tr "We are open Monday to Friday, 9:00–18:00." %}</div>
                            <div class="t-sociallinks">
                               <ul role="list" class="t-sociallinks__wrapper" aria-label="Social links">
                                  <!-- new soclinks -->
@@ -550,7 +550,7 @@
                               type="submit"
                               class="t-submit"
                               style="color:rgb(0, 0, 0); background-color:#88C8E8;border-radius:30px; -moz-border-radius:30px; -webkit-border-radius:30px;" data-field="buttontitle" data-buttonfieldset="button">
-                              Write to us</button> 
+                              {% tr "Write to us" %}</button> 
                            </div>
                         </div>
                         <div class="t-form__errorbox-bottom">

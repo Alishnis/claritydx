@@ -1,9 +1,10 @@
+{% load ui_i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration and login</title>
+    <title>{% tr "Registration and login" %}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -75,25 +76,25 @@
 <body>
     <div class="container">
         <!-- Registration form -->
-        <h2>Sign up</h2>
+        <h2>{% tr "Sign up" %}</h2>
         <form method="POST" action="{% url 'register' %}">
             {% csrf_token %}
-            <input type="email" name="email" placeholder="Enter your email" required>
-            <input type="password" name="password" placeholder="Enter your password" required>
-            <button type="submit">Sign up</button>
+            <input type="email" name="email" placeholder="{% tr 'Enter your email' %}" required>
+            <input type="password" name="password" placeholder="{% tr 'Enter your password' %}" required>
+            <button type="submit">{% tr "Sign up" %}</button>
         </form>
 
         <!-- Login form -->
-        <h2>Login</h2>
+        <h2>{% tr "Login" %}</h2>
         <form method="POST" action="{% url 'login' %}">
             {% csrf_token %}
-            <input type="email" name="email" placeholder="Enter your email" required>
-            <input type="password" name="password" placeholder="Enter your password" required>
-            <button type="submit">Login</button>
+            <input type="email" name="email" placeholder="{% tr 'Enter your email' %}" required>
+            <input type="password" name="password" placeholder="{% tr 'Enter your password' %}" required>
+            <button type="submit">{% tr "Login" %}</button>
         </form>
 
         <div class="link">
-            <a href="{% url 'analysis_page' %}">Go to home</a>
+            <a href="{% url 'analysis_page' %}">{% tr "Go to home" %}</a>
         </div>
     </div>
 </body>

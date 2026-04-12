@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static ui_i18n %}
 {% block content %}
 
 <div id="rec843263554" class="r t-rec t-rec_pt_135 t-rec_pt-res-480_90 t-rec_pb_135 t-rec_pb-res-480_90" style="padding-top:135px;padding-bottom:135px;background-color:#fff;" data-animationappear="off" data-record-type="948" data-bg-color="#fff">
@@ -7,10 +7,10 @@
         <div class="t-section__container t-container t-container_flex" style="margin-bottom:80px;">
             <div class="t-col t-col_12">
                 <div class="t-section__title t-title t-title_xs t-align_center t-margin_auto" field="btitle">
-                    CT Analysis
+                    {% tr "CT Analysis" %}
                 </div>
                 <div class="t-section__descr t-descr t-descr_xl t-align_center t-margin_auto" field="bdescr">
-                    powered by artificial intelligence
+                    {% tr "powered by artificial intelligence" %}
                 </div>
             </div>
         </div>
@@ -22,9 +22,9 @@
                 <div class="t948__textwrapper" style="border: 2px solid white; background-color: #EAF6FD; border-radius: 10px; padding: 20px; max-width: 1000px;">
                     
                     <div class="t948__title t-name t-name_md" style="padding-bottom: 20px ; text-align: center;" field="li_title__5917094636332">
-                        <h1>Analysis Results</h1>
+                        <h1>{% tr "Analysis Results" %}</h1>
                         {% if predicted_class %}
-                        <h2>Detected Conditions:</h2>
+                        <h2>{% tr "Detected Conditions" %}:</h2>
                       
                             
                             <p style="font-size: 35px;">{{ predicted_class }}</p>
@@ -32,73 +32,30 @@
                             
                         
                         {% else %}
-                        <p>No high-probability conditions detected</p>
+                        <p>{% tr "No high-probability conditions detected" %}</p>
                         {% endif %}
                         </ul>
                         <div class="analysis-results-container">
                             
                             <div class="hospital-location">
-                                <h2>Nearest hospital</h2>
+                                <h2>{% tr "Nearest hospital" %}</h2>
                                 <div id="map" style="width: 100%; height: 400px; border-radius: 5px; margin-top: 20px;"></div>
                                 <div id="hospital-info" style="margin-top: 20px; font-size: 16px;"></div>
                                 <div id="error-message" style="color: red; margin-top: 10px;"></div>
                             </div>
                         </div>
-                        <a style="display: block; padding-top: 30px;" href="{% url 'analyze_image' %}">Upload another image</a>
+                        <a style="display: block; padding-top: 30px;" href="{% url 'analyze_image' %}">{% tr "Upload another image" %}</a>
                     </div>
                     <form method="POST" action="{% url 'save_results' %}">
                         {% csrf_token %}
                         <input type="hidden" name="analysis_id" value="{{ analysis_id }}">
-                        <button type="submit" class="t1001__btn t-btn t-btn_md" style="background-color:#88C8E8; color: black; padding: 14px 60px; font-size: 18px; border-radius: 40px; transition: background 0.3s ease, transform 0.2s ease;" data-buttonfieldset="button">Save Results</button>
+                        <button type="submit" class="t1001__btn t-btn t-btn_md" style="background-color:#88C8E8; color: black; padding: 14px 60px; font-size: 18px; border-radius: 40px; transition: background 0.3s ease, transform 0.2s ease;" data-buttonfieldset="button">{% tr "Save Results" %}</button>
                     </form>
                 </div>
            
         
     
 </div>
-            <!-- <div class="analysis-container">
-                
-                    
-                        
-                            <div class="t948__textwrapper" style="border: 2px solid white; background-color: #EAF6FD; border-radius: 10px; padding: 20px; max-width: 1000px;">
-                                
-                                <div class="t948__title t-name t-name_md" style="padding-bottom: 20px ; text-align: center;" field="li_title__5917094636332">
-                                    <h1>Analysis Results</h1>
-                                    {% if diseases %}
-                                    <h2>Detected Diseases</h2>
-                                    <ul>
-                                        {% for disease in diseases %}
-                                        <p>{{ disease }}</p>
-                                        {% endfor %}
-                                    </ul>
-                                    {% else %}
-                                    <p>No diseases detected with high probability</p>
-                                    {% endif %}
-                                    </ul>
-                                    <div class="analysis-results-container">
-                                        <div class="analysis-results">
-                                            <h2>Grad-CAM Visualization</h2>
-                                            <img src="{{ gradcam_path }}" alt="Grad-CAM Visualization" style="width: 100%; max-width: 700px; height: auto;">
-                                        </div>
-                                        <div class="hospital-location">
-                                            <h2>The nearest hospital</h2>
-                                            <div id="map" style="width: 100%; height: 400px; border-radius: 5px; margin-top: 20px;"></div>
-                                            <div id="hospital-info" style="margin-top: 20px; font-size: 16px;"></div>
-                                            <div id="error-message" style="color: red; margin-top: 10px;"></div>
-                                        </div>
-                                    </div>
-                                    <a style="display: block; padding-top: 30px;" href="{% url 'analyze_image' %}">Upload another image</a>
-                                </div>
-                                <form method="POST" action="{% url 'save_results' %}">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="analysis_id" value="{{ analysis_id }}">
-                                    <butt on type="submit" class="t1001__btn t-btn t-btn_md" style="background-color:#88C8E8; color: black; padding: 14px 60px; font-size: 18px; border-radius: 40px; transition: background 0.3s ease, transform 0.2s ease;" data-buttonfieldset="button">Save Results</button>
-                                </form>
-                            </div>
-                       
-                    
-                
-            </div> -->
         </div>
     </div>
 </div>
@@ -106,8 +63,8 @@
 <!-- Loading indicator -->
 <div id="loading-overlay" style="display: none;">
     <div class="loading-spinner">
-        <img src="{% static 'loading.gif' %}" alt="Loading...">
-        <p>Analyzing...</p>
+        <img src="{% static 'loading.gif' %}" alt="{% tr 'Analyzing...' %}">
+        <p>{% tr "Analyzing..." %}</p>
     </div>
 </div>
 
@@ -262,7 +219,7 @@
             const nearestHospital = data[0];
 
             const hospitalCoordinates = [parseFloat(nearestHospital.lat), parseFloat(nearestHospital.lon)];
-            const hospitalName = nearestHospital.display_name || "Unknown hospital";
+            const hospitalName = nearestHospital.display_name || "{% tr 'Unknown hospital' %}";
 
             // Add hospital marker
             L.marker(hospitalCoordinates)
@@ -272,8 +229,8 @@
 
             // Render hospital info
             document.getElementById('hospital-info').innerHTML = `
-                <strong>Hospital name:</strong> ${hospitalName} <br>
-                <strong>Coordinates:</strong> ${hospitalCoordinates[0]}, ${hospitalCoordinates[1]}
+                <strong>{% tr "Hospital name:" %}</strong> ${hospitalName} <br>
+                <strong>{% tr "Coordinates:" %}</strong> ${hospitalCoordinates[0]}, ${hospitalCoordinates[1]}
             `;
         })
         .catch(error => {

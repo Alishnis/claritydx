@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static ui_i18n %}
 
 {% block content %}
 <div id="rec843263554" class="r t-rec t-rec_pt_135 t-rec_pt-res-480_90 t-rec_pb_135 t-rec_pb-res-480_90" style="padding-top:135px;padding-bottom:135px;background-color:#fff;" data-animationappear="off" data-record-type="948" data-bg-color="#fff">
@@ -7,10 +7,10 @@
         <div class="t-section__container t-container t-container_flex" style="margin-bottom:80px;">
             <div class="t-col t-col_12">
                 <div class="t-section__title t-title t-title_xs t-align_center t-margin_auto" field="btitle">
-                    Find out what condition you may have by entering only symptoms.
+                    {% tr "Find out what condition you may have by entering only symptoms." %}
                 </div>
                 <div class="t-section__descr t-descr t-descr_xl t-align_center t-margin_auto" field="bdescr">
-                    Enter symptoms.
+                    {% tr "Enter symptoms." %}
                 </div>
             </div>
         </div>
@@ -26,17 +26,17 @@
                                 <form method="POST" class="t948__descr t-text t-text_xs" action="{% url 'analyze_symptoms' %}" onsubmit="showLoading();">
                                     {% csrf_token %}
                                     <div class="form-group" style="font-size:130%;">
-                                        <label style="font-weight: bold;" for="symptoms">Symptoms (e.g., headache, nausea).</label>
+                                        <label style="font-weight: bold;" for="symptoms">{% tr "Symptoms (e.g., headache, nausea)." %}</label>
                                         <textarea 
                                             id="symptoms" 
                                             name="symptoms" 
                                             class="form-control" 
-                                            placeholder="Enter symptoms separated by commas."
+                                            placeholder="{% tr 'Enter symptoms separated by commas.' %}"
                                             rows="4" 
                                             required
                                             style="width: 100%; margin-block: 10px; box-sizing: border-box; border-radius: 5px; font-size: 0.7em;"></textarea>
                                     </div>
-                                    <button type="submit" class="t1001__btn t-btn t-btn_md " style= "color:rgb(0, 0, 0); ;margin-top: 10px ; font-size: large   ;padding-inline:30px ;display: block;background-color:#88C8E8;border-radius:30px;-moz-border-radius:30px; -webkit-border-radius:30px;" data-buttonfieldset="button">Analyze</button>
+                                    <button type="submit" class="t1001__btn t-btn t-btn_md " style= "color:rgb(0, 0, 0); ;margin-top: 10px ; font-size: large   ;padding-inline:30px ;display: block;background-color:#88C8E8;border-radius:30px;-moz-border-radius:30px; -webkit-border-radius:30px;" data-buttonfieldset="button">{% tr "Analyze" %}</button>
                                 </form>
                             </div>
                         </div>
@@ -51,12 +51,12 @@
                             <div class="t948__title t-name t-name_md" field="li_title__5917094636332"></div>
                             <div class="t948__descr t-text t-text_xs" field="li_descr__5917094636332" style="font-size: 130%; font-weight: bold;">
                                 {% if not diagnosis %}
-                                    Possible conditions will appear here.
+                                    {% tr "Possible conditions will appear here." %}
                                 {% endif %}
                             </div>
                             <div class="t948__descr t-text t-text_xs" field="li_descr__5917094636332" style="font-size: 130%;">
                                 {% if diagnosis %}
-                                    <p style="font-weight: bold;">Analysis results.</p>
+                                    <p style="font-weight: bold;">{% tr "Analysis results." %}</p>
                                    
                                         <ul style="font-size: 0.9em;">
                                             {% for disease in diagnosis %}
@@ -80,7 +80,7 @@
 <div id="loading-overlay" style="display: none;">
     <div class="loading-spinner">
         <img src="{% static 'loading.gif' %}" alt="Loading…">
-        <p>Analyzing...</p>
+        <p>{% tr "Analyzing..." %}</p>
     </div>
 </div>
 
