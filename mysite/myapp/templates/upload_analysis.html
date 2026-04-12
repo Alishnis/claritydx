@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static ui_i18n %}
 
 {% block content %}
 <style>
@@ -158,20 +158,20 @@
 </style>
 
 <div class="container">
-    <h1>Upload an image of your blood test</h1>
+    <h1>{% tr "Upload an image of your blood test" %}</h1>
 
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="file-upload">
             <label for="analysis_file">
                 <i class="fas fa-upload"></i>
-                <p>Click or drag an image (JPG/PNG/PDF)</p>
+                <p>{% tr "Click or drag an image (JPG/PNG/PDF)" %}</p>
             </label>
             <input type="file" name="file" id="analysis_file" accept=".jpg,.jpeg,.png,.pdf">
         </div>
         <div  class="t1001__btn-wrapper " style="margin-bottom: 5px; padding-bottom: 10px;margin-top: 10px;">
 
-        <button  class="t1001__btn t-btn t-btn_md " style= "color:rgb(0, 0, 0); margin-top: 20px ; font-size: large   ;padding-inline:50px ;display: block;background-color:#88C8E8;border-radius:30px;-moz-border-radius:30px; -webkit-border-radius:30px;"  type="submit">Submit</button>
+        <button  class="t1001__btn t-btn t-btn_md " style= "color:rgb(0, 0, 0); margin-top: 20px ; font-size: large   ;padding-inline:50px ;display: block;background-color:#88C8E8;border-radius:30px;-moz-border-radius:30px; -webkit-border-radius:30px;"  type="submit">{% tr "Submit" %}</button>
     </div>
     </form>
 
@@ -179,43 +179,43 @@
     <div class="analysis-flex">
         <!-- Left: Extracted Data -->
         <div class="analysis-half">
-            <h3>Extracted Data:</h3>
+            <h3>{% tr "Extracted Data:" %}</h3>
             <div class="result-item">
-                <span>Leukocytes Level:</span> {{ analysis_data.leukocytes_level }}
+                <span>{% tr "Leukocytes Level:" %}</span> {{ analysis_data.leukocytes_level }}
             </div>
             <div class="result-item">
-                <span>Hemoglobin Level:</span> {{ analysis_data.hemoglobin_level }}
+                <span>{% tr "Hemoglobin Level:" %}</span> {{ analysis_data.hemoglobin_level }}
             </div>
             <div class="result-item">
-                <span>Erythrocytes Level:</span> {{ analysis_data.erythrocytes_level }}
+                <span>{% tr "Erythrocytes Level:" %}</span> {{ analysis_data.erythrocytes_level }}
             </div>
             <div class="result-item">
-                <span>Thrombocytes Level:</span> {{ analysis_data.thrombocytes_level }}
+                <span>{% tr "Thrombocytes Level:" %}</span> {{ analysis_data.thrombocytes_level }}
             </div>
             <div class="result-item">
-                <span>Hematocrit Level:</span> {{ analysis_data.hematocrit_level }}
+                <span>{% tr "Hematocrit Level:" %}</span> {{ analysis_data.hematocrit_level }}
             </div>
             <div class="result-item">
-                <span>Amylase Level:</span> {{ analysis_data.amylase_level }}
+                <span>{% tr "Amylase Level:" %}</span> {{ analysis_data.amylase_level }}
             </div>
             <div class="result-item">
-                <span>Potassium Level:</span> {{ analysis_data.creatinine_level }}
+                <span>{% tr "Potassium Level:" %}</span> {{ analysis_data.creatinine_level }}
             </div>
             <div class="result-item">
-                <span>Basophils Level:</span> {{ analysis_data.creatinine_level }}
+                <span>{% tr "Basophils Level:" %}</span> {{ analysis_data.creatinine_level }}
             </div>
             <div class="result-item">
-                <span>Creatinine Level:</span> {{ analysis_data.creatinine_level }}
+                <span>{% tr "Creatinine Level:" %}</span> {{ analysis_data.creatinine_level }}
             </div>
             <div class="result-item">
-                <span>C-Reactive Protein Level:</span> {{ analysis_data.creatinine_level }}
+                <span>{% tr "C-Reactive Protein Level:" %}</span> {{ analysis_data.creatinine_level }}
             </div>
 
                 
         </div>
         <!-- Right: AI Recommendations -->
         <div class="analysis-half">
-            <button class="ai-btn" id="get-ai-recommendations">Get AI recommendations</button>
+            <button class="ai-btn" id="get-ai-recommendations">{% tr "Get AI recommendations" %}</button>
             <div class="ai-recommendations" id="ai-recommendations"></div>
         </div>
     </div>

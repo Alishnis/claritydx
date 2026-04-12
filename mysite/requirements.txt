@@ -35,6 +35,7 @@ imageio==2.37.0
 Jinja2==3.1.6
 jiter==0.11.1
 joblib==1.5.2
+kaleido==0.2.1
 keras==3.8.0
 kiwisolver==1.4.9
 lazy_loader==0.4

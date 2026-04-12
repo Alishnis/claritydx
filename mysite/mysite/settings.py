@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-l&$1ojscqhl&nck1vj1wm#@=r)+^q07e4yqv$^7eulf$+3)ot#"
+SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-dev-only-change-me")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "True").lower() == "true"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 
 
 # Application definition
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -82,16 +84,16 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-# Временное использование SQLite вместо MySQL
-# Для возврата к MySQL раскомментируйте ниже и исправьте настройки подключения:
+# Temporary SQLite configuration for local development.
+# If you switch to MySQL, move credentials to environment variables first.
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'aidiag',
-#         'USER': 'root',
-#         'PASSWORD': 'samsung3010',
-#         'HOST': 'localhost',
-#         'PORT': '3306',
+#         'NAME': os.getenv('MYSQL_NAME', 'aidiag'),
+#         'USER': os.getenv('MYSQL_USER', ''),
+#         'PASSWORD': os.getenv('MYSQL_PASSWORD', ''),
+#         'HOST': os.getenv('MYSQL_HOST', 'localhost'),
+#         'PORT': os.getenv('MYSQL_PORT', '3306'),
 #     }
 # }
 
@@ -117,9 +119,14 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "en"
 
-TIME_ZONE = "UTC"
+LANGUAGES = [
+    ("en", "English"),
+    ("ru", "Russian"),
+]
+
+TIME_ZONE = "Asia/Qyzylorda"
 
 USE_I18N = True
 
@@ -128,8 +135,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
-import os
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 

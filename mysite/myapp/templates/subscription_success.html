@@ -1,22 +1,23 @@
 {% extends 'base.html' %}
+{% load ui_i18n %}
 
-{% block title %}Subscription Successful - HealthX{% endblock %}
+{% block title %}{% tr "Subscription Successful - HealthX" %}{% endblock %}
 
 {% block content %}
 <div class="success-container">
     <div class="success-card">
         <div class="success-icon">✓</div>
-        <h1>Subscription successful!</h1>
-        <p>Thank you for trusting our service. You now have access to all premium features.</p>
+        <h1>{% tr "Subscription successful!" %}</h1>
+        <p>{% tr "Thank you for trusting our service. You now have access to all premium features." %}</p>
         <div class="next-steps">
-            <h2>What’s next?</h2>
+            <h2>{% tr "What’s next?" %}</h2>
             <ul>
-                <li>✓ Get access to advanced AI diagnostics</li>
-                <li>✓ Use priority support</li>
-                <li>✓ Explore the knowledge base</li>
+                <li>✓ {% tr "Get access to advanced AI diagnostics" %}</li>
+                <li>✓ {% tr "Use priority support" %}</li>
+                <li>✓ {% tr "Explore the knowledge base" %}</li>
             </ul>
         </div>
-        <a href="/" class="back-button">Back to home</a>
+        <a href="/" class="back-button">{% tr "Back to home" %}</a>
     </div>
 </div>
 

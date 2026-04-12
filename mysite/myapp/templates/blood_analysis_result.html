@@ -1,7 +1,8 @@
+{% load ui_i18n %}
 {% extends 'base.html' %}
 {% block content %}
 <div class="container" style="max-width: 900px; margin: 50px auto; padding: 30px; background-color: white; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); border-radius: 10px;">
-    <h1 style="text-align: center; color: #333;">Blood Test Results</h1>
+    <h1 style="text-align: center; color: #333;">{% tr "Blood Test Results" %}</h1>
 
     <!-- Analysis list -->
     <div style="margin-top: 20px;">
@@ -9,19 +10,19 @@
             <ul style="list-style-type: none; padding: 0;">
                 {% for analysis in analyses %}
                     <li style="padding: 15px; border-bottom: 2px solid #eee; cursor: pointer; transition: background-color 0.3s; border-radius: 8px;" onclick="toggleDetails('{{ analysis.id }}')">
-                        <p style="margin: 0; font-weight: bold; font-size: 18px; color: #333;">Test date: {{ analysis.uploaded_at|date:"d M Y" }}</p>
+                        <p style="margin: 0; font-weight: bold; font-size: 18px; color: #333;">{% tr "Upload date:" %} {{ analysis.uploaded_at|date:"d M Y" }}</p>
                         <div id="details-{{ analysis.id }}" style="display: none; padding-top: 10px;">
                             <div style="background-color: #f9f9f9; padding: 20px; border-radius: 10px; margin-top: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-                                <p><strong>Leukocytes Level:</strong> {{ analysis.leukocytes_level }}</p>
-                                <p><strong>Hemoglobin Level:</strong> {{ analysis.hemoglobin_level }}</p>
-                                <p><strong>Erythrocytes Level:</strong> {{ analysis.erythrocytes_level }}</p>
-                                <p><strong>Thrombocytes Level:</strong> {{ analysis.thrombocytes_level }}</p>
-                                <p><strong>Hematocrit Level:</strong> {{ analysis.hematocrit_level }}</p>
-                                <p><strong>Amylase Level:</strong> {{ analysis.amylase_level }}</p>
-                                <p><strong>Potassium Level:</strong> {{ analysis.potassium_level }}</p>
-                                <p><strong>Basophils Level:</strong> {{ analysis.basophils_level }}</p>
-                                <p><strong>Creatinine Level:</strong> {{ analysis.creatinine_level }}</p>
-                                <p><strong>C-reactive Protein Level:</strong> {{ analysis.c_reactive_protein_level }}</p>
+                                <p><strong>{% tr "Leukocytes Level:" %}</strong> {{ analysis.leukocytes_level }}</p>
+                                <p><strong>{% tr "Hemoglobin Level:" %}</strong> {{ analysis.hemoglobin_level }}</p>
+                                <p><strong>{% tr "Erythrocytes Level:" %}</strong> {{ analysis.erythrocytes_level }}</p>
+                                <p><strong>{% tr "Thrombocytes Level:" %}</strong> {{ analysis.thrombocytes_level }}</p>
+                                <p><strong>{% tr "Hematocrit Level:" %}</strong> {{ analysis.hematocrit_level }}</p>
+                                <p><strong>{% tr "Amylase Level:" %}</strong> {{ analysis.amylase_level }}</p>
+                                <p><strong>{% tr "Potassium Level:" %}</strong> {{ analysis.potassium_level }}</p>
+                                <p><strong>{% tr "Basophils Level:" %}</strong> {{ analysis.basophils_level }}</p>
+                                <p><strong>{% tr "Creatinine Level:" %}</strong> {{ analysis.creatinine_level }}</p>
+                                <p><strong>{% tr "C-Reactive Protein Level:" %}</strong> {{ analysis.c_reactive_protein_level }}</p>
                             </div>
                         </div>
                         
@@ -30,7 +31,7 @@
                 {% endfor %}
             </ul>
         {% else %}
-            <p style="text-align: center; color: #999;">No blood analysis available.</p>
+            <p style="text-align: center; color: #999;">{% tr "No blood analysis available." %}</p>
         {% endif %}
     </div>
     
@@ -38,35 +39,35 @@
 
 
     <div style="margin-top: 30px; text-align: center;">
-        <h2 style="text-align: center;margin-bottom: 20px ;color: rgb(0, 0, 0);">View trends by marker</h2>
-        <a href="{% url 'show_graph' 'leukocytes' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">Leukocytes</a>
-        <a href="{% url 'show_graph' 'hemoglobin' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">Hemoglobin</a>
-        <a href="{% url 'show_graph' 'erythrocytes' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">Erythrocytes</a>
-        <a href="{% url 'show_graph' 'thrombocytes' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">Thrombocytes</a>
-        <a href="{% url 'show_graph' 'hematocrit' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">Hematocrit</a>
-        <a href="{% url 'show_graph' 'amylase' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">Amylase</a>    
-        <a href="{% url 'show_graph' 'potassium' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">Potassium</a>
-        <a href="{% url 'show_graph' 'basophils' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">Basophils</a>
-        <a href="{% url 'show_graph' 'creatinine' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">Creatinine</a>
-        <a href="{% url 'show_graph' 'c_reactive_protein' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">C‑reactive protein</a>
+        <h2 style="text-align: center;margin-bottom: 20px ;color: rgb(0, 0, 0);">{% tr "View trends by marker" %}</h2>
+        <a href="{% url 'show_graph' 'leukocytes' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">{% tr "Leukocytes Level:" %}</a>
+        <a href="{% url 'show_graph' 'hemoglobin' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">{% tr "Hemoglobin Level:" %}</a>
+        <a href="{% url 'show_graph' 'erythrocytes' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">{% tr "Erythrocytes Level:" %}</a>
+        <a href="{% url 'show_graph' 'thrombocytes' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">{% tr "Thrombocytes Level:" %}</a>
+        <a href="{% url 'show_graph' 'hematocrit' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">{% tr "Hematocrit Level:" %}</a>
+        <a href="{% url 'show_graph' 'amylase' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">{% tr "Amylase Level:" %}</a>
+        <a href="{% url 'show_graph' 'potassium' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">{% tr "Potassium Level:" %}</a>
+        <a href="{% url 'show_graph' 'basophils' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">{% tr "Basophils Level:" %}</a>
+        <a href="{% url 'show_graph' 'creatinine' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">{% tr "Creatinine Level:" %}</a>
+        <a href="{% url 'show_graph' 'c_reactive_protein' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">{% tr "C-reactive protein" %}</a>
     </div>
 
     <div id="graph-container" style="margin-top: 30px; text-align: center;">
         {% if graph_image %}
-            <img src="data:image/png;base64,{{ graph_image }}" alt="Blood Analysis Graph">
+            <img src="data:image/png;base64,{{ graph_image }}" alt="{% tr 'Blood Test Results' %}">
         {% else %}
-            <p>Chart is not available.</p>
+            <p>{% tr "Chart is not available." %}</p>
         {% endif %}
     </div>
     {% if recommendations %}
     <div class='rec_blood'style="margin-top: 20px; background-color: #f9f9f9; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-        <p style="color: #333; font-size: 22px;"><strong>Recommendations for the latest test:</strong></p >
+        <p style="color: #333; font-size: 22px;"><strong>{% tr "Recommendations for the latest test:" %}</strong></p >
         <p>{{ recommendations.0.0 }}</p>  
-        <p style="color: #333; font-size: 22px;"><strong>Treatment options:</strong></p>
+        <p style="color: #333; font-size: 22px;"><strong>{% tr "Treatment options:" %}</strong></p>
         <p>{{ recommendations.0.1 }}</p>  
     </div>
 {% else %}
-    <p style="color: #999;">All results are within normal range.</p>
+    <p style="color: #999;">{% tr "All results are within normal range." %}</p>
 {% endif %}
 </div>
 <style>

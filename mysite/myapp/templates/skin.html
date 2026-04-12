@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static ui_i18n %}
 {% block content %}
 
 <div id="rec843263554" class="r t-rec t-rec_pt_135 t-rec_pt-res-480_90 t-rec_pb_135 t-rec_pb-res-480_90" style="padding-top:135px;padding-bottom:135px;background-color:#fff;" data-animationappear="off" data-record-type="948" data-bg-color="#fff">
@@ -7,17 +7,17 @@
         <div class="t-section__container t-container t-container_flex" style="margin-bottom:80px;">
             <div class="t-col t-col_12">
                 <div class="t-section__title t-title t-title_xs t-align_center t-margin_auto" field="btitle">
-                    Skin Disease Analysis
+                    {% tr "Skin Disease Analysis" %}
                 </div>
                 <div class="t-section__descr t-descr t-descr_xl t-align_center t-margin_auto" field="bdescr">
-                    with the help of artificial intelligence
+                    {% tr "with the help of artificial intelligence" %}
                 </div>
             </div>
         </div>
         
         {% if error %}
         <div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 20px;">
-            <strong>Error:</strong> {{ error }}
+            <strong>{% tr "Error" %}:</strong> {{ error }}
         </div>
         {% endif %}
 
@@ -32,15 +32,15 @@
                             <div class="t948__title t-name t-name_md" field="li_title__5917094636332">
                                 <form action="{% url 'analyze_skin_image' %}" method="POST" enctype="multipart/form-data" id="uploadForm">
                                     {% csrf_token %}
-                                    <label for="file">Select skin image:</label>
+                                    <label for="file">{% tr "Select skin image:" %}</label>
                                     <input type="file" id="file" name="file" accept="image/*" required>
                                     
                                     <div id="preview-container" style="display: none; margin-top: 20px;">
-                                        <h5>Image Preview</h5>
-                                        <img id="preview" class="img-fluid rounded" alt="Preview" style="max-width: 300px; margin: 10px auto;">
+                                        <h5>{% tr "Image Preview" %}</h5>
+                                        <img id="preview" class="img-fluid rounded" alt="{% tr 'Image Preview' %}" style="max-width: 300px; margin: 10px auto;">
                                     </div>
 
-                                    <button type="submit" class="t1001__btn t-btn t-btn_md " style= "color:rgb(0, 0, 0); margin-top: 20px ; font-size: large   ;padding-inline:50px ;display: block;background-color:#88C8E8;border-radius:30px;-moz-border-radius:30px; -webkit-border-radius:30px;" data-buttonfieldset="button">Analyze:</button>
+                                    <button type="submit" class="t1001__btn t-btn t-btn_md " style= "color:rgb(0, 0, 0); margin-top: 20px ; font-size: large   ;padding-inline:50px ;display: block;background-color:#88C8E8;border-radius:30px;-moz-border-radius:30px; -webkit-border-radius:30px;" data-buttonfieldset="button">{% tr "Analyze:" %}</button>
                                 </form>
                             </div>
                         </div>
@@ -55,8 +55,8 @@
 <!-- Loading Indicator -->
 <div id="loading-overlay" style="display: none;">
     <div class="loading-spinner">
-        <img src="{% static 'loading.gif' %}" alt="Loading...">
-        <p>Analyzing...</p>
+        <img src="{% static 'loading.gif' %}" alt="{% tr 'Analyzing...' %}">
+        <p>{% tr "Analyzing..." %}</p>
     </div>
 </div>
 

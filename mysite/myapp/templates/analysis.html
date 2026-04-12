@@ -1,9 +1,10 @@
 <!DOCTYPE html>
+{% load ui_i18n %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analysis Page</title>
+    <title>{% tr "Analysis Results" %}</title>
     <style>
         .analysis-block {
             margin-top: 20px;
@@ -14,8 +15,8 @@
     </style>
 </head>
 <body>
-    <h1>Welcome to the Analysis Page</h1>
-    <button id="add-analysis">Add analysis</button>
+    <h1>{% tr "Analysis Results" %}</h1>
+    <button id="add-analysis">{% tr "Add analysis" %}</button>
     <div id="analysis-container"></div>
 
     <script>
@@ -26,10 +27,10 @@
             if (!document.querySelector('.analysis-block')) {
                 const newBlock = document.createElement('div');
                 newBlock.className = 'analysis-block';
-                newBlock.textContent = 'Your analyses:';
+                newBlock.textContent = '{% tr "Your analyses:" %}';
                 analysisContainer.appendChild(newBlock);
             } else {
-                alert('You have already checked this scan');
+                alert('{% tr "You have already checked this scan" %}');
             }
         });
     </script>

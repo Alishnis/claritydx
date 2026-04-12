@@ -79,8 +79,8 @@ HealthX is a comprehensive medical analysis platform that leverages artificial i
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/Alishnis/healthX.git
-   cd healthX
+   git clone https://github.com/Alishnis/healthXinfomatrix.git
+   cd healthXinfomatrix
    ```
 
 2. **Create virtual environment**
@@ -97,10 +97,17 @@ HealthX is a comprehensive medical analysis platform that leverages artificial i
 
 4. **Set up environment variables**
    ```bash
-   # Create .env file in mysite directory
+   cp mysite/env.example mysite/.env
+   ```
+
+   Then edit `mysite/.env` and set:
+   ```bash
    OPENAI_API_KEY=your_openai_api_key
    STRIPE_SECRET_KEY=your_stripe_secret_key
    STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+   SECRET_KEY=your_django_secret_key
+   DEBUG=True
+   ALLOWED_HOSTS=127.0.0.1,localhost
    ```
 
 5. **Run database migrations**
@@ -116,7 +123,7 @@ HealthX is a comprehensive medical analysis platform that leverages artificial i
 
 7. **Start development server**
    ```bash
-   python manage.py runserver
+   python manage.py runserver 127.0.0.1:8000
    ```
 
 ## 🎯 Usage
@@ -161,6 +168,13 @@ Configure the following in your environment:
 - **OpenAI API Key**: For AI chatbot functionality
 - **Stripe Keys**: For payment processing
 - **Tesseract**: For OCR functionality
+- **Django SECRET_KEY**: Required for secure local or production runs
+
+## 📁 Repository Notes
+
+- Local secrets must stay in `mysite/.env` and are excluded by `.gitignore`
+- Large model weights are intentionally excluded from Git
+- If someone clones the repo, they must provide their own model files and API keys
 
 ## 📊 Performance
 
@@ -197,4 +211,3 @@ For support and questions:
 ---
 
 **⚠️ Medical Disclaimer**: This platform is for educational and research purposes only. Always consult with qualified healthcare professionals for medical decisions.
-

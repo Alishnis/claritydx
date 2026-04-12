@@ -1,7 +1,7 @@
 <!DOCTYPE html> 
 <html>
    <head>
-      {% load static %}
+      {% load static i18n ui_i18n %}
       <meta charset="utf-8" />
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -36,10 +36,11 @@
          document.addEventListener('DOMContentLoaded',t_setvisRecs);}})();
       </script>
       <link rel="stylesheet" href="{% static 'style.css' %}">
-    <title>{% block title %}Site{% endblock %}</title>
+    <title>{% block title %}{% tr "Site" %}{% endblock %}</title>
 
 </head>
 <body>
+    {% get_current_language as CURRENT_LANGUAGE %}
     <!-- Header -->
     <header>
         <div id="rec843263548" class="r t-rec" style="background-color:#ffffff; " data-animationappear="off" data-record-type="454" data-bg-color="#ffffff">
@@ -78,44 +79,44 @@
                            <li class="t454__list_item"
                               style="padding:0 0 0 6px;"> <a class="t-menu__link-item"
                               href="{% url 'analysis_page'%}" data-menu-submenu-hook="" data-menu-item-number="1">
-                              Home
+                              {% tr "Home" %}
                               </a> 
                            </li>
                            <li class="t454__list_item divider"
                               style="padding:0 0 0 6px;"> <a class="t-menu__link-item"
                               href="#rec843264067" data-menu-submenu-hook="" data-menu-item-number="3">
-                              Contacts
+                              {% tr "Contacts" %}
                               </a> 
                            </li>
                            <li class="t454__list_item divider" style="padding:0 0 0 6px; position: relative;">
                               <a class="t-menu__link-item" href="#" data-menu-submenu-hook="" data-menu-item-number="3">
-                              Check Condition
+                              {% tr "Check Condition" %}
                               </a>
                               <ul class="dropdown-menu" style="display: none; position: absolute; background-color: white; min-width: 200px; box-shadow: 0 8px 16px rgba(0,0,0,0.1); z-index: 1000; border-radius: 4px; padding: 8px 0;">
                                  <li style="padding: 8px 16px;">
-                                    <a href="{% url 'analyze_symptoms' %}" style="color: #000; text-decoration: none; display: block;">Use NLP Model</a>
+                                    <a href="{% url 'analyze_symptoms' %}" style="color: #000; text-decoration: none; display: block;">{% tr "Use NLP Model" %}</a>
                                  </li>
                                  <li style="padding: 8px 16px;">
-                                    <a href="{% url 'recommendation' %}" style="color: #000; text-decoration: none; display: block;">Use Large Database</a>
+                                    <a href="{% url 'recommendation' %}" style="color: #000; text-decoration: none; display: block;">{% tr "Use Large Database" %}</a>
                                  </li>
                               </ul>
                            </li>
                            <li class="t454__list_item divider"
                               style="padding:0 0 0 6px;"> <a class="t-menu__link-item"
                               href="{% url 'treatment_view' %}" data-menu-submenu-hook="" data-menu-item-number="4">
-                              Get Treatment
+                              {% tr "Get Treatment" %}
                               </a> 
                            </li>
                            <li class="t454__list_item"
                               style="padding:0 0 0 5px;"> <a class="t-menu__link-item"
                               href="{% url 'blood_analysis' %}" data-menu-submenu-hook="" data-menu-item-number="4">
-                              Blood Analysis
+                              {% tr "Blood Analysis" %}
                               </a> 
                            </li>
                            <li class="t454__list_item divider"
                               style="padding:0 0 0 6px;"> <a class="t-menu__link-item"
                               href="{% url 'subscription' %}" data-menu-submenu-hook="" data-menu-item-number="4">
-                              Subscription
+                              {% tr "Subscription" %}
                               </a> 
                            </li>
                         </ul>
@@ -125,8 +126,18 @@
                   <div class="t454__rightwrapper" style=" padding-left:80px; text-align: right;">
                      <nav class="t454__rightmenuwrapper">
                         <ul class="t454__list t-menu__list">
-                           <li class="t454__list_item divider" style="padding:0 15px 0 0;"> <a class="t-menu__link-item" href="{% static 'Privacy_Policy.pdf' %}" target="_blank" data-menu-submenu-hook="" data-menu-item-number="4">Privacy Policy</a> </li>
-                           <li class="t454__list_item" style="padding:0 15px;"> <a class="t-menu__link-item" href="{% url 'user_kab' %}" data-menu-submenu-hook="" data-menu-item-number="5">Dashboard</a> </li>
+                           <li class="t454__list_item divider" style="padding:0 15px 0 0;"> <a class="t-menu__link-item" href="{% static 'Privacy_Policy.pdf' %}" target="_blank" data-menu-submenu-hook="" data-menu-item-number="4">{% tr "Privacy Policy" %}</a> </li>
+                           <li class="t454__list_item" style="padding:0 15px;"> <a class="t-menu__link-item" href="{% url 'user_kab' %}" data-menu-submenu-hook="" data-menu-item-number="5">{% tr "Dashboard" %}</a> </li>
+                           <li class="t454__list_item" style="padding:0 0 0 15px;">
+                              <form action="{% url 'set_language' %}" method="post" class="lang-switcher">
+                                 {% csrf_token %}
+                                 <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                                 <select name="language" onchange="this.form.submit()" aria-label="{% tr 'Language' %}">
+                                    <option value="en" {% if CURRENT_LANGUAGE == 'en' %}selected{% endif %}>EN</option>
+                                    <option value="ru" {% if CURRENT_LANGUAGE == 'ru' %}selected{% endif %}>RU</option>
+                                 </select>
+                              </form>
+                           </li>
                         </ul>
                      </nav>
                   </div>
@@ -161,7 +172,7 @@
             <div class="t046">
                <div class="t-container">
                   <div class="t-col t-col_6 t-prefix_3">
-                     <div class="t046__text t-text t-text_xs" field="text">HealthX <br /><br />Phone: 8-7772223344</div>
+                     <div class="t046__text t-text t-text_xs" field="text">HealthX <br /><br />{% tr "Phone" %}: 8-7772223344</div>
                   </div>
                </div>
             </div>
@@ -232,6 +243,21 @@
 
     .dropdown-menu li a:hover {
         background-color: #f5f5f5;
+    }
+
+    .lang-switcher {
+        margin: 0;
+    }
+
+    .lang-switcher select {
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        background: #fff;
+        border-radius: 999px;
+        padding: 6px 12px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #000;
+        cursor: pointer;
     }
     </style>
 
