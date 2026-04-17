@@ -60,6 +60,8 @@
                 <div id="graph-container">
                     {% if graph_image %}
                         <img src="data:image/png;base64,{{ graph_image }}" alt="{% tr 'Blood Test Results' %}" class="media-frame">
+                    {% elif graph_html %}
+                        <div class="plotly-embed">{{ graph_html|safe }}</div>
                     {% else %}
                         <p>{% tr "Chart is not available." %}</p>
                     {% endif %}
