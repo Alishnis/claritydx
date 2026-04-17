@@ -13,7 +13,7 @@
         </div>
 
         {% if error %}
-            <div class="result-item" style="margin-bottom:1rem; border-color:rgba(145, 45, 45, 0.22);">
+            <div class="result-item notice-item">
                 <span>{% tr "Error" %}</span>
                 <div>{{ error }}</div>
             </div>
@@ -33,12 +33,12 @@
                     <img id="preview" alt="{% tr 'Image preview' %}">
                 </div>
 
-                <div class="button-row" style="margin-top:1.5rem; justify-content:flex-start;">
+                <div class="button-row">
                     <button type="submit" class="btn">{% tr "Analyze Image" %}</button>
                 </div>
             </form>
 
-            <form action="{% url 'user_kab' %}" method="POST" id="saveForm" class="{% if not show_save_button %}hidden{% endif %}" style="margin-top:1rem;">
+            <form action="{% url 'user_kab' %}" method="POST" id="saveForm" class="{% if not show_save_button %}hidden{% endif %}">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-secondary">{% tr "Save Results" %}</button>
             </form>

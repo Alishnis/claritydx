@@ -14,7 +14,7 @@
 
         <article class="result-card">
             {% if predicted_class %}
-                <div class="results-stack" style="margin-bottom:2rem;">
+                <div class="results-stack">
                     <div class="result-item"><span>{% tr "Predicted class" %}</span><div>{{ predicted_class }}</div></div>
                     <div class="result-item"><span>{% tr "Probability" %}</span><div>{{ predicted_probability }}</div></div>
                 </div>
@@ -22,21 +22,21 @@
                 <div class="result-grid">
                     <div class="editorial-card">
                         <h3>{% tr "Grad-CAM Visualization" %}</h3>
-                        <img src="{{ gradcam_url }}" alt="Grad-CAM" style="border-radius:16px; border:1px solid var(--border);">
+                        <img src="{{ gradcam_url }}" alt="Grad-CAM" class="media-frame">
                     </div>
                     <div class="editorial-card">
                         <h3>{% tr "Nearest hospital" %}</h3>
-                        <div id="map" style="width:100%; height:320px; border-radius:16px;"></div>
-                        <div id="hospital-info" style="margin-top:1rem;"></div>
+                        <div id="map" class="map-frame"></div>
+                        <div id="hospital-info"></div>
                     </div>
                 </div>
             {% else %}
                 <p>{% tr "No high-probability conditions detected" %}</p>
             {% endif %}
 
-            <div id="error-message" style="margin-top:1rem; color:#9b3d3d;"></div>
+            <div id="error-message" class="error-text"></div>
 
-            <div class="button-row" style="justify-content:flex-start; margin-top:2rem;">
+            <div class="button-row">
                 <a href="{% url 'analyze_skin_image' %}" class="btn btn-secondary">{% tr "Upload another image" %}</a>
                 <form method="POST" action="{% url 'save_results_skin' %}">
                     {% csrf_token %}

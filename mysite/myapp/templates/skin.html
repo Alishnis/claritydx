@@ -13,7 +13,7 @@
         </div>
 
         {% if error %}
-            <div class="result-item" style="margin-bottom:1rem; border-color:rgba(145, 45, 45, 0.22);">
+            <div class="result-item notice-item">
                 <span>{% tr "Error" %}</span>
                 <div>{{ error }}</div>
             </div>
@@ -33,7 +33,7 @@
                     <img id="preview" alt="{% tr 'Image preview' %}">
                 </div>
 
-                <div class="button-row" style="margin-top:1.5rem; justify-content:flex-start;">
+                <div class="button-row">
                     <button type="submit" class="btn">{% tr "Analyze" %}</button>
                 </div>
             </form>
