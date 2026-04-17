@@ -180,3 +180,6 @@ logs/
 # Temporary files
 *.tmp
 *.temp
+
+# Local archives
+*.zip

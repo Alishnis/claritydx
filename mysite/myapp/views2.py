@@ -198,6 +198,7 @@ import plotly.io as pio
 import io
 import base64
 import plotly.graph_objects as go
+from django.utils.safestring import mark_safe
 
 def show_graph(request, parameter):
     analyses = BloodAnalysis.objects.filter(user=request.user).order_by('-id')  
@@ -268,12 +269,25 @@ def show_graph(request, parameter):
         if rec:
             recommendations.append(rec)
 
-    img_bytes = pio.to_image(fig, format='png')
+    graph_image = None
+    graph_html = None
 
-    graph_image = base64.b64encode(img_bytes).decode('utf-8')
+    try:
+        img_bytes = pio.to_image(fig, format='png')
+        graph_image = base64.b64encode(img_bytes).decode('utf-8')
+    except ValueError:
+        # Fallback for environments where kaleido is not installed.
+        graph_html = mark_safe(
+            fig.to_html(
+                full_html=False,
+                include_plotlyjs='cdn',
+                config={'displayModeBar': False, 'responsive': True},
+            )
+        )
 
     return render(request, 'blood_analysis_result.html', {
         'graph_image': graph_image,
+        'graph_html': graph_html,
         'analyses': analyses,
         'selected_parameter': parameter,
         'recommendations': recommendations,  
