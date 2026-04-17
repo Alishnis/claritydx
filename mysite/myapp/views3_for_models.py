@@ -56,7 +56,7 @@ def upload_image(request):
             
             # Create database entry
             analysis = BloodCellAnalysis(
-                user=request.user,
+                user=request.user if request.user.is_authenticated else None,
                 prediction=class_labels[pred_class],
                 confidence=float(preds[0][pred_class])
             )

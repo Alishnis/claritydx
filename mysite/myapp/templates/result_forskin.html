@@ -1,296 +1,91 @@
 {% extends 'base.html' %}
 {% load static ui_i18n %}
+
+{% block title %}{% tr "Skin analysis results" %}{% endblock %}
+
 {% block content %}
+<section class="section">
+    <div class="site-container">
+        <div class="page-intro">
+            <div class="section-label"><span>{% tr "Result" %}</span></div>
+            <h1 class="page-heading">{% tr "Skin analysis by image" %}</h1>
+            <p class="section-copy">{% tr "Your existing skin-analysis pipeline now appears in the new editorial layout without changing prediction behavior." %}</p>
+        </div>
 
-<div id="rec843263554" class="r t-rec t-rec_pt_135 t-rec_pt-res-480_90 t-rec_pb_135 t-rec_pb-res-480_90" style="padding-top:135px;padding-bottom:135px;background-color:#fff;" data-animationappear="off" data-record-type="948" data-bg-color="#fff">
-    <div class="t948">
-        <div class="t-section__container t-container t-container_flex" style="margin-bottom:80px;">
-            <div class="t-col t-col_12">
-                <div class="t-section__title t-title t-title_xs t-align_center t-margin_auto" field="btitle">
-                    {% tr "Skin analysis by image" %}
+        <article class="result-card">
+            {% if predicted_class %}
+                <div class="results-stack" style="margin-bottom:2rem;">
+                    <div class="result-item"><span>{% tr "Predicted class" %}</span><div>{{ predicted_class }}</div></div>
+                    <div class="result-item"><span>{% tr "Probability" %}</span><div>{{ predicted_probability }}</div></div>
                 </div>
-                <div class="t-section__descr t-descr t-descr_xl t-align_center t-margin_auto" field="bdescr">
-                    {% tr "with the help of artificial intelligence" %}
+
+                <div class="result-grid">
+                    <div class="editorial-card">
+                        <h3>{% tr "Grad-CAM Visualization" %}</h3>
+                        <img src="{{ gradcam_url }}" alt="Grad-CAM" style="border-radius:16px; border:1px solid var(--border);">
+                    </div>
+                    <div class="editorial-card">
+                        <h3>{% tr "Nearest hospital" %}</h3>
+                        <div id="map" style="width:100%; height:320px; border-radius:16px;"></div>
+                        <div id="hospital-info" style="margin-top:1rem;"></div>
+                    </div>
                 </div>
+            {% else %}
+                <p>{% tr "No high-probability conditions detected" %}</p>
+            {% endif %}
+
+            <div id="error-message" style="margin-top:1rem; color:#9b3d3d;"></div>
+
+            <div class="button-row" style="justify-content:flex-start; margin-top:2rem;">
+                <a href="{% url 'analyze_skin_image' %}" class="btn btn-secondary">{% tr "Upload another image" %}</a>
+                <form method="POST" action="{% url 'save_results_skin' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="analysis_id" value="{{ analysis_id }}">
+                    <button type="submit" class="btn">{% tr "Save Results" %}</button>
+                </form>
             </div>
-        </div>
-        <div class="t-container" style="padding: 0px;">
-           
-                
-                    
-                        <div class="t948__textwrapper" style="border: 1px solid transparent;padding: 10px ; margin: 0px; padding-inline: 20px; background-color: #f2f9fd; width: 100%">
-                            
-                            <div class="t948__title t-name t-name_md" style="padding-block: 30px;margin: 0px; padding-inline:20px ; max-width: 100%; " field="li_title__5917094636332">
-                                
-                                
-                                    {% if predicted_class %}
-                                    <div    class="result">
-                                        <h1 style="margin: 10px;">{% tr "Analysis Results" %}</h1>
-                                        
-                                        <p>{% tr "Predicted class:" %} <strong>{{ predicted_class }}</strong></p>
-                                        <p>{% tr "Probability:" %} <strong>{{ predicted_probability }}</strong></p>
-                                        <div class="analysis-results-container" style="width: 100%;">
-                                            <div class="analysis-results">
-                                                <h2>{% tr "Grad-CAM Visualization" %}</h2>
-                                                <img src="{{ gradcam_url }}" alt="Grad-CAM" style="width: 100%;  margin-top: 20px;">
-                                            </div>
-                                            <div class="hospital-location">
-                                                <h2>{% tr "Nearest hospital" %}</h2>
-                                                <div id="map" style="width: 100%; height: 400px; border-radius: 5px; margin-top: 20px;"></div>
-                                                <div id="hospital-info" style="margin-top: 20px; font-size: 16px;"></div>
-                                            </div>
-                                        </div>
-                                        <div id="error-message" style="color: red; margin-top: 10px;"></div>
-                                        
-                                    </div>
-                                
-                                 
-                                {% else %}
-                                    <p>{% tr "No high-probability conditions detected" %}</p>
-                                {% endif %}
-                                    
-                                <div class="result"> 
-                                    <a style="margin: 15px;" href="{% url 'analyze_skin_image' %}">{% tr "Upload another image" %}</a>
-                            
-                            <form method="POST" action="{% url 'save_results_skin' %}">
-                                {% csrf_token %}
-                                <input type="hidden" name="analysis_id" value="{{ analysis_id }}">
-                                <button type="submit"  class="t1001__btn t-btn t-btn_md" style="background-color:#88C8E8; margin: 15px ;color: black; padding: 14px 60px; font-size: 18px; border-radius: 40px; transition: background 0.3s ease, transform 0.2s ease;" data-buttonfieldset="button">{% tr "Save Results" %}</button>
-                            </form>
-                        </div>
-                            </div>
-                            
-                        </div>
-                    
-                
-                
-            
-        </div>
+        </article>
     </div>
-</div>
+</section>
 
-<!-- Loading indicator -->
-<div id="loading-overlay" style="display: none;">
-    <div class="loading-spinner">
-        <img src="{% static 'loading.gif' %}" alt=" Loading…">
-        <p>{% tr "Analyzing..." %}</p>
-    </div>
-</div>
-
-<style>
-    /* Full-screen overlay styles */
-    .result{
-        max-width: 100%;
-        display: block;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-    }
-    .result p{
-        margin: 10px;
-    }
-    img {
-        
-        object-fit: contain; /* Keep proportions within bounds */
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        margin-top: 20px;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-    }
-    #loading-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000; /* Above all content */
-    }
-
-    /* Loading indicator styles */
-    .loading-spinner {
-        text-align: center;
-        color: white;
-        font-size: 1.5em;
-    }
-
-    .loading-spinner img {
-        width: 100px;
-        height: 100px;
-        margin-bottom: 20px;
-    }
-    button {
-            padding: 10px 15px;
-            font-size: 16px;
-            font-weight: bold;
-            color: #fff;
-            background-color: #007bff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
-        }
-
-        button:focus {
-            outline: none;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-        }
-
-    .analysis-results-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 20px;
-        max-width: 1000px;
-        margin: 20px auto;
-    }
-    .analysis-results, .hospital-location {
-        flex: 1;
-        max-width: 48%;
-        padding: 20px;
-        background: #f8f9fa;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-    .hospital-location #map {
-        width: 100%;
-        height: 250px;
-        border-radius: 5px;
-        margin-top: 10px;
-    }
-    .analysis-results img {
-        width: 100%;
-        max-width: 100%;
-        height: auto;
-        object-fit: contain;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-    }
-</style>
-
-<script>
-    // Show loading indicator
-    function showLoading() {
-        document.getElementById('loading-overlay').style.display = 'flex';
-    }
-</script>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 <script>
-    // Initialize map
-    const map = L.map('map').setView([55.7558, 37.6173], 14); // Moscow by default
+const map = L.map('map').setView([55.7558, 37.6173], 14);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    maxZoom: 20,
+    subdomains: 'abcd',
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+}).addTo(map);
 
-    // Add OpenStreetMap tiles
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
+const fixedCoordinates = [44.8488, 65.4823];
+map.setView(fixedCoordinates, 14);
+L.marker(fixedCoordinates).addTo(map).bindPopup('Kyzylorda').openPopup();
+findNearestHospital(fixedCoordinates);
 
-    // Use fixed location: Kyzylorda
-    const fixedCoordinates = [44.8488, 65.4823];
-    map.setView(fixedCoordinates, 14);
-    L.marker(fixedCoordinates).addTo(map)
-        .bindPopup('Kyzylorda')
-        .openPopup();
-    findNearestHospital(fixedCoordinates);
-
-    // Search for nearest hospital
-    function findNearestHospital(userCoordinates) {
+function findNearestHospital(userCoordinates) {
     const url = `https://nominatim.openstreetmap.org/search?format=json&q=hospital&limit=5&bounded=1&viewbox=${userCoordinates[1]-0.1},${userCoordinates[0]-0.1},${userCoordinates[1]+0.1},${userCoordinates[0]+0.1}`;
 
     fetch(url)
         .then(response => response.json())
         .then(data => {
-            console.log("Hospitals from OpenStreetMap:", data);
-
-            if (data.length === 0) {
+            if (!data.length) {
                 return;
             }
 
-            // Take the first hospital from the list
             const nearestHospital = data[0];
-
             const hospitalCoordinates = [parseFloat(nearestHospital.lat), parseFloat(nearestHospital.lon)];
             const hospitalName = nearestHospital.display_name || "{% tr 'Unknown hospital' %}";
 
-            // Add hospital marker
-            L.marker(hospitalCoordinates)
-                .addTo(map)
-                .bindPopup(`<strong>${hospitalName}</strong>`)
-                .openPopup();
-
-            // Render hospital info
+            L.marker(hospitalCoordinates).addTo(map).bindPopup(`<strong>${hospitalName}</strong>`).openPopup();
             document.getElementById('hospital-info').innerHTML = `
-                <strong>{% tr "Hospital name:" %}</strong> ${hospitalName} <br>
+                <strong>{% tr "Hospital name:" %}</strong> ${hospitalName}<br>
                 <strong>{% tr "Coordinates:" %}</strong> ${hospitalCoordinates[0]}, ${hospitalCoordinates[1]}
             `;
         })
         .catch(error => {
-            console.error("OpenStreetMap request error:", error);
+            console.error("Error fetching hospital data:", error);
         });
 }
 </script>
-    
-
-
-
-<style>
-    body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f9f9f9;
-    color: #333;
-}
-
-
-
-nav ul {
-    list-style: none;
-    padding: 0;
-}
-
-nav ul li {
-    display: inline;
-    margin: 0 15px;
-}
-
-nav ul li a {
-    color: white;
-    text-decoration: none;
-}
-
-main {
-    padding: 20px;
-}
-
-footer {
-    text-align: center;
-    padding: 10px;
-    background-color: #333;
-    color: white;
-}
-
-ul {
-    padding-left: 20px;
-}
-
-img {
-    max-width: 100%;
-    height: auto;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-top: 20px;
-}
-</style>
 {% endblock %}

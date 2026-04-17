@@ -1,233 +1,72 @@
 {% extends 'base.html' %}
 {% load static ui_i18n %}
 
+{% block title %}{% tr "Blood Analysis" %}{% endblock %}
+
 {% block content %}
-<style>
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f9fafb;
-        margin: 0;
-        padding: 0;
-    }
-    .container {
-        max-width: 900px;
-        margin: 50px auto;
-        padding: 30px;
-        background-color: white;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        text-align: center;
-    }
-    h1 {
-        font-size: 2.5rem;
-        color: #333;
-        margin-bottom: 30px;
-    }
-    .file-upload {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        background-color: #1ca6eb;
-        
-        color: white;
-        border: 2px dashed #121314;
-  
-        border-radius: 10px;
-        padding: 40px;
-        cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.3s ease;
-        width: 100%;
-        max-width: 400px;
-        margin: 0 auto;
-    }
-    .file-upload:hover {
-        background-color: #1b76a3;
-        transform: scale(1.05);
-    }
-    .file-upload input[type="file"] {
-        display: none;
-    }
-    .file-upload i {
-        font-size: 3rem;
-        margin-bottom: 20px;
-    }
-    .file-upload p {
-        font-size: 1.1rem;
-        margin: 0;
-    }
-
-    /* Data display styles */
-    .results {
-        margin-top: 40px;
-        padding: 20px;
-        background-color: #f3f4f6;
-        border-radius: 10px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-    .results h3 {
-        font-size: 1.8rem;
-        color: #333;
-        margin-bottom: 15px;
-    }
-    .result-item {
-        margin: 10px 0;
-        font-size: 1.2rem;
-        color: #333;
-        padding: 12px;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    }
-    .result-item span {
-        font-weight: bold;
-    }
-
-    .button-container {
-        margin-top: 30px;
-    }
-
-    .btn {
-        padding: 12px 25px;
-        margin-top: 20px;
-        background-color: #007bff;
-        color: white;
-        font-size: 18px;
-        border-radius: 30px;
-        text-decoration: none;
-        transition: background-color 0.3s ease, transform 0.3s ease;
-    }
-
-    .btn:hover {
-        background-color: #0056b3;
-        transform: scale(1.05);
-    }
-
-    .btn:active {
-        background-color: #004085;
-        transform: scale(1);
-    }
-
-    /* New flex layout for extracted data and AI recommendations */
-    .analysis-flex {
-        display: flex;
-        justify-content: space-between;
-        gap: 30px;
-        margin-top: 40px;
-    }
-    .analysis-half {
-        flex: 1;
-        background-color: #f3f4f6;
-        border-radius: 10px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-        min-width: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-    .ai-btn {
-        padding: 16px 32px;
-        background-color: #1ca6eb;
-        color: #fff;
-        font-size: 1.2rem;
-        border: none;
-        border-radius: 30px;
-        cursor: pointer;
-        margin-top: 20px;
-        transition: background 0.3s, transform 0.3s;
-    }
-    .ai-btn:hover {
-        background-color: #1b76a3;
-        transform: scale(1.05);
-    }
-    .ai-recommendations {
-        margin-top: 25px;
-        font-size: 1.1rem;
-        color: #222;
-        background: #fff;
-        border-radius: 8px;
-        padding: 18px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-        min-height: 60px;
-        width: 100%;
-        text-align: left;
-        display: none;
-    }
-</style>
-
-<div class="container">
-    <h1>{% tr "Upload an image of your blood test" %}</h1>
-
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="file-upload">
-            <label for="analysis_file">
-                <i class="fas fa-upload"></i>
-                <p>{% tr "Click or drag an image (JPG/PNG/PDF)" %}</p>
-            </label>
-            <input type="file" name="file" id="analysis_file" accept=".jpg,.jpeg,.png,.pdf">
+<section class="section">
+    <div class="site-container">
+        <div class="page-intro">
+            <div class="section-label"><span>{% tr "Laboratory" %}</span></div>
+            <h1 class="page-heading">{% tr "Upload an image of your blood test" %}</h1>
+            <p class="section-copy">{% tr "Import a report image or PDF to extract markers, preserve the original processing pipeline, and request AI recommendations." %}</p>
         </div>
-        <div  class="t1001__btn-wrapper " style="margin-bottom: 5px; padding-bottom: 10px;margin-top: 10px;">
 
-        <button  class="t1001__btn t-btn t-btn_md " style= "color:rgb(0, 0, 0); margin-top: 20px ; font-size: large   ;padding-inline:50px ;display: block;background-color:#88C8E8;border-radius:30px;-moz-border-radius:30px; -webkit-border-radius:30px;"  type="submit">{% tr "Submit" %}</button>
-    </div>
-    </form>
+        <article class="editorial-card">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="upload-box">
+                    <label for="analysis_file">{% tr "Click or drag an image (JPG/PNG/PDF)" %}</label>
+                    <input type="file" name="file" id="analysis_file" accept=".jpg,.jpeg,.png,.pdf">
+                </div>
+                <div class="button-row" style="margin-top:1.5rem; justify-content:flex-start;">
+                    <button class="btn" type="submit">{% tr "Submit" %}</button>
+                </div>
+            </form>
+        </article>
 
-    {% if analysis_data %}
-    <div class="analysis-flex">
-        <!-- Left: Extracted Data -->
-        <div class="analysis-half">
-            <h3>{% tr "Extracted Data:" %}</h3>
-            <div class="result-item">
-                <span>{% tr "Leukocytes Level:" %}</span> {{ analysis_data.leukocytes_level }}
-            </div>
-            <div class="result-item">
-                <span>{% tr "Hemoglobin Level:" %}</span> {{ analysis_data.hemoglobin_level }}
-            </div>
-            <div class="result-item">
-                <span>{% tr "Erythrocytes Level:" %}</span> {{ analysis_data.erythrocytes_level }}
-            </div>
-            <div class="result-item">
-                <span>{% tr "Thrombocytes Level:" %}</span> {{ analysis_data.thrombocytes_level }}
-            </div>
-            <div class="result-item">
-                <span>{% tr "Hematocrit Level:" %}</span> {{ analysis_data.hematocrit_level }}
-            </div>
-            <div class="result-item">
-                <span>{% tr "Amylase Level:" %}</span> {{ analysis_data.amylase_level }}
-            </div>
-            <div class="result-item">
-                <span>{% tr "Potassium Level:" %}</span> {{ analysis_data.creatinine_level }}
-            </div>
-            <div class="result-item">
-                <span>{% tr "Basophils Level:" %}</span> {{ analysis_data.creatinine_level }}
-            </div>
-            <div class="result-item">
-                <span>{% tr "Creatinine Level:" %}</span> {{ analysis_data.creatinine_level }}
-            </div>
-            <div class="result-item">
-                <span>{% tr "C-Reactive Protein Level:" %}</span> {{ analysis_data.creatinine_level }}
-            </div>
+        {% if analysis_data %}
+            <div class="analysis-grid" style="margin-top:2rem;">
+                <article class="editorial-card">
+                    <h3>{% tr "Extracted Data" %}</h3>
+                    <div class="results-stack">
+                        <div class="result-item"><span>{% tr "Leukocytes Level" %}</span><div>{{ analysis_data.leukocytes_level }}</div></div>
+                        <div class="result-item"><span>{% tr "Hemoglobin Level" %}</span><div>{{ analysis_data.hemoglobin_level }}</div></div>
+                        <div class="result-item"><span>{% tr "Erythrocytes Level" %}</span><div>{{ analysis_data.erythrocytes_level }}</div></div>
+                        <div class="result-item"><span>{% tr "Thrombocytes Level" %}</span><div>{{ analysis_data.thrombocytes_level }}</div></div>
+                        <div class="result-item"><span>{% tr "Hematocrit Level" %}</span><div>{{ analysis_data.hematocrit_level }}</div></div>
+                        <div class="result-item"><span>{% tr "Amylase Level" %}</span><div>{{ analysis_data.amylase_level }}</div></div>
+                        <div class="result-item"><span>{% tr "Potassium Level" %}</span><div>{{ analysis_data.potassium_level }}</div></div>
+                        <div class="result-item"><span>{% tr "Basophils Level" %}</span><div>{{ analysis_data.basophils_level }}</div></div>
+                        <div class="result-item"><span>{% tr "Creatinine Level" %}</span><div>{{ analysis_data.creatinine_level }}</div></div>
+                        <div class="result-item"><span>{% tr "C-Reactive Protein Level" %}</span><div>{{ analysis_data.c_reactive_protein_level }}</div></div>
+                    </div>
+                </article>
 
-                
-        </div>
-        <!-- Right: AI Recommendations -->
-        <div class="analysis-half">
-            <button class="ai-btn" id="get-ai-recommendations">{% tr "Get AI recommendations" %}</button>
-            <div class="ai-recommendations" id="ai-recommendations"></div>
-        </div>
+                <article class="editorial-card">
+                    <h3>{% tr "AI recommendations" %}</h3>
+                    <p>{% tr "Generate additional recommendations based on the extracted marker values using the current OpenAI-backed endpoint." %}</p>
+                    <button class="btn" id="get-ai-recommendations" type="button">{% tr "Get AI recommendations" %}</button>
+                    <div class="result-item hidden" id="ai-recommendations" style="margin-top:1rem;"></div>
+                </article>
+            </div>
+        {% endif %}
     </div>
-    <div  class="t1001__btn-wrapper " style="margin-bottom: 5px; padding-bottom: 10px;margin-top: 10px;">
-        <form method="POST" action="{% url 'save_results' %}">
-            {% csrf_token %}
-            <div class="t-btnwrapper" ><button class="t1001__btn t-btn t-btn_md " style= "color:rgb(0, 0, 0); margin-top: 20px ; font-size: large   ;padding-inline:50px ;display: block;background-color:#88C8E8;border-radius:30px;-moz-border-radius:30px; -webkit-border-radius:30px;" type="submit">Save results</button>
-            </div></form>
-    </div>
-    <script>
-    document.getElementById('get-ai-recommendations').onclick = function() {
-        const data = {
+</section>
+
+{% if analysis_data %}
+<script>
+document.getElementById('get-ai-recommendations').onclick = function () {
+    const recommendationsDiv = document.getElementById('ai-recommendations');
+    recommendationsDiv.classList.remove('hidden');
+    recommendationsDiv.innerHTML = '<span>{% tr "Status" %}</span><div>{% tr "Generating recommendations..." %}</div>';
+
+    fetch('{% url "get_ai_recommendations" %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
             leukocytes_level: '{{ analysis_data.leukocytes_level }}',
             hemoglobin_level: '{{ analysis_data.hemoglobin_level }}',
             erythrocytes_level: '{{ analysis_data.erythrocytes_level }}',
@@ -238,44 +77,22 @@
             basophils_level: '{{ analysis_data.basophils_level }}',
             creatinine_level: '{{ analysis_data.creatinine_level }}',
             c_reactive_protein_level: '{{ analysis_data.c_reactive_protein_level }}'
-        };
-        const recommendationsDiv = document.getElementById('ai-recommendations');
-        recommendationsDiv.style.display = 'block';
-        recommendationsDiv.innerHTML = 'Generating recommendations...';
-        fetch('{% url "get_ai_recommendations" %}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': '{{ csrf_token }}'
-            },
-            body: JSON.stringify(data)
         })
-        .then(response => response.json())
-        .then(data => {
-            if (Array.isArray(data.recommendations)) {
-                const keywords = [
-                    'Short description:',
-                    'Recommended treatments:',
-                    'Required precautions:',
-                    'Common medications:'
-                ];
-                recommendationsDiv.innerHTML = data.recommendations.map(section => {
-                    let html = section;
-                    keywords.forEach(kw => {
-                        // Replace keyword with bold version if present
-                        html = html.replace(kw, `<b>${kw}</b>`);
-                    });
-                    return `<div>${html}</div>`;
-                }).join('');
-            } else {
-                recommendationsDiv.innerHTML = data.recommendations || 'No recommendations.';
-            }
-        })
-        .catch(() => {
-            recommendationsDiv.innerHTML = 'Error while fetching recommendations.';
-        });
-    };
-    </script>
-    {% endif %}
-</div>
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (Array.isArray(data.recommendations)) {
+            recommendationsDiv.innerHTML = '<span>{% tr "Recommendations" %}</span><div>' +
+                data.recommendations.map(section => '<p>' + section + '</p>').join('') +
+                '</div>';
+        } else {
+            recommendationsDiv.innerHTML = '<span>{% tr "Recommendations" %}</span><div>' + (data.recommendations || '{% tr "No recommendations." %}') + '</div>';
+        }
+    })
+    .catch(() => {
+        recommendationsDiv.innerHTML = '<span>{% tr "Error" %}</span><div>{% tr "Error while fetching recommendations." %}</div>';
+    });
+};
+</script>
+{% endif %}
 {% endblock %}

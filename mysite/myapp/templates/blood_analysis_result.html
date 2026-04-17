@@ -1,144 +1,96 @@
-{% load ui_i18n %}
 {% extends 'base.html' %}
+{% load ui_i18n %}
+
+{% block title %}{% tr "Blood Test Results" %}{% endblock %}
+
 {% block content %}
-<div class="container" style="max-width: 900px; margin: 50px auto; padding: 30px; background-color: white; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); border-radius: 10px;">
-    <h1 style="text-align: center; color: #333;">{% tr "Blood Test Results" %}</h1>
+<section class="section">
+    <div class="site-container">
+        <div class="page-intro">
+            <div class="section-label"><span>{% tr "History" %}</span></div>
+            <h1 class="page-heading">{% tr "Blood Test Results" %}</h1>
+            <p class="section-copy">{% tr "Review previously extracted laboratory values and inspect trends by marker." %}</p>
+        </div>
 
-    <!-- Analysis list -->
-    <div style="margin-top: 20px;">
-        {% if analyses %}
-            <ul style="list-style-type: none; padding: 0;">
-                {% for analysis in analyses %}
-                    <li style="padding: 15px; border-bottom: 2px solid #eee; cursor: pointer; transition: background-color 0.3s; border-radius: 8px;" onclick="toggleDetails('{{ analysis.id }}')">
-                        <p style="margin: 0; font-weight: bold; font-size: 18px; color: #333;">{% tr "Upload date:" %} {{ analysis.uploaded_at|date:"d M Y" }}</p>
-                        <div id="details-{{ analysis.id }}" style="display: none; padding-top: 10px;">
-                            <div style="background-color: #f9f9f9; padding: 20px; border-radius: 10px; margin-top: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-                                <p><strong>{% tr "Leukocytes Level:" %}</strong> {{ analysis.leukocytes_level }}</p>
-                                <p><strong>{% tr "Hemoglobin Level:" %}</strong> {{ analysis.hemoglobin_level }}</p>
-                                <p><strong>{% tr "Erythrocytes Level:" %}</strong> {{ analysis.erythrocytes_level }}</p>
-                                <p><strong>{% tr "Thrombocytes Level:" %}</strong> {{ analysis.thrombocytes_level }}</p>
-                                <p><strong>{% tr "Hematocrit Level:" %}</strong> {{ analysis.hematocrit_level }}</p>
-                                <p><strong>{% tr "Amylase Level:" %}</strong> {{ analysis.amylase_level }}</p>
-                                <p><strong>{% tr "Potassium Level:" %}</strong> {{ analysis.potassium_level }}</p>
-                                <p><strong>{% tr "Basophils Level:" %}</strong> {{ analysis.basophils_level }}</p>
-                                <p><strong>{% tr "Creatinine Level:" %}</strong> {{ analysis.creatinine_level }}</p>
-                                <p><strong>{% tr "C-Reactive Protein Level:" %}</strong> {{ analysis.c_reactive_protein_level }}</p>
-                            </div>
-                        </div>
-                        
-                          <!-- Recommendations for this test -->
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p style="text-align: center; color: #999;">{% tr "No blood analysis available." %}</p>
-        {% endif %}
+        <div class="analysis-grid">
+            <article class="editorial-card">
+                <h3>{% tr "Saved analyses" %}</h3>
+                {% if analyses %}
+                    <ul class="list-reset history-list">
+                        {% for analysis in analyses %}
+                            <li onclick="toggleDetails('{{ analysis.id }}')" style="cursor:pointer;">
+                                <strong>{% tr "Upload date:" %}</strong> {{ analysis.uploaded_at|date:"d M Y" }}
+                                <div id="details-{{ analysis.id }}" class="hidden" style="margin-top:1rem;">
+                                    <div class="results-stack">
+                                        <div class="result-item"><span>{% tr "Leukocytes Level" %}</span><div>{{ analysis.leukocytes_level }}</div></div>
+                                        <div class="result-item"><span>{% tr "Hemoglobin Level" %}</span><div>{{ analysis.hemoglobin_level }}</div></div>
+                                        <div class="result-item"><span>{% tr "Erythrocytes Level" %}</span><div>{{ analysis.erythrocytes_level }}</div></div>
+                                        <div class="result-item"><span>{% tr "Thrombocytes Level" %}</span><div>{{ analysis.thrombocytes_level }}</div></div>
+                                        <div class="result-item"><span>{% tr "Hematocrit Level" %}</span><div>{{ analysis.hematocrit_level }}</div></div>
+                                        <div class="result-item"><span>{% tr "Amylase Level" %}</span><div>{{ analysis.amylase_level }}</div></div>
+                                        <div class="result-item"><span>{% tr "Potassium Level" %}</span><div>{{ analysis.potassium_level }}</div></div>
+                                        <div class="result-item"><span>{% tr "Basophils Level" %}</span><div>{{ analysis.basophils_level }}</div></div>
+                                        <div class="result-item"><span>{% tr "Creatinine Level" %}</span><div>{{ analysis.creatinine_level }}</div></div>
+                                        <div class="result-item"><span>{% tr "C-Reactive Protein Level" %}</span><div>{{ analysis.c_reactive_protein_level }}</div></div>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>{% tr "No blood analysis available." %}</p>
+                {% endif %}
+            </article>
+
+            <article class="editorial-card">
+                <h3>{% tr "View trends by marker" %}</h3>
+                <div class="dashboard-links categories" style="justify-content:flex-start; margin-bottom:1.5rem;">
+                    <a href="{% url 'show_graph' 'leukocytes' %}">{% tr "Leukocytes" %}</a>
+                    <a href="{% url 'show_graph' 'hemoglobin' %}">{% tr "Hemoglobin" %}</a>
+                    <a href="{% url 'show_graph' 'erythrocytes' %}">{% tr "Erythrocytes" %}</a>
+                    <a href="{% url 'show_graph' 'thrombocytes' %}">{% tr "Thrombocytes" %}</a>
+                    <a href="{% url 'show_graph' 'hematocrit' %}">{% tr "Hematocrit" %}</a>
+                    <a href="{% url 'show_graph' 'amylase' %}">{% tr "Amylase" %}</a>
+                    <a href="{% url 'show_graph' 'potassium' %}">{% tr "Potassium" %}</a>
+                    <a href="{% url 'show_graph' 'basophils' %}">{% tr "Basophils" %}</a>
+                    <a href="{% url 'show_graph' 'creatinine' %}">{% tr "Creatinine" %}</a>
+                    <a href="{% url 'show_graph' 'c_reactive_protein' %}">{% tr "C-reactive protein" %}</a>
+                </div>
+
+                <div id="graph-container">
+                    {% if graph_image %}
+                        <img src="data:image/png;base64,{{ graph_image }}" alt="{% tr 'Blood Test Results' %}" style="border-radius:16px; border:1px solid var(--border);">
+                    {% else %}
+                        <p>{% tr "Chart is not available." %}</p>
+                    {% endif %}
+                </div>
+
+                {% if recommendations %}
+                    <div class="result-item" style="margin-top:1.5rem;">
+                        <span>{% tr "Recommendations for the latest test" %}</span>
+                        <p>{{ recommendations.0.0 }}</p>
+                        <p><strong>{% tr "Treatment options:" %}</strong> {{ recommendations.0.1 }}</p>
+                    </div>
+                {% else %}
+                    <p style="margin-top:1rem;">{% tr "All results are within normal range." %}</p>
+                {% endif %}
+            </article>
+        </div>
     </div>
-    
+</section>
 
-
-
-    <div style="margin-top: 30px; text-align: center;">
-        <h2 style="text-align: center;margin-bottom: 20px ;color: rgb(0, 0, 0);">{% tr "View trends by marker" %}</h2>
-        <a href="{% url 'show_graph' 'leukocytes' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">{% tr "Leukocytes Level:" %}</a>
-        <a href="{% url 'show_graph' 'hemoglobin' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">{% tr "Hemoglobin Level:" %}</a>
-        <a href="{% url 'show_graph' 'erythrocytes' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">{% tr "Erythrocytes Level:" %}</a>
-        <a href="{% url 'show_graph' 'thrombocytes' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">{% tr "Thrombocytes Level:" %}</a>
-        <a href="{% url 'show_graph' 'hematocrit' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">{% tr "Hematocrit Level:" %}</a>
-        <a href="{% url 'show_graph' 'amylase' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">{% tr "Amylase Level:" %}</a>
-        <a href="{% url 'show_graph' 'potassium' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">{% tr "Potassium Level:" %}</a>
-        <a href="{% url 'show_graph' 'basophils' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">{% tr "Basophils Level:" %}</a>
-        <a href="{% url 'show_graph' 'creatinine' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">{% tr "Creatinine Level:" %}</a>
-        <a href="{% url 'show_graph' 'c_reactive_protein' %}" class="t1001__btn t-btn t-btn_md" style="color: rgb(0, 0, 0); padding: 20px; background-color: #88C8E8; border-radius: 30px;">{% tr "C-reactive protein" %}</a>
-    </div>
-
-    <div id="graph-container" style="margin-top: 30px; text-align: center;">
-        {% if graph_image %}
-            <img src="data:image/png;base64,{{ graph_image }}" alt="{% tr 'Blood Test Results' %}">
-        {% else %}
-            <p>{% tr "Chart is not available." %}</p>
-        {% endif %}
-    </div>
-    {% if recommendations %}
-    <div class='rec_blood'style="margin-top: 20px; background-color: #f9f9f9; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-        <p style="color: #333; font-size: 22px;"><strong>{% tr "Recommendations for the latest test:" %}</strong></p >
-        <p>{{ recommendations.0.0 }}</p>  
-        <p style="color: #333; font-size: 22px;"><strong>{% tr "Treatment options:" %}</strong></p>
-        <p>{{ recommendations.0.1 }}</p>  
-    </div>
-{% else %}
-    <p style="color: #999;">{% tr "All results are within normal range." %}</p>
-{% endif %}
-</div>
-<style>
-    .rec_blood p{
-        padding: 2.5px;
-        font-size: 17px;
-        font-weight: 100;
-    }
-</style>
 <script>
-    function toggleDetails(analysisId) {
-        const details = document.getElementById('details-' + analysisId);
+function toggleDetails(analysisId) {
+    const details = document.getElementById('details-' + analysisId);
+    const allDetails = document.querySelectorAll('[id^="details-"]');
 
-        const allDetails = document.querySelectorAll('[id^="details-"]');
-        allDetails.forEach(function(detail) {
-            if (detail !== details) {
-                detail.style.display = 'none';
-            }
-        });
-
-        
-        if (details.style.display === 'none' || details.style.display === '') {
-            details.style.display = 'block';
-        } else {
-            details.style.display = 'none';
+    allDetails.forEach(function (detail) {
+        if (detail !== details) {
+            detail.classList.add('hidden');
         }
-    }
+    });
 
-    window.onload = function() {
-        const allDetails = document.querySelectorAll('[id^="details-"]');
-        allDetails.forEach(function(detail) {
-            detail.style.display = 'none'; 
-        });
-    }
+    details.classList.toggle('hidden');
+}
 </script>
-
-{% block extra_css %}
-<style>
-    .btn-param {
-        padding: 12px 25px;
-        margin: 10px;
-        background-color: #007bff;
-        color: white;
-        text-decoration: none;
-        border-radius: 50px;
-        font-size: 18px;
-        font-weight: bold;
-        transition: background-color 0.3s ease, transform 0.3s ease;
-    }
-
-    .btn-param:hover {
-        background-color: #0056b3;
-        color: white;
-        transform: translateY(-5px);
-    }
-
-    .btn-param:active {
-        background-color: #004085;
-        color: white;
-        transform: translateY(2px);
-    }
-
-    .btn-param:focus {
-        outline: none;
-        box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
-    }
-
-    li:hover {
-        background-color: #f0f8ff;
-        cursor: pointer;
-    }
-</style>
-{% endblock %}
 {% endblock %}

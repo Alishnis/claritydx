@@ -2,8 +2,11 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import ensure_csrf_cookie
 from .models import Analysis, BloodAnalysis, BloodCellAnalysis
 
+@ensure_csrf_cookie
 def register_view(request):
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -19,6 +22,7 @@ def register_view(request):
     
     return render(request, 'register.html')
 
+@ensure_csrf_cookie
 def login_view(request):
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -33,6 +37,8 @@ def login_view(request):
 
 from .models import AnalysisCT, AnalysisSkin, Analysis  
 from django.core import serializers
+
+@login_required(login_url='/login/')
 def user_kab(request):
     """Показать личный кабинет с разным контентом в зависимости от выбранного раздела."""
     selected_section = request.GET.get('section', 'ct')  
