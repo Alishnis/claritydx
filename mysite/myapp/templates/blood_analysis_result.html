@@ -18,9 +18,9 @@
                 {% if analyses %}
                     <ul class="list-reset history-list">
                         {% for analysis in analyses %}
-                            <li onclick="toggleDetails('{{ analysis.id }}')" style="cursor:pointer;">
+                            <li onclick="toggleDetails('{{ analysis.id }}')" class="details-toggle">
                                 <strong>{% tr "Upload date:" %}</strong> {{ analysis.uploaded_at|date:"d M Y" }}
-                                <div id="details-{{ analysis.id }}" class="hidden" style="margin-top:1rem;">
+                                <div id="details-{{ analysis.id }}" class="hidden history-details">
                                     <div class="results-stack">
                                         <div class="result-item"><span>{% tr "Leukocytes Level" %}</span><div>{{ analysis.leukocytes_level }}</div></div>
                                         <div class="result-item"><span>{% tr "Hemoglobin Level" %}</span><div>{{ analysis.hemoglobin_level }}</div></div>
@@ -44,7 +44,7 @@
 
             <article class="editorial-card">
                 <h3>{% tr "View trends by marker" %}</h3>
-                <div class="dashboard-links categories" style="justify-content:flex-start; margin-bottom:1.5rem;">
+                <div class="dashboard-links categories">
                     <a href="{% url 'show_graph' 'leukocytes' %}">{% tr "Leukocytes" %}</a>
                     <a href="{% url 'show_graph' 'hemoglobin' %}">{% tr "Hemoglobin" %}</a>
                     <a href="{% url 'show_graph' 'erythrocytes' %}">{% tr "Erythrocytes" %}</a>
@@ -59,20 +59,20 @@
 
                 <div id="graph-container">
                     {% if graph_image %}
-                        <img src="data:image/png;base64,{{ graph_image }}" alt="{% tr 'Blood Test Results' %}" style="border-radius:16px; border:1px solid var(--border);">
+                        <img src="data:image/png;base64,{{ graph_image }}" alt="{% tr 'Blood Test Results' %}" class="media-frame">
                     {% else %}
                         <p>{% tr "Chart is not available." %}</p>
                     {% endif %}
                 </div>
 
                 {% if recommendations %}
-                    <div class="result-item" style="margin-top:1.5rem;">
+                    <div class="result-item">
                         <span>{% tr "Recommendations for the latest test" %}</span>
                         <p>{{ recommendations.0.0 }}</p>
                         <p><strong>{% tr "Treatment options:" %}</strong> {{ recommendations.0.1 }}</p>
                     </div>
                 {% else %}
-                    <p style="margin-top:1rem;">{% tr "All results are within normal range." %}</p>
+                    <p>{% tr "All results are within normal range." %}</p>
                 {% endif %}
             </article>
         </div>

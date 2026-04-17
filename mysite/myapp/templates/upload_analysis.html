@@ -19,14 +19,14 @@
                     <label for="analysis_file">{% tr "Click or drag an image (JPG/PNG/PDF)" %}</label>
                     <input type="file" name="file" id="analysis_file" accept=".jpg,.jpeg,.png,.pdf">
                 </div>
-                <div class="button-row" style="margin-top:1.5rem; justify-content:flex-start;">
+                <div class="button-row">
                     <button class="btn" type="submit">{% tr "Submit" %}</button>
                 </div>
             </form>
         </article>
 
         {% if analysis_data %}
-            <div class="analysis-grid" style="margin-top:2rem;">
+            <div class="analysis-grid">
                 <article class="editorial-card">
                     <h3>{% tr "Extracted Data" %}</h3>
                     <div class="results-stack">
@@ -43,11 +43,11 @@
                     </div>
                 </article>
 
-                <article class="editorial-card">
+                <article class="editorial-card ai-recommendations-card">
                     <h3>{% tr "AI recommendations" %}</h3>
-                    <p>{% tr "Generate additional recommendations based on the extracted marker values using the current OpenAI-backed endpoint." %}</p>
+                    <p>{% tr "Generate additional recommendations based on the extracted marker values with the help of OpenAI." %}</p>
                     <button class="btn" id="get-ai-recommendations" type="button">{% tr "Get AI recommendations" %}</button>
-                    <div class="result-item hidden" id="ai-recommendations" style="margin-top:1rem;"></div>
+                    <div class="result-item hidden" id="ai-recommendations"></div>
                 </article>
             </div>
         {% endif %}

@@ -15,7 +15,7 @@
         <article class="result-card">
             <h3>{% tr "Detected Conditions" %}</h3>
             {% if diseases %}
-                <div class="results-stack" style="margin-bottom:2rem;">
+                <div class="results-stack">
                     {% for disease in diseases %}
                         <div class="result-item">{{ disease }}</div>
                     {% endfor %}
@@ -27,17 +27,17 @@
             <div class="result-grid">
                 <div class="editorial-card">
                     <h3>{% tr "Grad-CAM Visualization" %}</h3>
-                    <img src="{{ gradcam_path }}" alt="{% tr 'Grad-CAM Visualization' %}" style="border-radius:16px; border:1px solid var(--border);">
+                    <img src="{{ gradcam_path }}" alt="{% tr 'Grad-CAM Visualization' %}" class="media-frame">
                 </div>
                 <div class="editorial-card">
                     <h3>{% tr "Nearest hospital" %}</h3>
-                    <div id="map" style="width:100%; height:320px; border-radius:16px;"></div>
-                    <div id="hospital-info" style="margin-top:1rem;"></div>
-                    <div id="error-message" style="margin-top:0.5rem; color:#9b3d3d;"></div>
+                    <div id="map" class="map-frame"></div>
+                    <div id="hospital-info"></div>
+                    <div id="error-message" class="error-text"></div>
                 </div>
             </div>
 
-            <div class="button-row" style="justify-content:flex-start; margin-top:2rem;">
+            <div class="button-row">
                 <a href="{% url 'analyze_image' %}" class="btn btn-secondary">{% tr "Upload another image" %}</a>
                 <form method="POST" action="{% url 'save_results' %}">
                     {% csrf_token %}
