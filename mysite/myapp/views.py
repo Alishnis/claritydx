@@ -78,8 +78,9 @@ def handle_upload(request):
     if request.method == 'POST':
         uploaded_file = request.FILES.get('file')
         if uploaded_file:
+            user = request.user if request.user.is_authenticated else None
             analysis = Analysis.objects.create(
-                user=request.user,  
+                user=user,
                 
                 analysis_file=uploaded_file,
                 result='Good',
@@ -105,13 +106,39 @@ import sys
 import re
 
 
+def _normalize_symptom_error(raw_error):
+    error_text = (raw_error or "").strip()
+    lowered = error_text.lower()
+
+    if not error_text:
+        return "Не удалось выполнить анализ симптомов. Попробуйте позже."
+
+    if "no symptoms provided" in lowered:
+        return "Пожалуйста, введите симптомы для анализа."
+
+    if any(token in lowered for token in ["huggingface.co", "ssl", "maxretryerror", "sacremoses", "tokenizer"]):
+        return (
+            "Сервис анализа симптомов временно недоступен. "
+            "Попробуйте позже или воспользуйтесь разделом Large Database."
+        )
+
+    if "temporarily unavailable" in lowered:
+        return (
+            "Сервис анализа симптомов временно недоступен. "
+            "Попробуйте позже или воспользуйтесь разделом Large Database."
+        )
+
+    if "unable to generate a diagnosis" in lowered or "no diagnosis returned" in lowered:
+        return "Не удалось получить результат. Попробуйте описать симптомы подробнее."
+
+    return "Не удалось выполнить анализ симптомов. Попробуйте позже."
+
 
 def analyze_symptoms(request):
     if request.method == 'POST':
         symptoms = request.POST.get('symptoms', '')
         if symptoms:
             try:
-                
                 import os
 
                 script_path = os.path.join(os.path.dirname(__file__), "ex.py")
@@ -122,19 +149,24 @@ def analyze_symptoms(request):
                     capture_output=True,
                 )
                 if proc.returncode != 0:
-                    err = proc.stderr.strip() or "Analysis failed."
+                    err = _normalize_symptom_error(proc.stderr)
                     return render(request, 'symptom_form.html', {'diagnosis': [err]})
 
                 output = (proc.stdout or "").strip()
                 if not output:
-                    err = proc.stderr.strip() or "No diagnosis returned."
+                    err = _normalize_symptom_error(proc.stderr or "No diagnosis returned.")
                     return render(request, 'symptom_form.html', {'diagnosis': [err]})
 
                 # Use raw model output; split by newlines/commas and drop empties
                 parts = [p.strip() for p in re.split(r"[,\n]+", output) if p.strip()]
                 return render(request, 'symptom_form.html', {'diagnosis': parts})
-            except Exception as e:
-                return render(request, 'symptom_form.html', {'diagnosis': f"Ошибка: {e}"})
+            except Exception:
+                logger.exception("Unexpected error during symptom analysis")
+                return render(
+                    request,
+                    'symptom_form.html',
+                    {'diagnosis': ["Не удалось выполнить анализ симптомов. Попробуйте позже."]},
+                )
     return render(request, 'symptom_form.html')   
 
 from django.shortcuts import render
@@ -322,8 +354,9 @@ def analyze_image(request):
             os.rename(gradcam_path, gradcam_file_path) 
 
         
+            user = request.user if request.user.is_authenticated else None
             analysis = Analysis.objects.create(
-                user=request.user,
+                user=user,
                 analysis_file=gradcam_file_path.replace(settings.MEDIA_ROOT, ''),  
                 result=result_text
             )           
@@ -343,6 +376,7 @@ def analyze_image(request):
     return render(request, 'upload.html')
 from .models import AnalysisCT
 
+@login_required(login_url='/login/')
 def save_results(request):
     """Подтверждение сохранения анализа."""
     if request.method == 'POST':
@@ -357,6 +391,8 @@ def save_results(request):
 
         return redirect('user_kab') 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+@login_required(login_url='/login/')
 def save_results_ct(request):
     """Подтверждение сохранения анализа."""
     if request.method == 'POST':
@@ -490,8 +526,9 @@ def analyze_image2(request):
 
         predicted_class = class_labels[predicted_index]
         readable_class = CLASS_TRANSLATIONS.get(predicted_class, "Unknown class")
+        user = request.user if request.user.is_authenticated else None
         analysis = AnalysisCT.objects.create(
-                user=request.user,
+                user=user,
                 analysis_file=os.path.relpath(saved_image_path, BASE_DIR),
                 
               
@@ -633,8 +670,9 @@ def process_blood_analysis_file(request):
             'c_reactive_protein_level': c_reactive_protein_level
         }
 
+        user = request.user if request.user.is_authenticated else None
         BloodAnalysis.objects.create(
-            user=request.user,
+            user=user,
             analysis_file=uploaded_file.name,
             uploaded_at=timezone.now(),
             leukocytes_level=leukocytes_level,

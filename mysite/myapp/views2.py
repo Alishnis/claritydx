@@ -12,6 +12,7 @@ from pytorch_grad_cam.utils.image import show_cam_on_image
 from skimage.transform import resize
 from .models import AnalysisSkin, BloodAnalysis
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -110,7 +111,7 @@ def analyze_skin_image(request):
             gradcam_path = os.path.join(gradcam_dir, f"gradcam_{os.path.basename(uploaded_file.name)}")
             Image.fromarray(heatmap_overlay).save(gradcam_path)
             analysis = AnalysisSkin.objects.create(
-                user=request.user,
+                user=request.user if request.user.is_authenticated else None,
                 analysis_file=gradcam_path.replace(settings.MEDIA_ROOT, ''),  
                 result=f'{predicted_class}: {predicted_probability:.2f}%'
             )
@@ -137,6 +138,7 @@ CLASSES = [
 
 from django.contrib import messages
 
+@login_required(login_url='/login/')
 def save_results_skin(request):
    
     if request.method == 'POST':
@@ -154,6 +156,7 @@ def save_results_skin(request):
 
 
 from django.core import serializers
+@login_required(login_url='/login/')
 def save_results(request):
     if request.method=="POST":
         analyses=BloodAnalysis.objects.filter(user=request.user).order_by('-id')

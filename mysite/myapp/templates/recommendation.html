@@ -1,411 +1,117 @@
 {% extends 'base.html' %}
 {% load static ui_i18n %}
 
+{% block title %}{% tr "Disease Prediction and Recommendation System" %}{% endblock %}
+
 {% block content %}
-<div id="rec843263554" class="r t-rec t-rec_pt_135 t-rec_pt-res-480_90 t-rec_pb_135 t-rec_pb-res-480_90" style="padding-top:135px;padding-bottom:135px;background-color:#fff;" data-animationappear="off" data-record-type="948" data-bg-color="#fff">
-    <div class="t948">
-        <div class="t-section__container t-container t-container_flex" style="margin-bottom:80px;">
-            <div class="t-col t-col_12">
-                <div class="t-section__title t-title t-title_xs t-align_center t-margin_auto" field="btitle">
-                    {% tr "Disease Prediction and Recommendation System" %}
-                </div>
-                <div class="t-section__descr t-descr t-descr_xl t-align_center t-margin_auto" field="bdescr">
-                    {% tr "Select your symptoms to get a diagnosis and recommendations." %}
-                </div>
-            </div>
+<section class="section">
+    <div class="site-container">
+        <div class="page-intro">
+            <div class="section-label"><span>{% tr "Large database" %}</span></div>
+            <h1 class="page-heading">{% tr "Disease Prediction and Recommendation System" %}</h1>
+            <p class="section-copy">{% tr "Search and select symptoms to obtain diagnosis, precautions, medications, diet guidance, and exercises from the existing recommendation engine." %}</p>
         </div>
-        <div class="t-container">
-            <div class="t948__row">
-                <div class="t-item t948__col t-col t-col_6">
-                    <div class="t948__content">
-                        <div class="t948__textwrapper" style="border: 1px solid transparent; background-color: #f2f9fd;">
-                            <div class="t948__circle">
-                                <div class="t948__number t-name t-name_md">1</div>
-                            </div>
-                            <div class="t948__title t-name t-name_md" field="li_title__5917094636332">
-                                <form method="POST" class="t948__descr t-text t-text_xs" action="{% url 'recommendation' %}" onsubmit="showLoading();">
-                                    {% csrf_token %}
-                                    <div class="form-group" style="font-size:130%;">
-                                        <label style="font-weight: bold;">{% tr "Search and select symptoms:" %}</label>
-                                        <div class="search-container" style="margin: 10px 0;">
-                                            <input type="text" id="symptomSearch" class="form-control" placeholder="{% tr 'Type to search symptoms...' %}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 0.9em;">
-                                        </div>
-                                        <div class="symptoms-container" style="max-height: 300px; overflow-y: auto; margin: 10px 0; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
-                                            {% for symptom in valid_symptoms %}
-                                            <div class="symptom-checkbox" style="margin: 5px 0;">
-                                                <input type="checkbox" id="symptom_{{ forloop.counter }}" name="symptoms" value="{{ symptom }}" style="margin-right: 5px;">
-                                                <label for="symptom_{{ forloop.counter }}" style="font-size: 0.9em;">{{ symptom|title }}</label>
-                                            </div>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="t1001__btn t-btn t-btn_md" style="color:rgb(0, 0, 0); margin-top: 10px; font-size: large; padding-inline:30px; display: block; background-color:#88C8E8; border-radius:30px; -moz-border-radius:30px; -webkit-border-radius:30px;" data-buttonfieldset="button">{% tr "Analyze Symptoms" %}</button>
-                                </form>
-                            </div>
+
+        <div class="analysis-grid">
+            <article class="editorial-card">
+                <h3>{% tr "Select symptoms" %}</h3>
+                <form method="POST" action="{% url 'recommendation' %}" id="recommendationForm">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="symptomSearch">{% tr "Search and select symptoms:" %}</label>
+                        <div class="search-container">
+                            <input type="text" id="symptomSearch" class="form-control" placeholder="{% tr 'Type to search symptoms...' %}">
+                        </div>
+                        <div class="symptoms-container" id="symptoms-list">
+                            {% for symptom in valid_symptoms %}
+                                <div class="symptom-checkbox">
+                                    <input type="checkbox" id="symptom_{{ forloop.counter }}" name="symptoms" value="{{ symptom }}">
+                                    <label for="symptom_{{ forloop.counter }}">{{ symptom|title }}</label>
+                                </div>
+                            {% endfor %}
                         </div>
                     </div>
-                </div>
-                <div class="t-item t948__col t-col t-col_6">
-                    <div class="t948__content">
-                        <div class="t948__textwrapper" style="border: 1px solid transparent; background-color: #f2f9fd;">
-                            <div class="t948__circle">
-                                <div class="t948__number t-name t-name_md">2</div>
-                            </div>
-                            <div class="t948__title t-name t-name_md" field="li_title__5917094636332"></div>
-                            <div class="t948__descr t-text t-text_xs" field="li_descr__5917094636332" style="font-size: 130%;">
-                                {% if message %}
-                                    <p style="color: #dc3545; font-weight: bold;">{{ message }}</p>
-                                {% endif %}
-                                
-                                {% if predicted_disease %}
-                                    <div class="results-container">
-                                        <h3 style="color: #007bff; margin-bottom: 15px; font-size: 1em;">{% tr "Analysis Results" %}</h3>
-                                        
-                                        <div class="result-section collapsible">
-                                            <div class="section-header" onclick="toggleSection(this)">
-                                                <h4 style="color: #28a745; margin: 0; display: flex; justify-content: space-between; align-items: center; font-size: 0.9em;">
-                                                    {% tr "Predicted Condition" %}
-                                                    <span class="toggle-icon">▼</span>
-                                                </h4>
-                                            </div>
-                                            <div class="section-content">
-                                                <p style="font-weight: bold; font-size: 0.8em;">{{ predicted_disease }}</p>
-                                            </div>
-                                        </div>
+                    <button type="submit" class="btn">{% tr "Analyze Symptoms" %}</button>
+                </form>
+            </article>
 
-                                        <div class="result-section collapsible">
-                                            <div class="section-header" onclick="toggleSection(this)">
-                                                <h4 style="color: #28a745; margin: 0; display: flex; justify-content: space-between; align-items: center; font-size: 0.9em;">
-                                                    {% tr "Description" %}
-                                                    <span class="toggle-icon">▼</span>
-                                                </h4>
-                                            </div>
-                                            <div class="section-content">
-                                                <p style="font-size: 0.8em;">{{ dis_des }}</p>
-                                            </div>
-                                        </div>
+            <article class="editorial-card">
+                <h3>{% tr "Analysis results" %}</h3>
+                {% if message %}
+                    <div class="result-item" style="margin-bottom:1rem;">
+                        <span>{% tr "Notice" %}</span>
+                        <div>{{ message }}</div>
+                    </div>
+                {% endif %}
 
-                                        <div class="result-section collapsible">
-                                            <div class="section-header" onclick="toggleSection(this)">
-                                                <h4 style="color: #28a745; margin: 0; display: flex; justify-content: space-between; align-items: center; font-size: 0.9em;">
-                                                    {% tr "Precautions" %}
-                                                    <span class="toggle-icon">▼</span>
-                                                </h4>
-                                            </div>
-                                            <div class="section-content">
-                                                <ul style="font-size: 0.8em;">
-                                                    {% for precaution in my_precautions %}
-                                                        <li>{{ precaution }}</li>
-                                                    {% endfor %}
-                                                </ul>
-                                            </div>
-                                        </div>
-
-                                        <div class="result-section collapsible">
-                                            <div class="section-header" onclick="toggleSection(this)">
-                                                <h4 style="color: #28a745; margin: 0; display: flex; justify-content: space-between; align-items: center; font-size: 0.9em;">
-                                                    {% tr "Recommended Medications" %}
-                                                    <span class="toggle-icon">▼</span>
-                                                </h4>
-                                            </div>
-                                            <div class="section-content">
-                                                <ul style="font-size: 0.8em;">
-                                                    {% for medication in my_medications %}
-                                                        <li>{{ medication }}</li>
-                                                    {% endfor %}
-                                                </ul>
-                                            </div>
-                                        </div>
-
-                                        <div class="result-section collapsible">
-                                            <div class="section-header" onclick="toggleSection(this)">
-                                                <h4 style="color: #28a745; margin: 0; display: flex; justify-content: space-between; align-items: center; font-size: 0.9em;">
-                                                    {% tr "Recommended Diet" %}
-                                                    <span class="toggle-icon">▼</span>
-                                                </h4>
-                                            </div>
-                                            <div class="section-content">
-                                                <ul style="font-size: 0.8em;">
-                                                    {% for diet in my_diet %}
-                                                        <li>{{ diet }}</li>
-                                                    {% endfor %}
-                                                </ul>
-                                            </div>
-                                        </div>
-
-                                        <div class="result-section collapsible">
-                                            <div class="section-header" onclick="toggleSection(this)">
-                                                <h4 style="color: #28a745; margin: 0; display: flex; justify-content: space-between; align-items: center; font-size: 0.9em;">
-                                                    {% tr "Recommended Exercises" %}
-                                                    <span class="toggle-icon">▼</span>
-                                                </h4>
-                                            </div>
-                                            <div class="section-content">
-                                                <ul style="font-size: 0.8em;">
-                                                    {% for exercise in workout %}
-                                                        <li>{{ exercise }}</li>
-                                                    {% endfor %}
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% else %}
-                                    <p style="font-weight: bold;">{% tr "Your results will appear here." %}</p>
-                                {% endif %}
-                            </div>
+                {% if predicted_disease %}
+                    <div class="results-stack">
+                        <div class="result-item">
+                            <span>{% tr "Predicted condition" %}</span>
+                            <div>{{ predicted_disease }}</div>
+                        </div>
+                        <div class="result-item">
+                            <span>{% tr "Description" %}</span>
+                            <div>{{ dis_des }}</div>
+                        </div>
+                        <div class="result-item">
+                            <span>{% tr "Precautions" %}</span>
+                            <ul>
+                                {% for precaution in my_precautions %}
+                                    <li>{{ precaution }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="result-item">
+                            <span>{% tr "Recommended medications" %}</span>
+                            <ul>
+                                {% for medication in my_medications %}
+                                    <li>{{ medication }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="result-item">
+                            <span>{% tr "Recommended diet" %}</span>
+                            <ul>
+                                {% for diet in my_diet %}
+                                    <li>{{ diet }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="result-item">
+                            <span>{% tr "Recommended exercises" %}</span>
+                            <ul>
+                                {% for exercise in workout %}
+                                    <li>{{ exercise }}</li>
+                                {% endfor %}
+                            </ul>
                         </div>
                     </div>
-                </div>
-            </div>
+                {% else %}
+                    <p>{% tr "Your results will appear here." %}</p>
+                {% endif %}
+            </article>
         </div>
     </div>
-</div>
+</section>
 
-<!-- Loading Overlay -->
-<div id="loading-overlay" style="display: none;">
+<div id="loading-overlay" class="loading-overlay">
     <div class="loading-spinner">
-        <img src="{% static 'loading.gif' %}" alt="Loading…">
+        <img src="{% static 'loading.gif' %}" alt="{% tr 'Analyzing symptoms...' %}">
         <p>{% tr "Analyzing symptoms..." %}</p>
     </div>
 </div>
 
-<style>
-    /* Loading Overlay Styles */
-    #loading-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-    }
-
-    .loading-spinner {
-        text-align: center;
-        color: white;
-        font-size: 1.5em;
-    }
-
-    .loading-spinner img {
-        width: 100px;
-        height: 100px;
-        margin-bottom: 20px;
-    }
-
-    /* Results Styling */
-    .results-container {
-        padding: 15px;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    .result-section {
-        margin-bottom: 20px;
-        padding: 10px;
-        background-color: #f8f9fa;
-        border-radius: 5px;
-    }
-
-    .result-section h4 {
-        margin-bottom: 10px;
-    }
-
-    .result-section ul {
-        list-style-type: none;
-        padding-left: 0;
-    }
-
-    .result-section li {
-        margin: 5px 0;
-        padding: 5px;
-        background-color: #fff;
-        border-radius: 3px;
-    }
-
-    /* Symptom Selection Styling */
-    .symptoms-container {
-        background-color: #fff;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        padding: 10px;
-    }
-
-    .symptom-checkbox {
-        padding: 5px;
-        transition: background-color 0.2s;
-    }
-
-    .symptom-checkbox:hover {
-        background-color: #f0f0f0;
-    }
-
-    /* Search Box Styling */
-    .search-container {
-        margin-bottom: 15px;
-    }
-
-    .search-container input {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        font-size: 1em;
-        transition: border-color 0.3s ease;
-    }
-
-    .search-container input:focus {
-        outline: none;
-        border-color: #88C8E8;
-        box-shadow: 0 0 5px rgba(136, 200, 232, 0.3);
-    }
-
-    /* Button Styling */
-    button {
-        padding: 10px 15px;
-        font-size: 16px;
-        font-weight: bold;
-        color: #fff;
-        background-color: #007bff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-
-    button:hover {
-        background-color: #0056b3;
-        transform: scale(1.05);
-    }
-
-    button:focus {
-        outline: none;
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-    }
-
-    /* Hidden symptom styling */
-    .symptom-checkbox.hidden {
-        display: none;
-    }
-
-    /* Updated Collapsible Section Styles */
-    .collapsible {
-        margin-bottom: 10px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        overflow: hidden;
-    }
-
-    .section-header {
-        background-color: #f8f9fa;
-        padding: 12px 15px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        user-select: none;
-    }
-
-    .section-header:hover {
-        background-color: #e9ecef;
-    }
-
-    .section-content {
-        padding: 15px;
-        background-color: #fff;
-        border-top: 1px solid #eee;
-    }
-
-    .toggle-icon {
-        display: inline-block;
-        transition: transform 0.3s ease;
-        margin-left: 10px;
-        font-size: 0.8em;
-    }
-
-    .section-header.active .toggle-icon {
-        transform: rotate(180deg);
-    }
-
-    /* Update existing result-section styles */
-    .result-section {
-        margin-bottom: 10px;
-        background-color: #fff;
-        border-radius: 5px;
-    }
-
-    .result-section ul {
-        list-style-type: none;
-        padding-left: 0;
-        margin: 0;
-    }
-
-    .result-section li {
-        margin: 5px 0;
-        padding: 8px;
-        background-color: #f8f9fa;
-        border-radius: 3px;
-        transition: background-color 0.2s ease;
-    }
-
-    .result-section li:hover {
-        background-color: #e9ecef;
-    }
-</style>
-
 <script>
-    function showLoading() {
-        document.getElementById('loading-overlay').style.display = 'flex';
-    }
+document.getElementById('recommendationForm').addEventListener('submit', function () {
+    document.getElementById('loading-overlay').style.display = 'flex';
+});
 
-    // Add search functionality
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchInput = document.getElementById('symptomSearch');
-        const symptomCheckboxes = document.querySelectorAll('.symptom-checkbox');
-
-        searchInput.addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-
-            symptomCheckboxes.forEach(function(checkbox) {
-                const label = checkbox.querySelector('label');
-                const symptomText = label.textContent.toLowerCase();
-                
-                if (symptomText.includes(searchTerm)) {
-                    checkbox.classList.remove('hidden');
-                } else {
-                    checkbox.classList.add('hidden');
-                }
-            });
-        });
+document.getElementById('symptomSearch').addEventListener('input', function (event) {
+    const term = event.target.value.toLowerCase();
+    document.querySelectorAll('#symptoms-list .symptom-checkbox').forEach(function (item) {
+        item.style.display = item.textContent.toLowerCase().includes(term) ? 'flex' : 'none';
     });
-
-    function toggleSection(header) {
-        // Toggle active class on header
-        header.classList.toggle('active');
-        
-        // Get the content div
-        const content = header.nextElementSibling;
-        
-        // Toggle visibility
-        if (content.style.display === 'none' || !content.style.display) {
-            content.style.display = 'block';
-        } else {
-            content.style.display = 'none';
-        }
-        
-        // Update toggle icon
-        const icon = header.querySelector('.toggle-icon');
-        icon.style.transform = header.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0)';
-    }
-
-    // Initialize all sections as collapsed
-    document.addEventListener('DOMContentLoaded', function() {
-        const sections = document.querySelectorAll('.section-content');
-        sections.forEach(section => {
-            section.style.display = 'none';
-        });
-    });
+});
 </script>
-{% endblock %} 
+{% endblock %}

@@ -1,101 +1,52 @@
+{% extends 'base.html' %}
 {% load ui_i18n %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% tr "Registration and login" %}</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
 
-        .container {
-            background: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-        }
+{% block title %}{% tr "Registration and login" %}{% endblock %}
 
-        .container h2 {
-            margin-bottom: 20px;
-            color: #333;
-            text-align: center;
-        }
+{% block content %}
+<section class="section">
+    <div class="narrow-container">
+        <div class="page-intro">
+            <div class="section-label"><span>{% tr "Account" %}</span></div>
+            <h1 class="page-heading">{% tr "Registration and login" %}</h1>
+            <p class="section-copy">{% tr "Create an account to preserve your diagnostic history, or sign in to continue working with existing analyses." %}</p>
+        </div>
 
-        .container form {
-            margin-bottom: 20px;
-        }
+        <div class="analysis-grid">
+            <article class="editorial-card">
+                <span class="tag">{% tr "New profile" %}</span>
+                <h3>{% tr "Sign up" %}</h3>
+                <form method="POST" action="{% url 'register' %}">
+                    {% csrf_token %}
+                    <div class="field-group">
+                        <label for="register-email">{% tr "Email" %}</label>
+                        <input id="register-email" type="email" name="email" placeholder="{% tr 'Enter your email' %}" required>
+                    </div>
+                    <div class="field-group">
+                        <label for="register-password">{% tr "Password" %}</label>
+                        <input id="register-password" type="password" name="password" placeholder="{% tr 'Enter your password' %}" required>
+                    </div>
+                    <button type="submit" class="btn">{% tr "Sign up" %}</button>
+                </form>
+            </article>
 
-        .container input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        .container button {
-            width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .container button:hover {
-            background-color: #45a049;
-        }
-
-        .container .link {
-            text-align: center;
-            font-size: 14px;
-        }
-
-        .container .link a {
-            color: #007BFF;
-            text-decoration: none;
-        }
-
-        .container .link a:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <!-- Registration form -->
-        <h2>{% tr "Sign up" %}</h2>
-        <form method="POST" action="{% url 'register' %}">
-            {% csrf_token %}
-            <input type="email" name="email" placeholder="{% tr 'Enter your email' %}" required>
-            <input type="password" name="password" placeholder="{% tr 'Enter your password' %}" required>
-            <button type="submit">{% tr "Sign up" %}</button>
-        </form>
-
-        <!-- Login form -->
-        <h2>{% tr "Login" %}</h2>
-        <form method="POST" action="{% url 'login' %}">
-            {% csrf_token %}
-            <input type="email" name="email" placeholder="{% tr 'Enter your email' %}" required>
-            <input type="password" name="password" placeholder="{% tr 'Enter your password' %}" required>
-            <button type="submit">{% tr "Login" %}</button>
-        </form>
-
-        <div class="link">
-            <a href="{% url 'analysis_page' %}">{% tr "Go to home" %}</a>
+            <article class="editorial-card">
+                <span class="tag">{% tr "Returning user" %}</span>
+                <h3>{% tr "Login" %}</h3>
+                <form method="POST" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <div class="field-group">
+                        <label for="login-email">{% tr "Email" %}</label>
+                        <input id="login-email" type="email" name="email" placeholder="{% tr 'Enter your email' %}" required>
+                    </div>
+                    <div class="field-group">
+                        <label for="login-password">{% tr "Password" %}</label>
+                        <input id="login-password" type="password" name="password" placeholder="{% tr 'Enter your password' %}" required>
+                    </div>
+                    <button type="submit" class="btn">{% tr "Login" %}</button>
+                </form>
+            </article>
         </div>
     </div>
-</body>
-</html>
+</section>
+{% endblock %}

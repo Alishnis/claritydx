@@ -1,22 +1,45 @@
+import os
 import re
 import sys
-from transformers import AutoTokenizer, AutoModelForCausalLM
+from transformers import AutoTokenizer, AutoModelForCausalLM, logging as hf_logging
 from deep_translator import GoogleTranslator
 
+MODEL_NAME = "microsoft/BioGPT"
+MODEL_LOAD_ERROR = (
+    "Symptom analysis is temporarily unavailable. "
+    "Please try again later or use the Large Database section."
+)
+NO_RESULT_ERROR = (
+    "Unable to generate a diagnosis right now. "
+    "Please try rephrasing the symptoms."
+)
+
+
+def fail(message, exit_code=1):
+    print(message, file=sys.stderr)
+    raise SystemExit(exit_code)
+
+
 def main():
+    hf_logging.set_verbosity_error()
+    os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
+
     symptoms = input().strip()
 
     if not symptoms:
-        print("No symptoms provided.", file=sys.stderr)
-        return
+        fail("No symptoms provided.")
 
     try:
         # Translate to English when needed
-        symptoms_en = GoogleTranslator(source='auto', target='en').translate(symptoms)
+        try:
+            symptoms_en = GoogleTranslator(source='auto', target='en').translate(symptoms)
+        except Exception:
+            # Use the original text if translation fails instead of breaking the flow.
+            symptoms_en = symptoms
 
         print("Loading the model and tokenizer... This might take a few seconds.", file=sys.stderr)
-        tokenizer = AutoTokenizer.from_pretrained("microsoft/BioGPT")
-        model = AutoModelForCausalLM.from_pretrained("microsoft/BioGPT")
+        tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+        model = AutoModelForCausalLM.from_pretrained(MODEL_NAME)
 
         print("Analyzing symptoms...", file=sys.stderr)
         input_text = f"Patient symptoms: {symptoms_en}. Based on these symptoms, provide possible diagnoses:"
@@ -39,10 +62,15 @@ def main():
             diagnosis_en = diagnosis_en[lower.find(marker) + len(marker):]
         diagnosis_en = re.sub(r"\s+", " ", diagnosis_en).strip()
 
+        if not diagnosis_en:
+            fail(NO_RESULT_ERROR)
+
         print(diagnosis_en)
 
-    except Exception as e:
-        print(f"An error occurred: {str(e)}", file=sys.stderr)
+    except SystemExit:
+        raise
+    except Exception:
+        fail(MODEL_LOAD_ERROR)
 
 if __name__ == "__main__":
     main()

@@ -1,136 +1,55 @@
 {% extends 'base.html' %}
 {% load static ui_i18n %}
 
+{% block title %}{% tr "Get Treatment Recommendations" %}{% endblock %}
+
 {% block content %}
-<div id="rec843263554" class="r t-rec t-rec_pt_135 t-rec_pt-res-480_90 t-rec_pb_135 t-rec_pb-res-480_90" style="padding-top:135px;padding-bottom:135px;background-color:#fff;" data-animationappear="off" data-record-type="948" data-bg-color="#fff">
-    <div class="t948">
-        <div class="t-section__container t-container t-container_flex" style="margin-bottom:80px;">
-            <div class="t-col t-col_12">
-                <div class="t-section__title t-title t-title_xs t-align_center t-margin_auto" field="btitle">
-                    {% tr "Get Treatment Recommendations" %}
-                </div>
-                <div class="t-section__descr t-descr t-descr_xl t-align_center t-margin_auto" field="bdescr">
-                    {% tr "Based on our database" %}
-                </div>
-            </div>
+<section class="section">
+    <div class="site-container">
+        <div class="page-intro">
+            <div class="section-label"><span>{% tr "Treatment" %}</span></div>
+            <h1 class="page-heading">{% tr "Get Treatment Recommendations" %}</h1>
+            <p class="section-copy">{% tr "Look up treatment guidance from the current database-backed workflow without altering its logic." %}</p>
         </div>
-        <div class="t-container">
-            <div class="t948__row">
-                <div class="t-item t948__col t-col t-col_6">
-                    <div class="t948__content">
-                        <div class="t948__textwrapper" style="border: 1px solid transparent; background-color: #f2f9fd;">
-                            <div class="t948__circle">
-                                <div class="t948__number t-name t-name_md">1</div>
-                            </div>
-                            <div class="t948__title t-name t-name_md" field="li_title__5917094636332">
-                                <form method="POST" class="t948__descr t-text t-text_xs" action="{% url 'treatment_view' %}" onsubmit="showLoading();">
-                                    {% csrf_token %}
-                                    <div class="form-group" style="font-size:130%;">
-                                        <label style="font-weight: bold;" for="illness">{% tr "Condition name (e.g., Flu, Diabetes, Depression)" %}</label>
-                                        <textarea 
-                                            id="illness"
-                                            name="illness" 
-                                            class="form-control" 
-                                            placeholder="{% tr 'Enter the condition name' %}"
-                                            rows="1" 
-                                            required
-                                            style="width: 100%; margin-block: 10px; box-sizing: border-box; border-radius: 5px; font-size: 0.7em;"></textarea>
-                                    </div>
-                                    <button type="submit" class="t1001__btn t-btn t-btn_md " style= "color:rgb(0, 0, 0); ;margin-top: 10px ; font-size: large   ;padding-inline:30px ;display: block;background-color:#88C8E8;border-radius:30px;-moz-border-radius:30px; -webkit-border-radius:30px;" data-buttonfieldset="button">{% tr "Analyze" %}</button>
-                                </form>
-                            </div>
-                        </div>
+
+        <div class="analysis-grid">
+            <article class="editorial-card">
+                <h3>{% tr "Enter condition" %}</h3>
+                <form method="POST" action="{% url 'treatment_view' %}" id="treatmentForm">
+                    {% csrf_token %}
+                    <div class="field-group">
+                        <label for="illness">{% tr "Condition name (e.g., Flu, Diabetes, Depression)" %}</label>
+                        <textarea id="illness" name="illness" placeholder="{% tr 'Enter the condition name' %}" rows="3" required></textarea>
                     </div>
-                </div>
-                <div class="t-item t948__col t-col t-col_6">
-                    <div class="t948__content">
-                        <div class="t948__textwrapper" style="border: 1px solid transparent; background-color: #f2f9fd;">
-                            <div class="t948__circle">
-                                <div class="t948__number t-name t-name_md">2</div>
-                            </div>
-                            <div class="t948__title t-name t-name_md" field="li_title__5917094636332"></div>
-                            <div class="t948__descr t-text t-text_xs" field="li_descr__5917094636332" style="font-size: 130%; font-weight: bold;">
-                                {% if not recommendations %}
-                                {% tr "Treatment recommendations will appear here:" %}
-                                {% endif %}
-                            </div>
-                            <div class="t948__descr t-text t-text_xs" field="li_descr__5917094636332" style="font-size: 130%;">
-                                {% if recommendations %}
-                                    <p style="font-weight: bold;">{% tr "Analysis Results" %}:</p>
-                                    <p style="font-size: 0.9em;">{{ recommendations }}</p>
-                                {% endif %}
-                            </div>
-                        </div>
+                    <button type="submit" class="btn">{% tr "Analyze" %}</button>
+                </form>
+            </article>
+
+            <article class="editorial-card">
+                <h3>{% tr "Recommendations" %}</h3>
+                {% if recommendations %}
+                    <div class="result-item">
+                        <span>{% tr "Analysis results" %}</span>
+                        <div>{{ recommendations }}</div>
                     </div>
-                </div>
-            </div>
+                {% else %}
+                    <p>{% tr "Treatment recommendations will appear here:" %}</p>
+                {% endif %}
+            </article>
         </div>
     </div>
-</div>
+</section>
 
-<!-- Loading indicator -->
-<div id="loading-overlay" style="display: none;">
+<div id="loading-overlay" class="loading-overlay">
     <div class="loading-spinner">
-        <img src="{% static 'loading.gif' %}" alt="Loading...">
+        <img src="{% static 'loading.gif' %}" alt="{% tr 'Analyzing...' %}">
         <p>{% tr "Analyzing..." %}</p>
     </div>
 </div>
 
-<style>
-    /* Full-screen overlay styles */
-    #loading-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000; /* Above all content */
-    }
-
-    /* Loading indicator styles */
-    .loading-spinner {
-        text-align: center;
-        color: white;
-        font-size: 1.5em;
-    }
-
-    .loading-spinner img {
-        width: 100px;
-        height: 100px;
-        margin-bottom: 20px;
-    }
-    button {
-            padding: 10px 15px;
-            font-size: 16px;
-            font-weight: bold;
-            color: #fff;
-            background-color: #007bff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
-        }
-
-        button:focus {
-            outline: none;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-        }
-</style>
-
 <script>
-    // Show loading indicator
-    function showLoading() {
-        document.getElementById('loading-overlay').style.display = 'flex';
-    }
+document.getElementById('treatmentForm').addEventListener('submit', function () {
+    document.getElementById('loading-overlay').style.display = 'flex';
+});
 </script>
 {% endblock %}
-    

@@ -1,152 +1,70 @@
 {% extends 'base.html' %}
 {% load static ui_i18n %}
+
+{% block title %}{% tr "Lung X-ray Analysis" %}{% endblock %}
+
 {% block content %}
-
-<div id="rec843263554" class="r t-rec t-rec_pt_135 t-rec_pt-res-480_90 t-rec_pb_135 t-rec_pb-res-480_90" style="padding-top:135px;padding-bottom:135px;background-color:#fff;" data-animationappear="off" data-record-type="948" data-bg-color="#fff">
-    <div class="t948">
-        <div class="t-section__container t-container t-container_flex" style="margin-bottom:80px;">
-            <div class="t-col t-col_12">
-                <div class="t-section__title t-title t-title_xs t-align_center t-margin_auto" field="btitle">
-                    {% tr "Lung X-ray Analysis" %}
-                </div>
-                <div class="t-section__descr t-descr t-descr_xl t-align_center t-margin_auto" field="bdescr">
-                    {% tr "powered by artificial intelligence" %}
-                </div>
-            </div>
+<section class="section">
+    <div class="narrow-container">
+        <div class="page-intro">
+            <div class="section-label"><span>{% tr "Radiology" %}</span></div>
+            <h1 class="page-heading">{% tr "Lung X-ray Analysis" %}</h1>
+            <p class="section-copy">{% tr "Upload a chest X-ray image to generate AI-supported diagnostic output and Grad-CAM visualization." %}</p>
         </div>
+
         {% if error %}
-    <div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 20px;">
-        <strong>{% tr "Error" %}:</strong> {{ error }}
-    </div>
-    {% endif %}
-        <div class="t-container">
-            <div class="t948__row">
-                <div class="t-item t948__col t-col t-col_12">
-                    <div class="t948__content">
-                        <div class="t948__textwrapper" style="border: 1px solid transparent; background-color: #f2f9fd;">
-                            <div class="t948__circle">
-                                <div class="t948__number t-name t-name_md">1</div>
-                            </div>
-                            <div class="t948__title t-name t-name_md" field="li_title__5917094636332">
-                                <form action="{% url 'analyze_image' %}" method="POST" enctype="multipart/form-data" id="uploadForm">
-                                    {% csrf_token %}
-                                    <label for="file">{% tr "Choose a file:" %}</label>
-                                    <input type="file" id="file" name="file" accept="image/*" required>
-                                    
-                                    <div id="preview-container" style="display: none; margin-top: 20px;">
-                                        <h5>{% tr "Image preview" %}</h5>
-                                        <img id="preview" class="img-fluid rounded" alt="{% tr 'Image preview' %}" style="max-width: 300px; margin: 10px auto;">
-                                    </div>
-
-                                    <button type="submit" class="t1001__btn t-btn t-btn_md " style= "color:rgb(0, 0, 0); margin-top: 20px ; font-size: large   ;padding-inline:50px ;display: block;background-color:#88C8E8;border-radius:30px;-moz-border-radius:30px; -webkit-border-radius:30px;" data-buttonfieldset="button">{% tr "Submit" %}</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
+            <div class="result-item" style="margin-bottom:1rem; border-color:rgba(145, 45, 45, 0.22);">
+                <span>{% tr "Error" %}</span>
+                <div>{{ error }}</div>
             </div>
-        </div>
+        {% endif %}
+
+        <article class="editorial-card">
+            <form action="{% url 'analyze_image' %}" method="POST" enctype="multipart/form-data" id="uploadForm">
+                {% csrf_token %}
+                <div class="upload-box">
+                    <label for="file">{% tr "Choose a file" %}</label>
+                    <input type="file" id="file" name="file" accept="image/*" required>
+                    <p>{% tr "Use a clear X-ray image for the most reliable analysis." %}</p>
+                </div>
+
+                <div id="preview-container" class="preview-box hidden">
+                    <h3>{% tr "Image preview" %}</h3>
+                    <img id="preview" alt="{% tr 'Image preview' %}">
+                </div>
+
+                <div class="button-row" style="margin-top:1.5rem; justify-content:flex-start;">
+                    <button type="submit" class="btn">{% tr "Submit" %}</button>
+                </div>
+            </form>
+        </article>
     </div>
-</div>
+</section>
 
-
-<!-- Loading indicator -->
-<div id="loading-overlay" style="display: none;">
+<div id="loading-overlay" class="loading-overlay">
     <div class="loading-spinner">
         <img src="{% static 'loading.gif' %}" alt="{% tr 'Analyzing...' %}">
         <p>{% tr "Analyzing..." %}</p>
     </div>
 </div>
 
-<style>
-    /* Full-screen overlay styles */
-    #loading-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000; /* Above all content */
-    }
-
-    /* Loading indicator styles */
-    .loading-spinner {
-        text-align: center;
-        color: white;
-        font-size: 1.5em;
-    }
-
-    .loading-spinner img {
-        width: 100px;
-        height: 100px;
-        margin-bottom: 20px;
-    }
-
-    #preview-container {
-        background-color: white;
-        padding: 15px;
-        border-radius: 10px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        text-align: center;
-    }
-
-    #preview {
-        border: 1px solid #ddd;
-        border-radius: 5px;
-    }
-
-    button {
-        padding: 10px 15px;
-        font-size: 16px;
-        font-weight: bold;
-        color: #fff;
-        background-color: #007bff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-
-    button:hover {
-        background-color: #0056b3;
-        transform: scale(1.05);
-    }
-
-    button:focus {
-        outline: none;
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-    }
-</style>
-
 <script>
-    // Show loading indicator
-    function showLoading() {
-        document.getElementById('loading-overlay').style.display = 'flex';
+document.getElementById('file').addEventListener('change', function (event) {
+    const file = event.target.files[0];
+    if (!file) {
+        return;
     }
 
-    // Image preview functionality
-    document.getElementById('file').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const preview = document.getElementById('preview');
-                preview.src = e.target.result;
-                document.getElementById('preview-container').style.display = 'block';
-            }
-            reader.readAsDataURL(file);
-        }
-    });
+    const reader = new FileReader();
+    reader.onload = function (loadEvent) {
+        document.getElementById('preview').src = loadEvent.target.result;
+        document.getElementById('preview-container').classList.remove('hidden');
+    };
+    reader.readAsDataURL(file);
+});
 
-    document.getElementById('uploadForm').addEventListener('submit', function(e) {
-        document.getElementById('loading-overlay').style.display = 'flex';
-    });
+document.getElementById('uploadForm').addEventListener('submit', function () {
+    document.getElementById('loading-overlay').style.display = 'flex';
+});
 </script>
-    
-
 {% endblock %}
