@@ -131,28 +131,25 @@ dmypy.json
 # Django specific
 media/
 staticfiles/
-static/
 
-# Machine Learning models (large files)
-*.h5
-*.pkl
+# Runtime-generated static output (source static assets ARE tracked)
+mysite/static/gradcam/
+mysite/static/uploads/
+mysite/myapp/static/extracted_images/
+
+# Machine Learning models
+# trained_model.h5, vgg16.weights.h5 and model_from_scratch_blood.weights.h5
+# are intentionally tracked via Git LFS (see .gitattributes) so the app
+# runs out of the box after cloning. Ignore any other stray model files.
 *.joblib
-*.weights.h5
-trained_model.h5
-model_from_scratch_blood.weights.h5
-vgg16.weights.h5
-
-# Model architecture files (keep these)
-# model_from_scratch_blood.json
-# vgg16.json
 
 # Data directories
 data/
 uploads/
 temp/
 
-# Recommendation system (separate project)
-mysite/myapp/recommendation system/
+# Recommendation system (vendored sub-project; its own venv only)
+mysite/myapp/recommendation system/venv/
 
 # IDE
 .vscode/
