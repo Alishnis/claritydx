@@ -1,0 +1,17 @@
+venv/
+.venv/
+__pycache__/
+*.pyc
+.git/
+.gitattributes
+.env
+db.sqlite3
+media/
+staticfiles/
+data/
+blood_reports/
+*.zip
+*.log
+.DS_Store
+.pytest_cache/
+mysite/myapp/recommendation system/venv/
