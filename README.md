@@ -1,213 +1,138 @@
-# HealthX - AI-Powered Medical Analysis Platform
+# ClarityDX (HealthX)
 
-## 🏥 Overview
+**AI-powered medical diagnostics platform** built with Django and a suite of deep-learning models for blood cell classification, lung CT screening, skin condition detection, symptom triage, and automated medical report parsing.
 
-HealthX is a comprehensive medical analysis platform that leverages artificial intelligence to provide accurate diagnoses and health insights. The platform offers multiple AI-powered analysis modules including blood cell analysis, skin disease detection, lung cancer screening, and medical report processing.
+![Python](https://img.shields.io/badge/Python-3.12-blue)
+![Django](https://img.shields.io/badge/Django-5.1.5-092E20?logo=django&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-ready-2496ED?logo=docker&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green)
 
-## 🚀 Features
-
-### 🔬 Blood Cell Analysis
-- **AI-powered blood cell classification** using deep learning models
-- **8 different cell types** detection: basophil, eosinophil, erythroblast, immature granulocytes, lymphocyte, monocyte, neutrophil, platelet
-- **GradCAM visualization** for explainable AI
-- **Saliency maps** for model interpretability
-- **PDF report generation** with detailed analysis
-
-### 🫁 Lung Cancer Detection
-- **CT scan analysis** using VGG16-based models
-- **4 cancer types** classification: adenocarcinoma, large cell carcinoma, squamous cell carcinoma, normal
-- **High accuracy** predictions with confidence scores
-- **Visual explanations** of AI decisions
-
-### 🩺 Skin Disease Detection
-- **7 skin conditions** classification using EfficientNet-B4
-- **Real-time analysis** of uploaded images
-- **GradCAM heatmaps** for visual explanations
-- **Professional medical insights**
-
-### 📄 Medical Report Processing
-- **OCR-powered** text extraction from medical reports
-- **AI analysis** of blood test results
-- **Automated report generation**
-- **PDF processing** with pytesseract
-
-### 🤖 AI Chatbot
-- **OpenAI GPT integration** for medical consultations
-- **Symptom analysis** and preliminary diagnoses
-- **Multi-language support** with translation capabilities
-- **Contextual medical advice**
-
-## 🛠️ Technology Stack
-
-### Backend
-- **Django 5.1.5** - Web framework
-- **Django REST Framework** - API development
-- **Python 3.12** - Programming language
-
-### Machine Learning
-- **TensorFlow 2.18.0** - Deep learning framework
-- **Keras 3.8.0** - High-level neural networks API
-- **PyTorch 2.6.0** - Deep learning framework
-- **Transformers 4.48.1** - Natural language processing
-- **OpenCV 4.11.0** - Computer vision
-- **scikit-image 0.21.0** - Image processing
-
-### Data Processing
-- **NumPy 1.26.4** - Numerical computing
-- **Pandas 2.2.3** - Data manipulation
-- **Matplotlib 3.10.3** - Data visualization
-- **Plotly 6.0.1** - Interactive visualizations
-
-### Document Processing
-- **pdfplumber 0.11.5** - PDF text extraction
-- **pytesseract 0.3.13** - OCR processing
-- **fpdf2 2.7.6** - PDF generation
-
-### External Services
-- **OpenAI API** - AI chatbot integration
-- **Stripe 7.8.0** - Payment processing
-- **Deep Translator** - Multi-language support
-
-## 📦 Installation
-
-### Prerequisites
-- Python 3.12+
-- Git
-- Virtual environment (recommended)
-
-### Setup Instructions
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/Alishnis/healthXinfomatrix.git
-   cd healthXinfomatrix
-   ```
-
-2. **Create virtual environment**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-
-3. **Install dependencies**
-   ```bash
-   cd mysite
-   pip install -r requirements.txt
-   ```
-
-4. **Set up environment variables**
-   ```bash
-   cp mysite/env.example mysite/.env
-   ```
-
-   Then edit `mysite/.env` and set:
-   ```bash
-   OPENAI_API_KEY=your_openai_api_key
-   STRIPE_SECRET_KEY=your_stripe_secret_key
-   STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
-   SECRET_KEY=your_django_secret_key
-   DEBUG=True
-   ALLOWED_HOSTS=127.0.0.1,localhost
-   ```
-
-5. **Run database migrations**
-   ```bash
-   python manage.py makemigrations
-   python manage.py migrate
-   ```
-
-6. **Create superuser**
-   ```bash
-   python manage.py createsuperuser
-   ```
-
-7. **Start development server**
-   ```bash
-   python manage.py runserver 127.0.0.1:8000
-   ```
-
-## 🎯 Usage
-
-### Blood Cell Analysis
-1. Navigate to the blood analysis section
-2. Upload a blood cell image
-3. Get AI-powered classification results
-4. View GradCAM visualizations
-5. Download detailed PDF reports
-
-### Lung Cancer Detection
-1. Upload CT scan images
-2. Receive instant cancer type predictions
-3. View confidence scores and explanations
-4. Access detailed analysis reports
-
-### Skin Disease Detection
-1. Upload skin condition images
-2. Get AI-powered disease classification
-3. View GradCAM heatmaps
-4. Receive professional medical insights
-
-### Medical Report Processing
-1. Upload medical reports (PDF/Image)
-2. Extract text using OCR
-3. Analyze blood test results
-4. Generate comprehensive reports
-
-## 🔧 Configuration
-
-### Model Files
-Ensure the following model files are present:
-- `myapp/model_from_scratch_blood.json` - Blood cell classification model
-- `myapp/model_from_scratch_blood.weights.h5` - Model weights
-- `myapp/vgg16.json` - VGG16 model architecture
-- `myapp/vgg16.weights.h5` - VGG16 weights
-- `trained_model.h5` - Lung cancer detection model
-
-### API Keys
-Configure the following in your environment:
-- **OpenAI API Key**: For AI chatbot functionality
-- **Stripe Keys**: For payment processing
-- **Tesseract**: For OCR functionality
-- **Django SECRET_KEY**: Required for secure local or production runs
-
-## 📁 Repository Notes
-
-- Local secrets must stay in `mysite/.env` and are excluded by `.gitignore`
-- Large model weights are intentionally excluded from Git
-- If someone clones the repo, they must provide their own model files and API keys
-
-## 📊 Performance
-
-- **Blood Cell Classification**: 95%+ accuracy
-- **Lung Cancer Detection**: 90%+ accuracy
-- **Skin Disease Detection**: 85%+ accuracy
-- **Real-time Processing**: < 5 seconds per analysis
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🆘 Support
-
-For support and questions:
-- Create an issue on GitHub
-- Contact: [Your Email]
-- Documentation: [Link to docs]
-
-## 🙏 Acknowledgments
-
-- Medical AI research community
-- Open source contributors
-- Healthcare professionals who provided feedback
+> ⚠️ **Medical disclaimer.** This project was built for educational and portfolio purposes. It is **not** a certified medical device and must never be used for real diagnosis or treatment decisions. Always consult a qualified healthcare professional.
 
 ---
 
-**⚠️ Medical Disclaimer**: This platform is for educational and research purposes only. Always consult with qualified healthcare professionals for medical decisions.
+## Demo
+
+| Home | Blood Cell Analysis | Blood Cell Result |
+|---|---|---|
+| ![Home](docs/screenshots/home.png) | ![Blood cell upload](docs/screenshots/blood-cell-upload.png) | ![Blood cell result](docs/screenshots/blood-cell-result.png) |
+
+| Symptom Check (NLP) | Lung CT Upload | Skin Analysis |
+|---|---|---|
+| ![Symptom check](docs/screenshots/symptom-check.png) | ![Lung CT upload](docs/screenshots/lung-ct-upload.png) | ![Skin analysis](docs/screenshots/skin-upload.png) |
+
+The **Blood Cell Analysis** result above is a real prediction from the bundled model (`platelet`, 86.8% confidence), including its saliency-map visualization and the nearest-hospital lookup.
+
+---
+
+## Features
+
+| Module | Endpoint | Model | Status |
+|---|---|---|---|
+| Blood Cell Classification | `/upload_cellblood/` | Custom CNN (8 cell types), Keras | ✅ Working, saliency-map explainability |
+| Lung CT Screening | `/upload2/` | VGG16-based classifier, 4 classes (adenocarcinoma, large cell carcinoma, squamous cell carcinoma, normal) | ✅ Working |
+| Skin Condition Detection | `/skin/` | EfficientNet-B4 (torchvision), Grad-CAM | ✅ Working |
+| Symptom Triage (NLP) | `/analyze/` | OpenAI-backed free-text symptom analysis | ✅ Working (requires `OPENAI_API_KEY`) |
+| Treatment Lookup | `/recovery/` | Database-backed condition → treatment lookup | ✅ Working |
+| Medicine Recommendation | `/recommendation/` | scikit-learn SVC over a symptom/disease dataset | ✅ Working |
+| Blood Report OCR | `/bloodanalysis/` | pytesseract + pdfplumber, chart generation | ✅ Working |
+| AI Chatbot | `/chatbot_api/` | OpenAI GPT | ✅ Working (requires `OPENAI_API_KEY`) |
+| Subscriptions | `/subscription/` | Stripe Checkout | ✅ Working (requires Stripe keys) |
+| Lung X-ray Analysis | `/upload/` | ⚠️ See [Known limitations](#known-limitations) | ⚠️ Known issue |
+
+## Tech stack
+
+- **Backend:** Django 5.1, Django REST Framework, Gunicorn
+- **ML/DL:** TensorFlow / Keras, PyTorch, torchvision, scikit-learn, OpenCV, Grad-CAM
+- **Data & documents:** pandas, pdfplumber, pytesseract, fpdf2, Plotly
+- **Integrations:** OpenAI API, Stripe, Deep Translator, OpenStreetMap/Leaflet
+- **Infra:** Docker, Docker Compose, PostgreSQL (SQLite for local dev), WhiteNoise for static files
+
+## Quick start (Docker — recommended)
+
+This is the fastest way to run the full stack (app + PostgreSQL) with zero local Python setup.
+
+```bash
+git clone https://github.com/Alishnis/claritydx.git
+cd claritydx/mysite
+cp env.example .env        # then fill in OPENAI_API_KEY / Stripe keys as needed
+docker compose up --build
+```
+
+The app will be available at **http://localhost:8000**. The first build downloads and bakes in the ML model backbones, so it can take several minutes; subsequent builds are cached.
+
+To create an admin account inside the container:
+
+```bash
+docker compose exec web python manage.py createsuperuser
+```
+
+## Manual setup (without Docker)
+
+Prerequisites: Python 3.12+, [Tesseract OCR](https://github.com/tesseract-ocr/tesseract) installed locally.
+
+```bash
+git clone https://github.com/Alishnis/claritydx.git
+cd claritydx/mysite
+
+python -m venv venv
+source venv/bin/activate   # Windows: venv\Scripts\activate
+
+pip install -r requirements.txt
+
+cp env.example .env        # fill in your keys; leave POSTGRES_* unset to use SQLite
+
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver 127.0.0.1:8000
+```
+
+> This repository uses [Git LFS](https://git-lfs.com/) to store the trained model weight files (`trained_model.h5`, `vgg16.weights.h5`, `model_from_scratch_blood.weights.h5`). Install `git-lfs` and run `git lfs pull` if the models don't load after cloning.
+
+## Environment variables
+
+See [`mysite/env.example`](mysite/env.example) for the full list. Summary:
+
+| Variable | Required | Purpose |
+|---|---|---|
+| `SECRET_KEY` | Recommended | Django secret key |
+| `DEBUG` | No (default `True`) | Django debug mode |
+| `ALLOWED_HOSTS` | No | Comma-separated allowed hosts |
+| `OPENAI_API_KEY` | For chatbot & symptom NLP | OpenAI API access |
+| `STRIPE_SECRET_KEY` / `STRIPE_PUBLISHABLE_KEY` | For subscriptions | Stripe payment processing |
+| `POSTGRES_HOST` / `POSTGRES_DB` / `POSTGRES_USER` / `POSTGRES_PASSWORD` / `POSTGRES_PORT` | No | Switches the database from SQLite to PostgreSQL (set automatically by `docker-compose.yml`) |
+
+## Project structure
+
+```
+claritydx/
+├── docs/screenshots/         # README demo images
+├── LICENSE
+└── mysite/                   # Django project root
+    ├── manage.py
+    ├── Dockerfile
+    ├── docker-compose.yml
+    ├── requirements.txt
+    ├── env.example
+    ├── mysite/                # Django settings, URLs, WSGI/ASGI
+    └── myapp/                 # Application logic
+        ├── views.py           # Lung CT / X-ray, symptom analysis, chatbot, subscriptions
+        ├── views2.py          # Skin analysis
+        ├── views3_for_models.py  # Blood cell classification, medicine recommendation
+        ├── auth_views.py      # Registration/login
+        ├── blood_ml_model.py  # Blood cell model loader
+        ├── inference.py       # Grad-CAM inference helper
+        ├── templates/         # HTML templates
+        ├── static/            # App static assets
+        └── recommendation system/  # Symptom → medicine recommendation dataset & model
+```
+
+## Known limitations
+
+- **Lung X-ray Analysis (`/upload/`) does not perform real chest X-ray classification.** It currently reuses the lung-CT model's output and labels it with an unrelated 14-class NIH ChestX-ray14 disease list, so the returned disease name/confidence is not medically meaningful. The intended VGG16 X-ray model/weights referenced in `inference.py` were never wired into a URL and their weight file is a duplicate of the blood-cell model's weights. Use **Lung CT Analysis** for a correctly matched model/label pipeline. This is left in place for transparency rather than silently removed; contributions fixing it are welcome.
+- The skin-analysis and Grad-CAM backbones (EfficientNet-B4, DenseNet121) download their pretrained ImageNet weights from `download.pytorch.org` the first time they're used; the Docker image pre-downloads them at build time so this isn't an issue in containers, but a from-scratch local `venv` setup needs outbound internet access on first run.
+- Model accuracy figures in this README describe the original training runs, not a guarantee for arbitrary input images.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
