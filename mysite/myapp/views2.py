@@ -112,7 +112,7 @@ def analyze_skin_image(request):
             Image.fromarray(heatmap_overlay).save(gradcam_path)
             analysis = AnalysisSkin.objects.create(
                 user=request.user if request.user.is_authenticated else None,
-                analysis_file=gradcam_path.replace(settings.MEDIA_ROOT, ''),  
+                analysis_file=os.path.relpath(gradcam_path, settings.MEDIA_ROOT),
                 result=f'{predicted_class}: {predicted_probability:.2f}%'
             )
 

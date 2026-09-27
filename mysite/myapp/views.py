@@ -357,9 +357,9 @@ def analyze_image(request):
             user = request.user if request.user.is_authenticated else None
             analysis = Analysis.objects.create(
                 user=user,
-                analysis_file=gradcam_file_path.replace(settings.MEDIA_ROOT, ''),  
+                analysis_file=os.path.relpath(gradcam_file_path, settings.MEDIA_ROOT),
                 result=result_text
-            )           
+            )
 
            
             os.remove(temp_image_path)
@@ -483,6 +483,17 @@ model = load_or_train_model()
 def get_class_labels(train_generator):
     return {v: k for k, v in train_generator.class_indices.items()}
 
+# Class order matches what Keras' flow_from_directory produces (alphabetical
+# by subfolder name) for the original data/train/ layout. Hardcoded so
+# predictions don't depend on the (multi-GB) training image set being
+# present at runtime -- it's only needed once, at training time.
+CT_CLASS_LABELS = {
+    0: 'adenocarcinoma_left.lower.lobe_T2_N0_M0_Ib',
+    1: 'large.cell.carcinoma_left.hilum_T2_N2_M0_IIIa',
+    2: 'normal',
+    3: 'squamous.cell.carcinoma_left.hilum_T1_N2_M0_IIIa',
+}
+
 CLASS_TRANSLATIONS = {
     "Large Cell Carcinoma": "Большеклеточная карцинома",
     "Adenocarcinoma": "Аденокарцинома",
@@ -492,8 +503,8 @@ CLASS_TRANSLATIONS = {
 
 def analyze_image2(request):
     if request.method == 'POST':
-        uploaded_file = request.FILES['file'] 
-        uploads_dir = os.path.join(BASE_DIR, 'uploads/analysis')
+        uploaded_file = request.FILES['file']
+        uploads_dir = os.path.join(settings.MEDIA_ROOT, 'uploads/analysis')
         os.makedirs(uploads_dir, exist_ok=True)
         saved_image_path = os.path.join(uploads_dir, uploaded_file.name)
 
@@ -515,21 +526,12 @@ def analyze_image2(request):
         predicted_index = np.argmax(predicted_probs, axis=1)[0]
         predicted_probability = predicted_probs[0][predicted_index] * 100 
 
-        train_datagen = ImageDataGenerator(rescale=1./255)
-        train_generator = train_datagen.flow_from_directory(
-            os.path.join(BASE_DIR, 'train'),
-            target_size=IMG_SIZE,
-            batch_size=BATCH_SIZE,
-            class_mode='categorical'
-        )
-        class_labels = get_class_labels(train_generator)
-
-        predicted_class = class_labels[predicted_index]
+        predicted_class = CT_CLASS_LABELS[predicted_index]
         readable_class = CLASS_TRANSLATIONS.get(predicted_class, "Unknown class")
         user = request.user if request.user.is_authenticated else None
         analysis = AnalysisCT.objects.create(
                 user=user,
-                analysis_file=os.path.relpath(saved_image_path, BASE_DIR),
+                analysis_file=os.path.relpath(saved_image_path, settings.MEDIA_ROOT),
                 
               
                 result=f'{predicted_class}: {predicted_probability:.2f}%'
@@ -693,11 +695,45 @@ def process_blood_analysis_file(request):
     return render(request, 'upload_analysis.html')
 
 from django.views.decorators.csrf import csrf_exempt
-import openai
+from openai import OpenAI
 import os
 import json
 from django.http import JsonResponse
+from django.utils.translation import get_language
 from dotenv import load_dotenv
+
+
+def _get_ai_client():
+    return OpenAI(
+        api_key=os.getenv('OPENAI_API_KEY'),
+        base_url=os.getenv('OPENAI_BASE_URL', 'https://openrouter.ai/api/v1'),
+    )
+
+
+def _current_ai_language():
+    """Match the AI's reply language to the page's current UI language."""
+    return 'ru' if (get_language() or 'en').split('-')[0] == 'ru' else 'en'
+
+
+RECOMMENDATION_KEYWORDS = {
+    'ru': [
+        "Краткое описание:",
+        "Рекомендуемые методы лечения:",
+        "Необходимые меры предосторожности:",
+        "Общие лекарства:",
+    ],
+    'en': [
+        "Brief description:",
+        "Recommended treatment methods:",
+        "Necessary precautions:",
+        "Common medications:",
+    ],
+}
+
+CHAT_SYSTEM_PROMPTS = {
+    'ru': "Ты медицинский ассистент. Отвечай профессионально, понятно и дружелюбно.",
+    'en': "You are a medical assistant. Answer professionally, clearly, and in a friendly tone.",
+}
 import os
 import stripe
 from django.conf import settings
@@ -710,7 +746,9 @@ def get_ai_recommendations(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            prompt = f"""
+            lang = _current_ai_language()
+            if lang == 'ru':
+                prompt = f"""
 Вы - ассистент по медицинской диагностике. Основываясь на представленных симптомах, вы должны:
 Пациент с результатами анализа крови:
 Лейкоциты: {data.get('leukocytes_level', '')},
@@ -738,11 +776,41 @@ def get_ai_recommendations(request):
 В конце ответа кратко напомни о том, что данный ассистент не является заменой профессиональной медицинской консультации.
 Отвечай кратко, но детально.
 """
-            openai.api_key = os.getenv('OPENAI_API_KEY')
-            if not openai.api_key:
-                return JsonResponse({'recommendations': 'OpenAI API ключ не найден.'}, status=500)
-            response = openai.chat.completions.create(
-                model="gpt-3.5-turbo",
+            else:
+                prompt = f"""
+You are a medical diagnostics assistant. Based on the provided data, you must:
+Patient with blood test results:
+Leukocytes: {data.get('leukocytes_level', '')},
+Hemoglobin: {data.get('hemoglobin_level', '')},
+Erythrocytes: {data.get('erythrocytes_level', '')},
+Thrombocytes: {data.get('thrombocytes_level', '')},
+Hematocrit: {data.get('hematocrit_level', '')},
+Amylase: {data.get('amylase_level', '')},
+Potassium: {data.get('potassium_level', '')},
+Basophils: {data.get('basophils_level', '')},
+Creatinine: {data.get('creatinine_level', '')},
+C-reactive protein: {data.get('c_reactive_protein_level', '')}.
+Based on this data:
+List the possible diagnoses.
+For each possible diagnosis use the following structure (start each new diagnosis on a new line and number them):
+
+1. Diagnosis name:
+   - Brief description: ...
+   - Recommended treatment methods: ...
+   - Necessary precautions: ...
+   - Common medications: ...
+
+Leave a blank line between different diagnoses for readability.
+Use plain text, do not use Markdown, and do not add extra symbols.
+At the end of the response, briefly remind that this assistant does not replace professional medical advice.
+Answer briefly but in detail.
+"""
+            if not os.getenv('OPENAI_API_KEY'):
+                message = 'OpenAI API ключ не найден.' if lang == 'ru' else 'OpenAI API key not found.'
+                return JsonResponse({'recommendations': message}, status=500)
+            client = _get_ai_client()
+            response = client.chat.completions.create(
+                model=os.getenv('OPENAI_MODEL', 'meta-llama/llama-3.1-8b-instruct'),
                 messages=[{"role": "user", "content": prompt}],
                 max_tokens=1200,
                 temperature=0.7
@@ -752,12 +820,7 @@ def get_ai_recommendations(request):
             import re
             recommendations = re.sub(r'(\d+\.)', r'\n\1', recommendations)
 
-            keywords = [
-                "Краткое описание:",
-                "Рекомендуемые методы лечения:",
-                "Необходимые меры предосторожности:",
-                "Общие лекарства:"
-            ]
+            keywords = RECOMMENDATION_KEYWORDS[lang]
             # Split the response into sections using regex
             pattern = r"(" + "|".join(re.escape(kw) for kw in keywords) + r")"
             parts = re.split(pattern, recommendations)
@@ -773,8 +836,12 @@ def get_ai_recommendations(request):
                 i += 2
             return JsonResponse({'recommendations': sections})
         except Exception as e:
-            return JsonResponse({'recommendations': f'Ошибка: {str(e)}'}, status=500)
-    return JsonResponse({'recommendations': 'Только POST запросы разрешены.'}, status=405)
+            lang = _current_ai_language()
+            message = f'Ошибка: {str(e)}' if lang == 'ru' else f'Error: {str(e)}'
+            return JsonResponse({'recommendations': message}, status=500)
+    lang = _current_ai_language()
+    message = 'Только POST запросы разрешены.' if lang == 'ru' else 'Only POST requests are allowed.'
+    return JsonResponse({'recommendations': message}, status=405)
 
 @csrf_exempt
 def chat_with_openai(request):
@@ -782,13 +849,13 @@ def chat_with_openai(request):
         try:
             data = json.loads(request.body)
             user_message = data.get('message', '')
-            openai.api_key = os.getenv('OPENAI_API_KEY')
-            if not openai.api_key:
+            if not os.getenv('OPENAI_API_KEY'):
                 return JsonResponse({'error': 'API key not found'}, status=500)
-            response = openai.chat.completions.create(
-                model="gpt-3.5-turbo",
+            client = _get_ai_client()
+            response = client.chat.completions.create(
+                model=os.getenv('OPENAI_MODEL', 'meta-llama/llama-3.1-8b-instruct'),
                 messages=[
-                    {"role": "system", "content": "Ты медицинский ассистент. Отвечай профессионально, понятно и дружелюбно."},
+                    {"role": "system", "content": CHAT_SYSTEM_PROMPTS[_current_ai_language()]},
                     {"role": "user", "content": user_message}
                 ],
                 max_tokens=600,
