@@ -13,6 +13,10 @@
 
 ## Demo
 
+[![Watch the demo](https://img.youtube.com/vi/e7lqUNRr8Vo/maxresdefault.jpg)](https://youtu.be/e7lqUNRr8Vo)
+
+Full walkthrough: Lung X-ray analysis with Grad-CAM, saved analysis history, CT screening, blood cell classification with saliency maps, blood report OCR with AI recommendations, symptom lookup, and the AI chatbot.
+
 | Home | Blood Cell Analysis | Blood Cell Result |
 |---|---|---|
 | ![Home](docs/screenshots/home.png) | ![Blood cell upload](docs/screenshots/blood-cell-upload.png) | ![Blood cell result](docs/screenshots/blood-cell-result.png) |
