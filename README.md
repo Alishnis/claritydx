@@ -2,6 +2,7 @@
 
 **AI-powered medical diagnostics platform** built with Django and a suite of deep-learning models for blood cell classification, lung CT screening, skin condition detection, symptom triage, and automated medical report parsing.
 
+[![CI](https://github.com/Alishnis/claritydx/actions/workflows/ci.yml/badge.svg)](https://github.com/Alishnis/claritydx/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![Django](https://img.shields.io/badge/Django-5.1.5-092E20?logo=django&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-ready-2496ED?logo=docker&logoColor=white)
@@ -93,6 +94,15 @@ python manage.py runserver 127.0.0.1:8000
 
 > This repository uses [Git LFS](https://git-lfs.com/) to store the trained model weight files (`trained_model.h5`, `vgg16.weights.h5`, `model_from_scratch_blood.weights.h5`). Install `git-lfs` and run `git lfs pull` if the models don't load after cloning.
 
+## Tests
+
+```bash
+cd mysite
+python manage.py test myapp
+```
+
+25 tests cover auth, the dashboard (per-user isolation), CT upload (with a mocked model, including a regression test for stored file paths), the treatment lookup, the blood-analysis API and the AI chatbot (mocked LLM client, language selection). GitHub Actions runs them, plus a migrations check, on every push and pull request.
+
 ## Environment variables
 
 See [`mysite/env.example`](mysite/env.example) for the full list. Summary:
@@ -131,11 +141,50 @@ claritydx/
         └── recommendation system/  # Symptom → medicine recommendation dataset & model
 ```
 
+## Evaluation
+
+Only the **Lung CT classifier** had a labeled held-out test set available (kept out of the repo because of its size), so it is the one model evaluated quantitatively. Metrics below were measured on **314 test images** kept separate from the train/valid folders (VGG16 transfer-learning classifier, 128×128 input; the accompanying training split contains 613 images).
+
+| Class | Precision | Recall | F1 | Support |
+|---|---|---|---|---|
+| Adenocarcinoma | 0.710 | 0.555 | 0.623 | 119 |
+| Large cell carcinoma | 0.398 | 0.922 | 0.556 | 51 |
+| Normal | 1.000 | 0.981 | 0.991 | 54 |
+| Squamous cell carcinoma | 0.740 | 0.411 | 0.529 | 90 |
+| **Overall accuracy** | | | **0.646** | **314** |
+| **Macro avg** | 0.712 | 0.717 | 0.675 | 314 |
+
+Confusion matrix (rows = true class, columns = predicted):
+
+| True \ Pred | Adeno | Large cell | Normal | Squamous |
+|---|---|---|---|---|
+| **Adenocarcinoma** | 66 | 40 | 0 | 13 |
+| **Large cell** | 4 | 47 | 0 | 0 |
+| **Normal** | 0 | 1 | 53 | 0 |
+| **Squamous cell** | 23 | 30 | 0 | 37 |
+
+**Reading the numbers:** the model separates *normal* scans from cancerous ones almost perfectly (98% recall, no false "normal" predictions on cancer scans) and rarely misses large cell carcinoma (92% recall), but it over-predicts large cell and misses many squamous cases (41% recall). The model was retrained with data augmentation, class weighting and two-phase fine-tuning (`train_ct_model.py`); this lifted accuracy from 56.4% to 64.6% over the first version, with model selection done on the validation split only. The remaining gap is likely due to the very small training set (613 images) and a distribution shift between the train and test splits. This is a transfer-learning prototype, not a clinical-grade classifier.
+
+Reproduce (from `mysite/`, after placing your own test images in `data/test/<class>/`, one folder per class):
+
+```bash
+python evaluate_ct_model.py data/test
+```
+
+To retrain: `python train_ct_model.py data trained_model.h5` (expects `data/train` and `data/valid`).
+
+| Module | Evaluated? | Why not |
+|---|---|---|
+| Lung CT | ✅ Above | — |
+| Blood cell classification | ❌ | No labeled test set is bundled with the repo |
+| Skin analysis | ❌ | No labeled test set is bundled with the repo |
+| Lung X-ray | ❌ | See [Known limitations](#known-limitations) |
+
 ## Known limitations
 
 - **Lung X-ray Analysis (`/upload/`) does not perform real chest X-ray classification.** It currently reuses the lung-CT model's output and labels it with an unrelated 14-class NIH ChestX-ray14 disease list, so the returned disease name/confidence is not medically meaningful. The intended VGG16 X-ray model/weights referenced in `inference.py` were never wired into a URL and their weight file is a duplicate of the blood-cell model's weights. Use **Lung CT Analysis** for a correctly matched model/label pipeline. This is left in place for transparency rather than silently removed; contributions fixing it are welcome.
 - The skin-analysis and Grad-CAM backbones (EfficientNet-B4, DenseNet121) download their pretrained ImageNet weights from `download.pytorch.org` the first time they're used; the Docker image pre-downloads them at build time so this isn't an issue in containers, but a from-scratch local `venv` setup needs outbound internet access on first run.
-- Model accuracy figures in this README describe the original training runs, not a guarantee for arbitrary input images.
+- The [Evaluation](#evaluation) figures come from a small held-out test split and are not a guarantee for arbitrary real-world scans.
 
 ## License
 

@@ -402,7 +402,7 @@ def save_results_ct(request):
             analysis.is_saved = True 
             analysis.save()
             messages.success(request, 'Results saved successfully!')
-        except Analysis.DoesNotExist:
+        except AnalysisCT.DoesNotExist:
             messages.error(request, 'Analysis not found.')
 
         return redirect('user_kab') 
