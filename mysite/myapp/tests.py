@@ -11,10 +11,11 @@ from django.core.files.storage import FileSystemStorage
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, override_settings
 from django.urls import reverse
+import torch
 from django.utils import translation
 from PIL import Image
 
-from . import views
+from . import views, views2
 from .models import AnalysisCT, BloodAnalysis, Disease
 
 
@@ -108,6 +109,40 @@ class DashboardTests(TestCase):
         self.client.force_login(self.user)
         resp = self.client.post(reverse("save_results_ct"), {"analysis_id": analysis.id})
         self.assertEqual(resp.status_code, 302)
+
+
+class _TinySkinNet(torch.nn.Module):
+    """Stand-in for the EfficientNet-B4 skin model (same `.features` / 7-way head shape)."""
+
+    def __init__(self):
+        super().__init__()
+        self.features = torch.nn.Sequential(torch.nn.Conv2d(3, 4, 3))
+        self.classifier = torch.nn.Linear(4, 7)
+        with torch.no_grad():  # make class 0 near-certain so the old x140 bug would show >100%
+            self.classifier.bias.copy_(torch.tensor([20.0, 0, 0, 0, 0, 0, 0]))
+
+    def forward(self, x):
+        return self.classifier(self.features(x).mean(dim=(2, 3)))
+
+
+class SkinUploadTests(TestCase):
+    """Regression test: the reported confidence used to be multiplied by 140 instead of
+    100, so it could exceed 100%."""
+
+    def setUp(self):
+        self.media = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.media, ignore_errors=True)
+
+    def test_confidence_is_a_valid_percentage(self):
+        tiny = torch.nn.Sequential(_TinySkinNet(), torch.nn.Dropout(0.5)).eval()
+        with override_settings(MEDIA_ROOT=self.media), mock.patch.object(
+            views2, "load_skin_disease_model", return_value=tiny
+        ):
+            resp = self.client.post(reverse("analyze_skin_image"), {"file": make_png()})
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn(resp.context["predicted_class"], views2.CLASSES)
+        confidence = float(resp.context["predicted_probability"].rstrip("%"))
+        self.assertTrue(90.0 <= confidence <= 100.0, confidence)
 
 
 class TreatmentLookupTests(TestCase):
