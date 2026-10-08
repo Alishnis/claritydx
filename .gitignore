@@ -101,8 +101,10 @@ celerybeat.pid
 # SageMath parsed files
 *.sage.py
 
-# Environments
+# Environments (never commit real keys; env.example is the tracked template)
 .env
+.env.*
+!.env.example
 .venv
 env/
 venv/
@@ -180,3 +182,8 @@ logs/
 
 # Local archives
 *.zip
+
+# Generated at runtime / local-only
+blood_reports/
+node_modules/
+*.jar
