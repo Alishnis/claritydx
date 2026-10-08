@@ -95,7 +95,7 @@ def analyze_skin_image(request):
 
             predicted_index = probabilities.argmax().item()
             predicted_class = CLASSES[predicted_index]
-            predicted_probability = probabilities[predicted_index].item() * 140
+            predicted_probability = probabilities[predicted_index].item() * 100
 
             target_layer = model[0].features[-1]  
             heatmap = generate_gradcam(model[0], input_tensor, target_layer, predicted_index)
